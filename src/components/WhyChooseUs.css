@@ -1,0 +1,26 @@
+.why-us__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+  margin-top: 32px;
+}
+
+.why-us__card {
+  background: #fff;
+  border-radius: 18px;
+  padding: 28px 20px;
+  text-align: center;
+  border: 1px solid rgba(29, 66, 29, 0.08);
+}
+
+.why-us__icon {
+  font-size: 2rem;
+  display: block;
+  margin-bottom: 12px;
+}
+
+.why-us__card p {
+  margin: 0;
+  font-weight: 700;
+  color: var(--color-green-darker);
+}
