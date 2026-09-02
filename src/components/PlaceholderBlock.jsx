@@ -9,11 +9,12 @@ export function PlaceholderBlock({
   aspect = '4 / 3',
   icon = '🌾',
   className = '',
+  fill = false,
 }) {
   return (
     <div
-      className={`placeholder-block ${className}`}
-      style={{ aspectRatio: aspect }}
+      className={`placeholder-block ${fill ? 'placeholder-block--fill' : ''} ${className}`}
+      style={fill ? undefined : { aspectRatio: aspect }}
       role="img"
       aria-label={label}
     >

@@ -1,4 +1,5 @@
 import { useRef } from 'react';
+import { motion } from 'motion/react';
 import './Hero.css';
 import { useFlavor } from '../context/FlavorContext.jsx';
 import { VideoWithFallback } from './VideoWithFallback.jsx';
@@ -33,6 +34,17 @@ export function Hero() {
     if (target) scrollToEl(target);
   };
 
+  // Entrance/gesture transitions collapse to instant when reduced motion is
+  // preferred — the copy still appears, it just doesn't animate in.
+  const fadeUp = reducedMotion
+    ? { initial: false, animate: { opacity: 1, y: 0 } }
+    : {
+        initial: { opacity: 0, y: 24 },
+        animate: { opacity: 1, y: 0 },
+        transition: { duration: 0.7, ease: 'easeOut' },
+      };
+  const tap = reducedMotion ? {} : { whileHover: { scale: 1.04 }, whileTap: { scale: 0.96 } };
+
   return (
     <section
       id="top"
@@ -42,6 +54,22 @@ export function Hero() {
       data-flavor={activeFlavorId}
     >
       <div className="hero grain-overlay" ref={heroContentRef}>
+        {/* Full-bleed pour video, scroll-scrubbed by useHeroScrollScrub —
+            the video itself fills the entire hero viewport, with copy
+            overlaid on top of a dark scrim for legibility. */}
+        <div className="hero__video-layer">
+          <VideoWithFallback
+            ref={videoRef}
+            src={activeFlavor.videoSrc}
+            label={`${activeFlavor.label} gari pour — coming soon`}
+            className="hero__video"
+            key={activeFlavor.id}
+            autoPlayLoop={reducedMotion}
+            fill
+          />
+          <div className="hero__scrim" />
+        </div>
+
         {!reducedMotion && (
           <>
             <div className="hero__progress-track" aria-hidden="true">
@@ -55,19 +83,23 @@ export function Hero() {
         )}
 
         <div className="container hero__inner">
-          <div className="hero__copy">
+          <motion.div className="hero__copy" {...fadeUp}>
             <p className="hero__eyebrow">Fire-Roasted Ghanaian Gari</p>
-            <h1 className="display-1 hero__headline">Gari, But Better</h1>
-            <div className="dotted-line hero__dotted" />
+            <h1 className="display-1 on-dark hero__headline">Gari, But Better</h1>
+            <div className="dotted-line dotted-line--pale hero__dotted" />
             <p className="hero__flavor-name">{activeFlavor.label} gari mix</p>
 
-            <p className="hero__subhead">
+            <p className="hero__subhead on-dark">
               Real cassava, real superfoods, real Ghana. Farm-to-table gari,
               reimagined for your health.
             </p>
-            <a href="#notify-me" className="btn btn-primary hero__cta">
+            <motion.a
+              href="#notify-me"
+              className="btn btn-primary hero__cta"
+              {...tap}
+            >
               Notify Me at Launch
-            </a>
+            </motion.a>
 
             <div
               className="hero__flavor-selector"
@@ -75,7 +107,7 @@ export function Hero() {
               aria-label="Choose a flavor"
             >
               {flavors.map((flavor) => (
-                <button
+                <motion.button
                   key={flavor.id}
                   type="button"
                   className={`hero__flavor-pill${
@@ -84,23 +116,13 @@ export function Hero() {
                   data-flavor={flavor.id}
                   aria-pressed={flavor.id === activeFlavorId}
                   onClick={() => setActiveFlavorId(flavor.id)}
+                  {...tap}
                 >
                   {flavor.label}
-                </button>
+                </motion.button>
               ))}
             </div>
-          </div>
-
-          <div className="hero__visual">
-            <VideoWithFallback
-              ref={videoRef}
-              src={activeFlavor.videoSrc}
-              label={`${activeFlavor.label} gari pour — coming soon`}
-              className="hero__video"
-              key={activeFlavor.id}
-              autoPlayLoop={reducedMotion}
-            />
-          </div>
+          </motion.div>
         </div>
       </div>
     </section>

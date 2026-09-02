@@ -7,7 +7,7 @@ import { PlaceholderBlock } from './PlaceholderBlock.jsx';
 // needed as real clips are dropped into /public/assets — this just starts
 // resolving instead of erroring.
 export const VideoWithFallback = forwardRef(function VideoWithFallback(
-  { src, label, className = '', autoPlayLoop = false },
+  { src, label, className = '', autoPlayLoop = false, fill = false },
   ref
 ) {
   const [failed, setFailed] = useState(false);
@@ -19,6 +19,7 @@ export const VideoWithFallback = forwardRef(function VideoWithFallback(
         aspect="4 / 5"
         icon="🎬"
         className={className}
+        fill={fill}
       />
     );
   }
