@@ -2,13 +2,20 @@
   position: relative;
 }
 
-.hero {
+/* Specificity bumped (.hero-pin-wrapper .hero) so this reliably beats the
+   .grain-overlay utility's `position: relative` regardless of CSS import
+   order — both are single-class rules and would otherwise be a coin flip. */
+.hero-pin-wrapper .hero {
   position: sticky;
   top: 0;
   height: 100vh;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  /* Top-align rather than center: on narrow/short viewports the stacked
+     copy + 5-pill selector + visual can exceed 100vh, and with
+     `overflow: hidden` below, centering would clip the top (headline) —
+     top-aligning clips only the least-important bottom content instead. */
+  justify-content: flex-start;
   background: linear-gradient(
     160deg,
     color-mix(in srgb, var(--flavor-active) 22%, var(--color-cream)) 0%,
@@ -49,7 +56,12 @@
   color: var(--color-green-darker);
 }
 
-.hero__inner {
+/* .hero__inner.container (specificity 0,2,0) so this padding-top reliably
+   beats .container's `padding: 0 24px` shorthand (0,1,0), which would
+   otherwise zero it out depending on CSS import order. */
+.hero__inner.container {
+  position: relative;
+  z-index: 2;
   display: grid;
   grid-template-columns: 1fr;
   gap: 40px;
@@ -63,10 +75,27 @@
   }
 }
 
-.hero__headline {
-  font-size: clamp(2.4rem, 6vw, 4.2rem);
-  letter-spacing: -0.01em;
-  color: var(--color-green-darker);
+.hero__eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--flavor-active);
+  margin: 0 0 12px;
+}
+
+.hero__dotted {
+  max-width: 220px;
+  margin: 18px 0 10px;
+}
+
+.hero__flavor-name {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.3rem;
+  text-transform: capitalize;
+  color: var(--flavor-active);
+  margin: 0 0 20px;
 }
 
 .hero__subhead {

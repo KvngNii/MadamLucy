@@ -14,11 +14,21 @@
   background: #fff;
   border-radius: 24px;
   padding: 36px;
-  max-width: 520px;
+  max-width: 600px;
   width: 100%;
   max-height: 85vh;
   overflow-y: auto;
   animation: recipe-modal-in 0.2s ease;
+}
+
+.recipe-modal__tag {
+  display: inline-block;
+  text-transform: uppercase;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: var(--color-orange);
+  margin-bottom: 8px;
 }
 
 @keyframes recipe-modal-in {
@@ -55,14 +65,100 @@
   margin-top: 20px;
 }
 
-.recipe-modal__ingredients,
-.recipe-modal__steps {
+.recipe-modal__breakdown {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  background: color-mix(in srgb, var(--color-pale) 40%, #fff);
+  border-radius: 14px;
+  padding: 16px 12px;
+  margin-bottom: 20px;
+}
+
+.recipe-modal__breakdown > div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 4px;
+}
+
+.recipe-modal__breakdown-label {
+  text-transform: uppercase;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  opacity: 0.65;
+}
+
+.recipe-modal__breakdown-value {
+  font-family: var(--font-display);
+  font-weight: 700;
+  color: var(--color-green-darker);
+}
+
+.recipe-modal__ingredients {
   margin: 0;
   padding-left: 20px;
 }
 
+.recipe-modal__tip {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  background: color-mix(in srgb, var(--color-orange) 8%, #fff);
+  border-radius: 12px;
+  padding: 14px 16px;
+  margin-top: 16px;
+}
+
+.recipe-modal__tip p {
+  margin: 0;
+  font-size: 0.88rem;
+  opacity: 0.85;
+}
+
+.recipe-modal__divider {
+  margin: 24px 0;
+}
+
+.recipe-modal__steps {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
 .recipe-modal__steps li {
-  margin-bottom: 8px;
+  display: flex;
+  gap: 14px;
+  margin-bottom: 18px;
+}
+
+.recipe-modal__step-number {
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--color-green-darker);
+  color: var(--color-pale);
+  font-weight: 700;
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.recipe-modal__step-title {
+  display: block;
+  font-weight: 700;
+  color: var(--color-green-darker);
+  margin-bottom: 2px;
+}
+
+.recipe-modal__step-desc {
+  display: block;
+  font-size: 0.92rem;
+  opacity: 0.8;
 }
 
 @media (prefers-reduced-motion: reduce) {

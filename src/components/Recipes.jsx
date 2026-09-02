@@ -20,6 +20,10 @@ export function Recipes() {
               className="recipe-card"
               onClick={() => setActiveRecipeId(recipe.id)}
             >
+              <div className="recipe-card__tags">
+                <span className="recipe-card__tag">recipe</span>
+                <span className="recipe-card__tag">{recipe.total}</span>
+              </div>
               <span className="recipe-card__icon" aria-hidden="true">
                 🍲
               </span>

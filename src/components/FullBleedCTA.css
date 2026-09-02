@@ -1,0 +1,49 @@
+.fullbleed-cta {
+  position: relative;
+  min-height: 60vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(
+    150deg,
+    var(--flavor-active),
+    var(--color-green-darker) 75%
+  );
+  overflow: hidden;
+  text-align: center;
+}
+
+.fullbleed-cta__overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(29, 66, 29, 0.35);
+}
+
+.fullbleed-cta__content {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 28px;
+  /* padding-top/bottom only (not the `padding` shorthand) so this can't
+     clobber .container's horizontal gutter regardless of CSS import order —
+     see the same class of bug fixed in Hero.css. */
+  padding-top: 80px;
+  padding-bottom: 80px;
+}
+
+.fullbleed-cta__btn {
+  font-size: 1.05rem;
+}
+
+.fullbleed-cta__photo-note {
+  position: absolute;
+  bottom: 14px;
+  right: 20px;
+  z-index: 2;
+  margin: 0;
+  font-size: 0.75rem;
+  color: rgba(232, 241, 135, 0.7);
+  font-style: italic;
+}

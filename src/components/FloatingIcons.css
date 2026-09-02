@@ -1,0 +1,45 @@
+.floating-icons {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  z-index: 900;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.floating-icons__btn {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  border: none;
+  background: #fff;
+  box-shadow: 0 8px 24px rgba(29, 66, 29, 0.25);
+  font-size: 1.4rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.15s ease;
+}
+
+.floating-icons__btn:hover {
+  transform: translateY(-2px);
+}
+
+.floating-icons__btn--primary {
+  background: var(--color-orange);
+}
+
+@media (max-width: 640px) {
+  .floating-icons {
+    right: 14px;
+    bottom: 14px;
+  }
+
+  .floating-icons__btn {
+    width: 46px;
+    height: 46px;
+    font-size: 1.2rem;
+  }
+}
