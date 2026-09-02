@@ -44,8 +44,28 @@ export function RecipeModal({ recipe, onClose }) {
           ✕
         </button>
 
+        <span className="recipe-modal__tag">recipe</span>
         <h2 id="recipe-modal-title">{recipe.title}</h2>
         <p className="recipe-modal__teaser">{recipe.teaser}</p>
+
+        <div className="recipe-modal__breakdown">
+          <div>
+            <span className="recipe-modal__breakdown-label">prep time</span>
+            <span className="recipe-modal__breakdown-value">{recipe.prep}</span>
+          </div>
+          <div>
+            <span className="recipe-modal__breakdown-label">cook time</span>
+            <span className="recipe-modal__breakdown-value">{recipe.cook}</span>
+          </div>
+          <div>
+            <span className="recipe-modal__breakdown-label">serves</span>
+            <span className="recipe-modal__breakdown-value">{recipe.serves}</span>
+          </div>
+          <div>
+            <span className="recipe-modal__breakdown-label">total</span>
+            <span className="recipe-modal__breakdown-value">{recipe.total}</span>
+          </div>
+        </div>
 
         <h3>Ingredients</h3>
         <ul className="recipe-modal__ingredients">
@@ -54,10 +74,25 @@ export function RecipeModal({ recipe, onClose }) {
           ))}
         </ul>
 
-        <h3>Steps</h3>
+        {recipe.tip && (
+          <div className="recipe-modal__tip">
+            <span aria-hidden="true">💡</span>
+            <p>{recipe.tip}</p>
+          </div>
+        )}
+
+        <div className="dotted-line recipe-modal__divider" />
+
+        <h3>Instructions</h3>
         <ol className="recipe-modal__steps">
           {recipe.steps.map((step, i) => (
-            <li key={i}>{step}</li>
+            <li key={step.title}>
+              <span className="recipe-modal__step-number">{i + 1}</span>
+              <span>
+                <span className="recipe-modal__step-title">{step.title}</span>
+                <span className="recipe-modal__step-desc">{step.desc}</span>
+              </span>
+            </li>
           ))}
         </ol>
       </div>

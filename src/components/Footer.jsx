@@ -13,6 +13,10 @@ const LINKS = [
 export function Footer() {
   return (
     <footer className="footer">
+      <div className="container">
+        <p className="footer__wordmark">Lucy Perfect</p>
+      </div>
+
       <div className="container footer__inner">
         <div className="footer__brand">
           <LogoMark variant="reversed" size={48} />
@@ -51,6 +55,10 @@ export function Footer() {
         <div className="footer__seal">
           <MadeInGhanaSeal size={90} />
         </div>
+      </div>
+
+      <div className="container">
+        <div className="dotted-line dotted-line--pale footer__divider" />
       </div>
 
       <div className="container footer__bottom">

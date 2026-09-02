@@ -1,0 +1,122 @@
+.ingredients-modal__overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(29, 66, 29, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  z-index: 2000;
+}
+
+.ingredients-modal {
+  position: relative;
+  background: #fff;
+  border-radius: 24px;
+  padding: 36px;
+  max-width: 480px;
+  width: 100%;
+  max-height: 85vh;
+  overflow-y: auto;
+}
+
+.ingredients-modal__close {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: none;
+  background: color-mix(in srgb, var(--color-olive) 15%, #fff);
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.ingredients-modal__title {
+  text-transform: lowercase;
+  font-size: clamp(1.6rem, 4vw, 2.2rem);
+  margin: 0 0 20px;
+}
+
+.ingredients-modal__flavor-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 16px;
+}
+
+.ingredients-modal__flavor-tab {
+  border: 2px solid color-mix(in srgb, var(--flavor-active) 35%, transparent);
+  background: #fff;
+  border-radius: 999px;
+  padding: 6px 14px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.ingredients-modal__flavor-tab.is-active {
+  background: var(--flavor-active);
+  border-color: var(--flavor-active);
+  color: #fff;
+}
+
+.ingredients-modal__tabs {
+  display: flex;
+  gap: 8px;
+  border-bottom: 1px solid rgba(29, 66, 29, 0.1);
+  margin-bottom: 20px;
+}
+
+.ingredients-modal__tab {
+  border: none;
+  background: none;
+  padding: 8px 4px 12px;
+  font-weight: 700;
+  font-size: 0.9rem;
+  text-transform: lowercase;
+  cursor: pointer;
+  color: var(--color-ink);
+  opacity: 0.55;
+  border-bottom: 2px solid transparent;
+  margin-right: 12px;
+}
+
+.ingredients-modal__tab.is-active {
+  opacity: 1;
+  color: var(--color-green-darker);
+  border-bottom-color: var(--flavor-active);
+}
+
+.ingredients-modal__desc {
+  font-size: 0.92rem;
+  opacity: 0.8;
+  margin: 0 0 16px;
+}
+
+.ingredients-modal__list {
+  margin: 0;
+  padding-left: 20px;
+  font-weight: 700;
+  color: var(--color-green-darker);
+}
+
+.ingredients-modal__note {
+  font-size: 0.82rem;
+  font-style: italic;
+  opacity: 0.65;
+  margin-top: 12px;
+}
+
+.ingredients-modal__nutrition-pending {
+  background: color-mix(in srgb, var(--color-pale) 40%, #fff);
+  border-radius: 12px;
+  padding: 20px;
+  font-size: 0.92rem;
+}
+
+.ingredients-modal__nutrition-pending p:last-child {
+  margin-bottom: 0;
+  opacity: 0.8;
+}

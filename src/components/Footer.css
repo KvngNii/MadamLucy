@@ -1,7 +1,17 @@
 .footer {
   background: var(--color-green-deep);
   color: var(--color-pale);
-  padding-top: 64px;
+  padding-top: 48px;
+}
+
+.footer__wordmark {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(3rem, 12vw, 8rem);
+  line-height: 1;
+  margin: 0 0 40px;
+  color: var(--color-pale);
+  opacity: 0.9;
 }
 
 .footer__inner {
@@ -9,7 +19,6 @@
   grid-template-columns: 1fr;
   gap: 40px;
   padding-bottom: 40px;
-  border-bottom: 1px solid rgba(232, 241, 135, 0.15);
 }
 
 @media (min-width: 760px) {
@@ -84,8 +93,15 @@
   }
 }
 
+.footer__divider {
+  margin: 0 0 20px;
+  opacity: 0.6;
+}
+
 .footer__bottom {
-  padding: 20px 24px;
+  /* padding-bottom only — avoids the `padding` shorthand fighting
+     .container's horizontal-gutter shorthand for the same element. */
+  padding-bottom: 24px;
   font-size: 0.8rem;
   opacity: 0.7;
 }

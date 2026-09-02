@@ -1,0 +1,111 @@
+.whats-inside {
+  background: #fff;
+  padding: 96px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 80px;
+}
+
+.whats-inside__row {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 40px;
+  align-items: center;
+}
+
+@media (min-width: 860px) {
+  .whats-inside__row {
+    grid-template-columns: 1fr 1fr;
+    gap: 64px;
+  }
+
+  .whats-inside__row--reverse .whats-inside__side:first-child {
+    order: 2;
+  }
+}
+
+.whats-inside__heading {
+  font-family: var(--font-display);
+  font-weight: 700;
+  text-transform: lowercase;
+  font-size: clamp(2.2rem, 5vw, 3.2rem);
+  line-height: 1;
+  margin: 0 0 20px;
+  color: var(--color-green-darker);
+}
+
+.whats-inside__dotted {
+  max-width: 160px;
+  margin-bottom: 20px;
+}
+
+.whats-inside__desc {
+  font-size: 1.05rem;
+  color: var(--color-ink);
+  opacity: 0.85;
+  margin: 0 0 20px;
+}
+
+.whats-inside__tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.whats-inside__tab {
+  border: 2px solid color-mix(in srgb, var(--flavor-active) 35%, transparent);
+  background: #fff;
+  border-radius: 999px;
+  padding: 8px 16px;
+  font-weight: 700;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+.whats-inside__tab.is-active {
+  background: var(--flavor-active);
+  border-color: var(--flavor-active);
+  color: #fff;
+}
+
+.whats-inside__list {
+  margin: 0 0 12px;
+  padding-left: 20px;
+  font-weight: 700;
+  color: var(--color-green-darker);
+}
+
+.whats-inside__note {
+  font-size: 0.85rem;
+  font-style: italic;
+  opacity: 0.65;
+  margin: 0 0 20px;
+}
+
+.whats-inside__seal {
+  margin-top: 8px;
+}
+
+.whats-inside__statement {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.whats-inside__md {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(1.8rem, 4vw, 2.6rem);
+  margin: 0;
+  color: var(--color-green-darker);
+  line-height: 1.1;
+}
+
+.whats-inside__bold {
+  margin-top: 20px;
+  font-size: 1.1rem;
+  color: var(--color-ink);
+  opacity: 0.85;
+  max-width: 42ch;
+}

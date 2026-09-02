@@ -5,7 +5,10 @@ import { gsap, ScrollTrigger } from '../lib/gsap.js';
 // the user scrolls past it. Not pinned — the scroll distance is whatever the
 // paragraph's own position gives it (start/end are viewport-relative, a few
 // hundred vh at most for a paragraph this size).
-export function useScrollHighlightText(textRef, { reducedMotion } = {}) {
+export function useScrollHighlightText(
+  textRef,
+  { reducedMotion, onDark = false } = {}
+) {
   useLayoutEffect(() => {
     const el = textRef.current;
     if (!el) return undefined;
@@ -17,9 +20,10 @@ export function useScrollHighlightText(textRef, { reducedMotion } = {}) {
 
     const words = el.querySelectorAll('.scroll-highlight__word');
     // GSAP's color interpolation needs a resolved color, not a raw var()
-    // reference — this hex must match --color-green-darker in global.css.
+    // reference — these hexes must match --color-green-darker / --color-pale
+    // in global.css.
     const tween = gsap.to(words, {
-      color: '#1d421d',
+      color: onDark ? '#e8f187' : '#1d421d',
       stagger: 0.04,
       ease: 'none',
       scrollTrigger: {
@@ -34,5 +38,5 @@ export function useScrollHighlightText(textRef, { reducedMotion } = {}) {
       tween.scrollTrigger?.kill();
       tween.kill();
     };
-  }, [textRef, reducedMotion]);
+  }, [textRef, reducedMotion, onDark]);
 }

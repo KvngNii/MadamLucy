@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import './Newsletter.css';
+import { PlaceholderBlock } from './PlaceholderBlock.jsx';
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -45,59 +46,72 @@ export function Newsletter() {
 
   return (
     <section id="notify-me" className="section newsletter">
-      <div className="container newsletter__inner">
-        <p className="section-eyebrow">Coming Soon</p>
-        <h2>Be the first to try Lucy&apos;s Gari</h2>
-        <p className="newsletter__subhead">
-          Sign up for launch updates — no spam, just word the moment it&apos;s
-          ready to ship.
-        </p>
-
-        {status === 'success' ? (
-          <p className="newsletter__success" role="status">
-            You&apos;re on the list! We&apos;ll email you the moment Lucy&apos;s
-            Gari launches.
+      <div className="container newsletter__grid">
+        <div className="newsletter__copy-col">
+          <p className="section-eyebrow">Coming Soon</p>
+          <h2 className="display-2 on-dark">Be the first to try Lucy&apos;s Gari</h2>
+          <span className="newsletter__spinner" aria-hidden="true">
+            ✦
+          </span>
+          <p className="newsletter__subhead">
+            Sign up for launch updates — no spam, just word the moment
+            it&apos;s ready to ship.
           </p>
-        ) : (
-          <form className="newsletter__form" onSubmit={handleSubmit} noValidate>
-            <div className="newsletter__fields">
-              <label className="visually-hidden" htmlFor="newsletter-name">
-                Name
-              </label>
-              <input
-                id="newsletter-name"
-                type="text"
-                placeholder="Your name"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                autoComplete="name"
-              />
-              <label className="visually-hidden" htmlFor="newsletter-email">
-                Email
-              </label>
-              <input
-                id="newsletter-email"
-                type="email"
-                placeholder="you@example.com"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                autoComplete="email"
-              />
-              <button
-                type="submit"
-                className="btn btn-primary"
-                disabled={status === 'submitting'}
-              >
-                {status === 'submitting' ? 'Signing up…' : 'Notify Me'}
-              </button>
-            </div>
-            {status === 'error' && (
-              <p className="newsletter__error" role="alert">
-                {errorMessage}
-              </p>
-            )}
-          </form>
-        )}
+
+          {status === 'success' ? (
+            <p className="newsletter__success" role="status">
+              You&apos;re on the list! We&apos;ll email you the moment
+              Lucy&apos;s Gari launches.
+            </p>
+          ) : (
+            <form className="newsletter__form" onSubmit={handleSubmit} noValidate>
+              <div className="newsletter__fields">
+                <label className="visually-hidden" htmlFor="newsletter-name">
+                  Name
+                </label>
+                <input
+                  id="newsletter-name"
+                  type="text"
+                  placeholder="Your name"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  autoComplete="name"
+                />
+                <label className="visually-hidden" htmlFor="newsletter-email">
+                  Email
+                </label>
+                <input
+                  id="newsletter-email"
+                  type="email"
+                  placeholder="you@example.com"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  autoComplete="email"
+                />
+                <button
+                  type="submit"
+                  className="btn btn-primary"
+                  disabled={status === 'submitting'}
+                >
+                  {status === 'submitting' ? 'Signing up…' : 'Notify Me'}
+                </button>
+              </div>
+              {status === 'error' && (
+                <p className="newsletter__error" role="alert">
+                  {errorMessage}
+                </p>
+              )}
+            </form>
+          )}
+        </div>
+
+        <div className="newsletter__photo-col">
+          <PlaceholderBlock
+            label="Lifestyle photo — coming soon"
+            aspect="4 / 5"
+            icon="📸"
+          />
+        </div>
       </div>
     </section>
   );

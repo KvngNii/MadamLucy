@@ -4,10 +4,11 @@ import { useFlavor } from '../context/FlavorContext.jsx';
 import { VideoWithFallback } from './VideoWithFallback.jsx';
 import { useReducedMotion } from '../hooks/useReducedMotion.js';
 import { useHeroScrollScrub } from '../hooks/useHeroScrollScrub.js';
+import { scrollToEl } from '../lib/lenis.js';
 
 // Total scroll distance the pinned hero occupies. Kept well inside the
-// 150-250vh requirement — see useHeroScrollScrub (wired in a follow-up pass)
-// for how this height becomes the actual ScrollTrigger start/end range.
+// 150-250vh requirement — see useHeroScrollScrub for how this height becomes
+// the actual ScrollTrigger start/end range.
 export const HERO_PIN_VH = 200;
 
 export function Hero() {
@@ -28,7 +29,8 @@ export function Hero() {
   });
 
   const handleSkip = () => {
-    document.getElementById('about-lucy')?.scrollIntoView({ behavior: 'smooth' });
+    const target = document.getElementById('about-lucy');
+    if (target) scrollToEl(target);
   };
 
   return (
@@ -39,7 +41,7 @@ export function Hero() {
       style={{ height: reducedMotion ? '100vh' : `${HERO_PIN_VH}vh` }}
       data-flavor={activeFlavorId}
     >
-      <div className="hero" ref={heroContentRef}>
+      <div className="hero grain-overlay" ref={heroContentRef}>
         {!reducedMotion && (
           <>
             <div className="hero__progress-track" aria-hidden="true">
@@ -54,8 +56,11 @@ export function Hero() {
 
         <div className="container hero__inner">
           <div className="hero__copy">
-            <p className="section-eyebrow">Lucy Perfect Enterprise</p>
-            <h1 className="hero__headline">GARI, BUT BETTER</h1>
+            <p className="hero__eyebrow">Fire-Roasted Ghanaian Gari</p>
+            <h1 className="display-1 hero__headline">Gari, But Better</h1>
+            <div className="dotted-line hero__dotted" />
+            <p className="hero__flavor-name">{activeFlavor.label} gari mix</p>
+
             <p className="hero__subhead">
               Real cassava, real superfoods, real Ghana. Farm-to-table gari,
               reimagined for your health.
