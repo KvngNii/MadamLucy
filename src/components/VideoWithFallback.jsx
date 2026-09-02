@@ -33,7 +33,7 @@ export const VideoWithFallback = forwardRef(function VideoWithFallback(
       playsInline
       loop={autoPlayLoop}
       autoPlay={autoPlayLoop}
-      preload="metadata"
+      preload="auto"
       aria-label={label}
       onError={() => setFailed(true)}
     />

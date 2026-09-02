@@ -1,4 +1,9 @@
 .whats-inside {
+  /* Curtain: the story pulls this section up by 100vh (negative margin on
+     .story); z-index 2 puts it above the stuck stage so it slides over the
+     frozen pour instead of appearing beneath it. Opaque background matters. */
+  position: relative;
+  z-index: 2;
   background: #fff;
   padding: 96px 0;
   display: flex;

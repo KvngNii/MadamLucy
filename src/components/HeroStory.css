@@ -1,0 +1,342 @@
+/* ---- Story shell ------------------------------------------------------ */
+
+.story {
+  position: relative;
+  background: var(--color-green-darker);
+  /* Sit under the transparent sticky nav from scroll 0 so the video runs
+     edge-to-edge behind it (the nav is in normal flow above us otherwise). */
+  margin-top: calc(-1 * var(--nav-height));
+  /* The next section is pulled up by one viewport so it curtains over the
+     trailer panel while the stage is still stuck. NOTE: the trailer must be
+     a real panel, not padding — `position: sticky` is bounded by the
+     parent's *content* box, so padding would not extend the stuck range. */
+  margin-bottom: -100vh;
+}
+
+.story--static {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+/* Full-bleed pinned stage. Specificity is deliberately .story .story__stage
+   so no single-class utility (.grain-overlay etc.) can ever out-cascade the
+   sticky positioning — that exact bug bit the previous hero. */
+.story .story__stage {
+  position: sticky;
+  top: 0;
+  z-index: 0;
+  height: 100vh;
+  overflow: hidden;
+  background: var(--color-green-darker);
+}
+
+.story--static .story__stage {
+  position: relative;
+}
+
+.story__video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* No scrim over the pour — only a faint edge vignette so edge-hugging copy
+   keeps contrast while the centre stays exactly as bright as the clip. */
+.story__vignette {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse 70% 65% at 50% 50%,
+    transparent 55%,
+    rgba(17, 24, 17, 0.45) 100%
+  );
+}
+
+/* Progress bar + skip: zero-height sticky layer above the panels. */
+.story__ui {
+  position: sticky;
+  top: 0;
+  z-index: 3;
+  height: 0;
+}
+
+.story__progress-track {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: rgba(232, 241, 135, 0.2);
+}
+
+.story__progress-fill {
+  height: 100%;
+  width: 0%;
+  background: var(--color-orange);
+  transform-origin: left;
+}
+
+.story__skip {
+  position: absolute;
+  top: calc(var(--nav-height) + 12px);
+  right: 16px;
+  background: rgba(17, 24, 17, 0.45);
+  border: 1px solid rgba(232, 241, 135, 0.35);
+  border-radius: 999px;
+  padding: 8px 16px;
+  font-weight: 700;
+  font-size: 0.85rem;
+  cursor: pointer;
+  color: var(--color-pale);
+  backdrop-filter: blur(4px);
+}
+
+/* ---- Panels ----------------------------------------------------------- */
+
+.story__panels {
+  position: relative;
+  z-index: 1;
+  /* Start on top of the stage rather than below it. */
+  margin-top: -100vh;
+  /* Empty panel area must not block the skip button / stage; only the copy
+     blocks take pointer events. */
+  pointer-events: none;
+}
+
+.story--static .story__panels {
+  margin-top: 0;
+}
+
+.story__panel {
+  position: relative;
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto 1fr auto;
+  gap: 16px 24px;
+  padding: calc(var(--nav-height) + 20px) 24px 40px;
+  max-width: var(--max-width);
+  margin: 0 auto;
+}
+
+.story--static .story__panel {
+  min-height: 0;
+  padding-top: 48px;
+  padding-bottom: 48px;
+}
+
+.story__block {
+  pointer-events: auto;
+  max-width: 520px;
+}
+
+.story__block--wide {
+  max-width: 760px;
+}
+
+.story__block--top {
+  grid-column: 1 / -1;
+  grid-row: 1;
+  justify-self: center;
+  text-align: center;
+  max-width: none;
+  width: 100%;
+}
+
+.story__block--top-right {
+  grid-column: 2;
+  grid-row: 1;
+  justify-self: end;
+  text-align: right;
+  max-width: 380px;
+}
+
+.story__block--bottom-left {
+  grid-column: 1;
+  grid-row: 3;
+  align-self: end;
+}
+
+.story__block--bottom-right {
+  grid-column: 2;
+  grid-row: 3;
+  justify-self: end;
+  align-self: end;
+}
+
+.story__block--bottom-center {
+  grid-column: 1 / -1;
+  grid-row: 3;
+  justify-self: center;
+  align-self: end;
+  text-align: center;
+  max-width: 640px;
+}
+
+@media (max-width: 720px) {
+  .story__panel {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr auto auto;
+    gap: 14px;
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  .story__block--top-right {
+    grid-column: 1;
+    grid-row: 1;
+    justify-self: start;
+    text-align: left;
+  }
+
+  .story__block--bottom-left {
+    grid-column: 1;
+    grid-row: 3;
+  }
+
+  .story__block--bottom-right {
+    grid-column: 1;
+    grid-row: 4;
+    justify-self: start;
+  }
+
+  .story__block--bottom-center {
+    grid-column: 1;
+    grid-row: 3;
+  }
+}
+
+/* ---- Type ------------------------------------------------------------- */
+
+.story__eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--color-orange);
+  margin: 0 0 10px;
+}
+
+.story__headline {
+  font-family: var(--font-display);
+  font-weight: 700;
+  line-height: 0.92;
+  letter-spacing: -0.015em;
+  text-transform: uppercase;
+  font-size: clamp(3rem, 11vw, 9.5rem);
+  margin: 0;
+  text-shadow: 0 2px 28px rgba(0, 0, 0, 0.35);
+}
+
+.story__dotted {
+  max-width: 100%;
+  margin: 16px auto 12px;
+}
+
+.story__flavor-name {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(1.2rem, 2.6vw, 2rem);
+  text-transform: capitalize;
+  color: var(--color-orange);
+  margin: 0;
+  text-shadow: 0 2px 16px rgba(0, 0, 0, 0.35);
+}
+
+.story__h2 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+  font-size: clamp(2.2rem, 6vw, 5rem);
+  margin: 0 0 16px;
+  text-shadow: 0 2px 24px rgba(0, 0, 0, 0.35);
+}
+
+.story__h2--big {
+  font-size: clamp(2.6rem, 7.5vw, 6.5rem);
+  margin-bottom: 0;
+}
+
+.story__h2--textured {
+  background: linear-gradient(
+    100deg,
+    var(--color-orange),
+    var(--color-pale) 55%,
+    var(--color-olive)
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  text-shadow: none;
+}
+
+.story__small {
+  font-size: 0.98rem;
+  line-height: 1.55;
+  margin: 0 0 16px;
+  opacity: 0.95;
+  text-shadow: 0 1px 12px rgba(0, 0, 0, 0.45);
+}
+
+.story__block--bottom-center .story__small {
+  margin-bottom: 0;
+}
+
+/* ---- Flavor pills / icons -------------------------------------------- */
+
+.story__flavor-selector {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+@media (max-width: 720px) {
+  .story__flavor-selector {
+    justify-content: flex-start;
+  }
+}
+
+.story__pill {
+  border: 2px solid rgba(232, 241, 135, 0.4);
+  background: rgba(17, 24, 17, 0.4);
+  backdrop-filter: blur(4px);
+  border-radius: 999px;
+  padding: 7px 16px;
+  font-weight: 700;
+  font-size: 0.85rem;
+  cursor: pointer;
+  color: var(--color-pale);
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.story__pill.is-active {
+  background: var(--flavor-active);
+  border-color: var(--flavor-active);
+  color: #fff;
+}
+
+.story__icons {
+  display: flex;
+  justify-content: center;
+  gap: 14px;
+  margin-bottom: 16px;
+}
+
+.story__icon-circle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: rgba(255, 253, 244, 0.92);
+  font-size: 1.4rem;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+}

@@ -1,11 +1,9 @@
 import { FlavorProvider } from './context/FlavorContext.jsx';
 import { useLenisScroll } from './hooks/useLenisScroll.js';
 import { Nav } from './components/Nav.jsx';
-import { Hero } from './components/Hero.jsx';
-import { MeetLucy } from './components/MeetLucy.jsx';
-import { StatementSection } from './components/StatementSection.jsx';
-import { UnwrapSection } from './components/UnwrapSection.jsx';
+import { HeroStory } from './components/HeroStory.jsx';
 import { WhatsInside } from './components/WhatsInside.jsx';
+import { MeetLucy } from './components/MeetLucy.jsx';
 import { TraditionSection } from './components/TraditionSection.jsx';
 import { Products } from './components/Products.jsx';
 import { FullBleedCTA } from './components/FullBleedCTA.jsx';
@@ -29,11 +27,11 @@ export default function App() {
       </a>
       <Nav />
       <main id="main-content">
-        <Hero />
-        <MeetLucy />
-        <StatementSection />
-        <UnwrapSection />
+        {/* Pinned pour story (hero + angle + unwrap + pour panels), then
+            WhatsInside curtains up over its frozen last frame. */}
+        <HeroStory />
         <WhatsInside />
+        <MeetLucy />
         <TraditionSection />
         <Products />
         <FullBleedCTA />

@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import './Nav.css';
 import { LogoMark } from './LogoMark.jsx';
+import { useNavOverStory } from '../hooks/useNavOverStory.js';
 
 const LINKS = [
   { href: '#flavors', label: 'Flavors' },
@@ -11,9 +12,11 @@ const LINKS = [
 
 export function Nav() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const navRef = useRef(null);
+  useNavOverStory(navRef);
 
   return (
-    <header className="nav">
+    <header className="nav" ref={navRef}>
       <div className="container nav__inner">
         <a href="#top" className="nav__brand">
           <LogoMark variant="light" size={40} />
