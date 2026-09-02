@@ -1,0 +1,35 @@
+.logo-mark {
+  display: inline-grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  gap: 2px;
+  width: var(--logo-size);
+  height: var(--logo-size);
+  border-radius: 22%;
+  overflow: hidden;
+  font-family: var(--font-display);
+  font-weight: 700;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.logo-mark__cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(var(--logo-size) * 0.34);
+}
+
+.logo-mark--reversed {
+  background: var(--color-green-deep);
+}
+.logo-mark--reversed .logo-mark__cell {
+  color: var(--color-pale);
+}
+
+.logo-mark--light {
+  background: var(--color-pale);
+}
+.logo-mark--light .logo-mark__cell {
+  color: var(--color-green-darker);
+}

@@ -1,0 +1,72 @@
+.recipe-modal__overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(29, 66, 29, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  z-index: 2000;
+}
+
+.recipe-modal {
+  position: relative;
+  background: #fff;
+  border-radius: 24px;
+  padding: 36px;
+  max-width: 520px;
+  width: 100%;
+  max-height: 85vh;
+  overflow-y: auto;
+  animation: recipe-modal-in 0.2s ease;
+}
+
+@keyframes recipe-modal-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.recipe-modal__close {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: none;
+  background: color-mix(in srgb, var(--color-olive) 15%, #fff);
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.recipe-modal__teaser {
+  opacity: 0.8;
+  margin-bottom: 24px;
+}
+
+.recipe-modal h3 {
+  font-size: 1rem;
+  margin-top: 20px;
+}
+
+.recipe-modal__ingredients,
+.recipe-modal__steps {
+  margin: 0;
+  padding-left: 20px;
+}
+
+.recipe-modal__steps li {
+  margin-bottom: 8px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .recipe-modal {
+    animation: none;
+  }
+}

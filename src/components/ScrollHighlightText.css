@@ -1,0 +1,13 @@
+.scroll-highlight {
+  font-size: 1.2rem;
+  line-height: 1.7;
+}
+
+.scroll-highlight__word {
+  color: color-mix(in srgb, var(--color-green-darker) 22%, transparent);
+  transition: color 0.2s ease;
+}
+
+.scroll-highlight.is-static .scroll-highlight__word {
+  color: var(--color-green-darker);
+}

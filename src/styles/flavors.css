@@ -1,0 +1,30 @@
+:root {
+  /* Per-flavor accent colors — estimated from packaging renders.
+     Replace with exact hex pulled from the source design files (Illustrator/
+     Figma) once available; nothing else needs to change when they do. */
+  --flavor-beetroot: #7a1f1f;
+  --flavor-ginger: #c97a2e;
+  --flavor-turmeric: #8a6642;
+  --flavor-coconut: #9a8b1f;
+  --flavor-garlic: #80993f;
+
+  /* Default active flavor before any selection */
+  --flavor-active: var(--flavor-beetroot);
+  --flavor-active-soft: color-mix(in srgb, var(--flavor-active) 16%, #fff);
+}
+
+[data-flavor='beetroot'] {
+  --flavor-active: var(--flavor-beetroot);
+}
+[data-flavor='ginger'] {
+  --flavor-active: var(--flavor-ginger);
+}
+[data-flavor='turmeric'] {
+  --flavor-active: var(--flavor-turmeric);
+}
+[data-flavor='coconut'] {
+  --flavor-active: var(--flavor-coconut);
+}
+[data-flavor='garlic'] {
+  --flavor-active: var(--flavor-garlic);
+}

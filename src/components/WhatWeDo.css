@@ -1,0 +1,21 @@
+.what-we-do {
+  background: var(--color-green-deep);
+  color: var(--color-pale);
+}
+
+.what-we-do__inner {
+  max-width: 760px;
+  text-align: center;
+  margin: 0 auto;
+}
+
+.what-we-do h2 {
+  color: var(--color-pale);
+  font-size: clamp(1.8rem, 4vw, 2.6rem);
+}
+
+.what-we-do p {
+  font-size: 1.15rem;
+  opacity: 0.92;
+  margin: 0;
+}

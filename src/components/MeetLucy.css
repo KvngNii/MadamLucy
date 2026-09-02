@@ -1,0 +1,20 @@
+.meet-lucy {
+  background: #fff;
+}
+
+.meet-lucy__inner {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 48px;
+  align-items: center;
+}
+
+@media (min-width: 860px) {
+  .meet-lucy__inner {
+    grid-template-columns: 0.8fr 1.2fr;
+  }
+}
+
+.meet-lucy__photo :is(img, .placeholder-block) {
+  border-radius: 24px;
+}
