@@ -6,6 +6,10 @@ export const flavors = [
     id: 'beetroot',
     label: 'Beetroot',
     videoSrc: '/assets/pour-beetroot.mp4',
+    videoWebm: '/assets/pour-beetroot.webm',
+    // Canvas frame sequence (see scripts/encode-pour.sh). Flavors without
+    // `frames` fall back to the video, then to the placeholder.
+    frames: '/assets/frames/beetroot/',
     productName: 'Beetroot Gari Mix',
     productTagline: 'Purple Vitality',
     productBlurb:

@@ -2,7 +2,7 @@ import { useRef } from 'react';
 import { motion } from 'motion/react';
 import './HeroStory.css';
 import { useFlavor } from '../context/FlavorContext.jsx';
-import { VideoWithFallback } from './VideoWithFallback.jsx';
+import { StageRenderer } from './StageRenderer.jsx';
 import { ScrollHighlightText } from './ScrollHighlightText.jsx';
 import { useReducedMotion } from '../hooks/useReducedMotion.js';
 import { useStoryScrub } from '../hooks/useStoryScrub.js';
@@ -36,14 +36,14 @@ export function HeroStory() {
   const reducedMotion = useReducedMotion();
 
   const storyRef = useRef(null);
-  const videoRef = useRef(null);
+  const rendererRef = useRef(null);
   const progressBarRef = useRef(null);
   const angleHeadlineRef = useRef(null);
   const pourHeadlineRef = useRef(null);
 
   useStoryScrub({
     storyRef,
-    videoRef,
+    rendererRef,
     progressBarRef,
     activeFlavorId,
     reducedMotion,
@@ -95,14 +95,14 @@ export function HeroStory() {
       )}
 
       <div className="story__stage">
-        <VideoWithFallback
-          ref={videoRef}
-          src={activeFlavor.videoSrc}
-          label={`${activeFlavor.label} gari pour — coming soon`}
+        {/* Canvas frame sequence → <video> → placeholder, driven by
+            useStoryScrub through one seek(progress). Remounts per flavor. */}
+        <StageRenderer
+          ref={rendererRef}
+          flavor={activeFlavor}
           className="story__video"
           key={activeFlavor.id}
           autoPlayLoop={reducedMotion}
-          fill
         />
         <div className="story__vignette" />
       </div>
