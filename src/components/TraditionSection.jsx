@@ -18,23 +18,23 @@ const STEPS = [
 
 const WHY_CARDS = [
   {
-    icon: '🌱',
-    title: 'Farm-to-Table Freshness',
-    body: 'Hand-processed with care, from Lucy’s own cassava farm straight to your sachet.',
+    number: '01',
+    title: 'She grows the cassava',
+    body: "Every sachet starts on Lucy's own farm in the Eastern Region.",
   },
   {
-    icon: '❤️',
-    title: 'Made with Your Health in Mind',
-    body: 'Every flavor is built around a real superfood, chosen for its nutrients, not just its color.',
+    number: '02',
+    title: 'Fermented and roasted by hand',
+    body: 'Small batches, turned by hand, the way she has done it for over ten years.',
   },
   {
-    icon: '🍃',
-    title: '100% Natural & Locally Sourced',
-    body: 'No artificial preservatives, no shortcuts — just cassava, superfoods, and time.',
+    number: '03',
+    title: 'One superfood per flavor',
+    body: 'Beetroot paste, ginger, turmeric. Nothing else goes in.',
   },
 ];
 
-const TAGS = ['farm fresh', 'hand roasted', 'superfood-infused'];
+const TAGS = ['no preservatives', 'nothing artificial', 'made in ghana'];
 
 export function TraditionSection() {
   return (
@@ -69,14 +69,10 @@ export function TraditionSection() {
       <div id="why-us" className="container tradition__why">
         <div className="tradition__why-head">
           <h2 className="display-2 on-dark">
-            Why It
+            How She
             <br />
-            Matters
+            Makes It
           </h2>
-          <p className="tradition__why-copy on-dark">
-            The sealed sachet keeps every batch fresh and ready to use,
-            whenever you need it.
-          </p>
           <div className="tradition__tags">
             {TAGS.map((tag) => (
               <span className="tradition__tag" key={tag}>
@@ -89,8 +85,8 @@ export function TraditionSection() {
         <div className="tradition__why-grid">
           {WHY_CARDS.map((card) => (
             <div className="tradition__why-card" key={card.title}>
-              <span className="tradition__why-icon" aria-hidden="true">
-                {card.icon}
+              <span className="tradition__why-number" aria-hidden="true">
+                {card.number}
               </span>
               <h3 className="on-dark">{card.title}</h3>
               <p className="on-dark">{card.body}</p>

@@ -8,7 +8,7 @@ export function TrustStrip() {
           &ldquo;Over a decade of hands-on farming and gari-making
           experience.&rdquo;
         </p>
-        <p className="trust-strip__attribution">— Lucy, Founder</p>
+        <p className="trust-strip__attribution">Lucy, Founder</p>
       </div>
     </section>
   );

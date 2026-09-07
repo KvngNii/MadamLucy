@@ -52,7 +52,7 @@ export function WhatsInside() {
           </ul>
           {!activeFlavor.ingredientsConfirmed && (
             <p className="whats-inside__note">
-              Exact wording pending confirmation — shown here following the
+              Exact wording pending confirmation. Shown here following the
               established cassava-dough-plus-flavor pattern.
             </p>
           )}
@@ -64,7 +64,7 @@ export function WhatsInside() {
 
         <div className="whats-inside__side">
           <PlaceholderBlock
-            label={`${activeFlavor.label} ingredients — photo coming soon`}
+            label={`${activeFlavor.label} ingredients, photo coming soon`}
             aspect="4 / 5"
             icon="🌾"
           />
@@ -74,7 +74,7 @@ export function WhatsInside() {
       <div className="container whats-inside__row whats-inside__row--reverse">
         <div className="whats-inside__side">
           <PlaceholderBlock
-            label="Lucy's hands, farm-to-sachet — photo coming soon"
+            label="Lucy's hands, farm-to-sachet, photo coming soon"
             aspect="4 / 5"
             icon="🤲🏾"
           />
@@ -84,7 +84,7 @@ export function WhatsInside() {
           <p className="whats-inside__md">No Shortcuts.</p>
           <p className="whats-inside__bold">
             100% natural, locally sourced, and free of artificial
-            preservatives — real gari, made the hard way.
+            preservatives. Real gari, made the hard way.
           </p>
         </div>
       </div>

@@ -75,7 +75,7 @@ export const StageRenderer = forwardRef(function StageRenderer(
   );
 
   const toVideo = useCallback(() => setMode('video'), []);
-  const label = `${flavor.label} gari pour — coming soon`;
+  const label = `${flavor.label} gari pour coming soon`;
 
   if (mode === 'frames') {
     return (

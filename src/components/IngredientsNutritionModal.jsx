@@ -92,7 +92,7 @@ export function IngredientsNutritionModal({ onClose }) {
         {tab === 'ingredients' ? (
           <div>
             <p className="ingredients-modal__desc">
-              Nothing to hide — just real cassava and one real superfood per
+              Nothing to hide. Just real cassava and one real superfood per
               flavor.
             </p>
             <ul className="ingredients-modal__list">
@@ -109,7 +109,7 @@ export function IngredientsNutritionModal({ onClose }) {
         ) : (
           <div className="ingredients-modal__nutrition-pending">
             <p>
-              <strong>Nutrition facts panel — pending lab analysis.</strong>
+              <strong>Nutrition facts panel pending lab analysis.</strong>
             </p>
             <p>
               We&apos;ll publish exact per-serving values here once official

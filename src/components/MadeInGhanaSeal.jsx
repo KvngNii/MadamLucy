@@ -9,7 +9,7 @@ export function MadeInGhanaSeal({ size = 120 }) {
       height={size}
       viewBox="0 0 200 200"
       role="img"
-      aria-label="Made in Ghana — Premium Quality seal"
+      aria-label="Made in Ghana, Premium Quality seal"
     >
       <defs>
         <path id={id} d="M 100,100 m -78,0 a 78,78 0 1,1 156,0 a 78,78 0 1,1 -156,0" />

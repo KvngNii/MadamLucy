@@ -5,7 +5,7 @@ export function ProductCard({ flavor }) {
   return (
     <article className="product-card" data-flavor={flavor.id}>
       <PlaceholderBlock
-        label={`${flavor.productName} pack — photo coming soon`}
+        label={`${flavor.productName} pack, photo coming soon`}
         aspect="1 / 1"
         icon="🥤"
         className="product-card__image"

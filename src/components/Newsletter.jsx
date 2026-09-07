@@ -40,7 +40,7 @@ export function Newsletter() {
       setEmail('');
     } catch {
       setStatus('error');
-      setErrorMessage('Something went wrong — please try again in a moment.');
+      setErrorMessage('Something went wrong. Please try again in a moment.');
     }
   };
 
@@ -54,7 +54,7 @@ export function Newsletter() {
             ✦
           </span>
           <p className="newsletter__subhead">
-            Sign up for launch updates — no spam, just word the moment
+            Sign up for launch updates. No spam, just word the moment
             it&apos;s ready to ship.
           </p>
 
@@ -107,7 +107,7 @@ export function Newsletter() {
 
         <div className="newsletter__photo-col">
           <PlaceholderBlock
-            label="Lifestyle photo — coming soon"
+            label="Lifestyle photo coming soon"
             aspect="4 / 5"
             icon="📸"
           />

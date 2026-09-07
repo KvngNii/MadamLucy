@@ -38,16 +38,16 @@ export function Footer() {
             <span className="footer__tbd">handle coming soon</span>
           </p>
           <p>
-            Phone: <span className="footer__tbd">TBD — pending confirmation</span>
+            Phone: <span className="footer__tbd">pending confirmation</span>
           </p>
           <p>
             <a href="#" className="footer__legal-link" onClick={(e) => e.preventDefault()}>
-              Privacy Policy — coming soon
+              Privacy Policy, coming soon
             </a>
           </p>
           <p>
             <a href="#" className="footer__legal-link" onClick={(e) => e.preventDefault()}>
-              Terms of Service — coming soon
+              Terms of Service, coming soon
             </a>
           </p>
         </div>

@@ -179,7 +179,7 @@ export function HeroStory() {
               style={copyStyle}
               {...reveal}
             >
-              More than just food packed with carbs — a healthier, more
+              More than just food packed with carbs. A healthier, more
               flavorful experience, infused with powerful superfoods chosen
               for their health-boosting properties, rich nutrients, and
               unique taste.
@@ -211,7 +211,7 @@ export function HeroStory() {
             </div>
             <p className="story__small on-dark">
               Tear open a sachet of Lucy&apos;s Gari and you&apos;re met with
-              vivid color and bold aroma — earthy beetroot, warm ginger,
+              vivid color and bold aroma: earthy beetroot, warm ginger,
               golden turmeric. Rich, fragrant, and ready to transform any
               meal.
             </p>
@@ -228,7 +228,7 @@ export function HeroStory() {
           >
             <p className="story__small on-dark">
               Bold color, smooth crunch, and a timeless taste of Ghanaian
-              tradition — all in one sachet.
+              tradition, all in one sachet.
             </p>
             <motion.a href="#notify-me" className="btn btn-primary" {...tap}>
               Notify Me
