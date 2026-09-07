@@ -7,6 +7,26 @@
   border-bottom: 1px solid rgba(29, 66, 29, 0.1);
 }
 
+/* Over the pinned pour story the nav drops its bar entirely (toggled by
+   useNavOverStory) — like the reference, the links just sit on the video. */
+.nav.nav--over-story {
+  background: transparent;
+  backdrop-filter: none;
+  border-bottom-color: transparent;
+}
+
+.nav--over-story .nav__wordmark,
+.nav--over-story .nav__link,
+.nav--over-story .nav__menu-toggle {
+  color: var(--color-pale);
+  text-shadow: 0 1px 10px rgba(0, 0, 0, 0.45);
+}
+
+.nav--over-story .nav__link:hover {
+  color: var(--color-orange);
+  border-color: var(--color-orange);
+}
+
 .nav__inner {
   display: flex;
   align-items: center;
