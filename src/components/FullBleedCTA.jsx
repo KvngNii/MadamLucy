@@ -15,7 +15,7 @@ export function FullBleedCTA() {
         </a>
       </div>
       <p className="fullbleed-cta__photo-note">
-        Full-bleed lifestyle photography — coming soon
+        Full-bleed lifestyle photography coming soon
       </p>
     </section>
   );

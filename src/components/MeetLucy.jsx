@@ -18,7 +18,7 @@ export function MeetLucy() {
       <div className="container meet-lucy__inner">
         <div className="meet-lucy__photo">
           <PlaceholderBlock
-            label="Photo of Lucy on her farm — coming soon"
+            label="Photo of Lucy on her farm coming soon"
             aspect="4 / 5"
             icon="👩🏾‍🌾"
           />

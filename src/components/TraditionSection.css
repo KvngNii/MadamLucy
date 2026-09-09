@@ -90,9 +90,14 @@
   padding: 24px;
 }
 
-.tradition__why-icon {
-  font-size: 1.8rem;
+/* Numbered like the STEPS above, so the two halves read as one idea. */
+.tradition__why-number {
   display: block;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.5rem;
+  line-height: 1;
+  color: var(--color-orange);
   margin-bottom: 12px;
 }
 

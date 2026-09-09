@@ -1,6 +1,12 @@
 import { useState } from 'react';
 import './Newsletter.css';
 import { PlaceholderBlock } from './PlaceholderBlock.jsx';
+import { MadeInGhanaSeal } from './MadeInGhanaSeal.jsx';
+
+// Product shot for the right-hand panel. Drop the file in at this path and
+// it appears; until then the onError below degrades to a labeled
+// placeholder rather than a broken image.
+const PACK_IMAGE = '/assets/product-coconut.jpg';
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -17,6 +23,7 @@ export function Newsletter() {
   const [email, setEmail] = useState('');
   const [status, setStatus] = useState('idle'); // idle | submitting | success | error
   const [errorMessage, setErrorMessage] = useState('');
+  const [imageFailed, setImageFailed] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -40,21 +47,24 @@ export function Newsletter() {
       setEmail('');
     } catch {
       setStatus('error');
-      setErrorMessage('Something went wrong — please try again in a moment.');
+      setErrorMessage('Something went wrong. Please try again in a moment.');
     }
   };
 
   return (
-    <section id="notify-me" className="section newsletter">
-      <div className="container newsletter__grid">
-        <div className="newsletter__copy-col">
+    <section id="notify-me" className="newsletter">
+      <div className="newsletter__panel">
+        <div className="newsletter__panel-inner">
           <p className="section-eyebrow">Coming Soon</p>
-          <h2 className="display-2 on-dark">Be the first to try Lucy&apos;s Gari</h2>
-          <span className="newsletter__spinner" aria-hidden="true">
-            ✦
+          <h2 className="display-2 on-dark newsletter__headline">
+            Be the first to try Lucy&apos;s Gari
+          </h2>
+          <div className="dotted-line newsletter__rule" />
+          <span className="newsletter__seal" aria-hidden="true">
+            <MadeInGhanaSeal size={92} />
           </span>
           <p className="newsletter__subhead">
-            Sign up for launch updates — no spam, just word the moment
+            Sign up for launch updates. No spam, just word the moment
             it&apos;s ready to ship.
           </p>
 
@@ -65,7 +75,7 @@ export function Newsletter() {
             </p>
           ) : (
             <form className="newsletter__form" onSubmit={handleSubmit} noValidate>
-              <div className="newsletter__fields">
+              <div className="newsletter__inputs">
                 <label className="visually-hidden" htmlFor="newsletter-name">
                   Name
                 </label>
@@ -88,14 +98,14 @@ export function Newsletter() {
                   onChange={(e) => setEmail(e.target.value)}
                   autoComplete="email"
                 />
-                <button
-                  type="submit"
-                  className="btn btn-primary"
-                  disabled={status === 'submitting'}
-                >
-                  {status === 'submitting' ? 'Signing up…' : 'Notify Me'}
-                </button>
               </div>
+              <button
+                type="submit"
+                className="btn btn-primary newsletter__submit"
+                disabled={status === 'submitting'}
+              >
+                {status === 'submitting' ? 'Signing up…' : 'Notify Me'}
+              </button>
               {status === 'error' && (
                 <p className="newsletter__error" role="alert">
                   {errorMessage}
@@ -104,14 +114,27 @@ export function Newsletter() {
             </form>
           )}
         </div>
+      </div>
 
-        <div className="newsletter__photo-col">
+      {/* data-flavor tints the stand-in placeholder golden rather than the
+          default beetroot pink, so it sits closer to the coconut pack's
+          warm background until the real photo lands. */}
+      <div className="newsletter__media" data-flavor="coconut">
+        {imageFailed ? (
           <PlaceholderBlock
-            label="Lifestyle photo — coming soon"
-            aspect="4 / 5"
+            label="Coconut Gari Mix pack, photo coming soon"
             icon="📸"
+            fill
           />
-        </div>
+        ) : (
+          <img
+            className="newsletter__image"
+            src={PACK_IMAGE}
+            alt="Lucy's Coconut Gari Mix pack"
+            loading="lazy"
+            onError={() => setImageFailed(true)}
+          />
+        )}
       </div>
     </section>
   );

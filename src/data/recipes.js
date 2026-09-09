@@ -8,7 +8,7 @@ export const recipes = [
     title: 'Gari Soakings',
     teaser: 'A quick, refreshing snack or breakfast option.',
     prep: '5 min',
-    cook: '—',
+    cook: 'None',
     serves: '1',
     total: '5 min',
     tip: 'Chill the water or milk beforehand for the most refreshing texture.',
@@ -42,7 +42,7 @@ export const recipes = [
     cook: '10 min',
     serves: '2',
     total: '15 min',
-    tip: 'Stir continuously while adding gari to avoid lumps — a smooth ball is the goal.',
+    tip: 'Stir continuously while adding gari to avoid lumps. A smooth ball is the goal.',
     ingredients: [
       "Lucy's Gari Mix (any flavor)",
       'Water',
