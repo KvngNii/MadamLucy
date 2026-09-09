@@ -1,15 +1,11 @@
-// Central flavor registry — every themed section (hero, product cards,
-// ingredients drawer) reads from this single source so adding/adjusting a
-// flavor never requires touching layout code.
+// Central flavor registry. Every themed section (products grid, What's
+// Inside, the ingredients modal) reads from this single source so
+// adjusting a flavor never requires touching layout code. There is one
+// pour clip for the whole site (see HeroStory), not one per flavor.
 export const flavors = [
   {
     id: 'beetroot',
     label: 'Beetroot',
-    videoSrc: '/assets/pour-beetroot.mp4',
-    videoWebm: '/assets/pour-beetroot.webm',
-    // Canvas frame sequence (see scripts/encode-pour.sh). Flavors without
-    // `frames` fall back to the video, then to the placeholder.
-    frames: '/assets/frames/beetroot/',
     productName: 'Beetroot Gari Mix',
     productTagline: 'Purple Vitality',
     productBlurb:
@@ -20,7 +16,6 @@ export const flavors = [
   {
     id: 'ginger',
     label: 'Ginger',
-    videoSrc: '/assets/pour-ginger.mp4',
     productName: 'Ginger Gari Mix',
     productTagline: 'Spicy Warmth',
     productBlurb: 'Peppery, zesty and ready to spice up your life!',
@@ -30,7 +25,6 @@ export const flavors = [
   {
     id: 'turmeric',
     label: 'Turmeric',
-    videoSrc: '/assets/pour-turmeric.mp4',
     productName: 'Turmeric Gari Mix',
     productTagline: 'Golden Goodness',
     productBlurb:
@@ -41,9 +35,6 @@ export const flavors = [
   {
     id: 'coconut',
     label: 'Coconut',
-    videoSrc: '/assets/pour-coconut.mp4',
-    videoWebm: '/assets/pour-coconut.webm',
-    frames: '/assets/frames/coconut/',
     productName: 'Coconut Gari Mix',
     productTagline: 'Creamy Richness',
     productBlurb: 'Creamy and coconutty, taste the magic in the crunch!',
@@ -53,7 +44,6 @@ export const flavors = [
   {
     id: 'garlic',
     label: 'Garlic',
-    videoSrc: '/assets/pour-garlic.mp4',
     productName: 'Garlic Gari Mix',
     productTagline: 'Aromatic Strength',
     productBlurb:
@@ -65,5 +55,5 @@ export const flavors = [
 
 export const getFlavor = (id) => flavors.find((f) => f.id === id) ?? flavors[0];
 
-// Coconut leads: it's the flavor whose pour the hero opens on.
+// Coconut leads: it's the pack in the hero's pour clip.
 export const DEFAULT_FLAVOR_ID = 'coconut';

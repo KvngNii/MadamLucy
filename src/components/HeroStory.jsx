@@ -20,6 +20,11 @@ import { scrollToEl } from '../lib/lenis.js';
 // the stage stuck while the next section (pulled up 100vh by a negative
 // margin on the story) slides over it.
 
+// One pour clip for the whole site, not one per flavor. The canvas frame
+// sequence is what actually scrubs; the mp4 is the fallback if it can't load.
+const POUR_FRAMES = '/assets/frames/pour/';
+const POUR_VIDEO = '/assets/pour.mp4';
+
 const UNWRAP_ICONS = [
   { icon: '🫚', label: 'Ginger' },
   { icon: '🟣', label: 'Beetroot' },
@@ -41,13 +46,7 @@ export function HeroStory() {
   const angleHeadlineRef = useRef(null);
   const pourHeadlineRef = useRef(null);
 
-  useStoryScrub({
-    storyRef,
-    rendererRef,
-    progressBarRef,
-    activeFlavorId,
-    reducedMotion,
-  });
+  useStoryScrub({ storyRef, rendererRef, progressBarRef, reducedMotion });
   useScrollHighlightText(angleHeadlineRef, { reducedMotion, onDark: true });
   useScrollHighlightText(pourHeadlineRef, { reducedMotion, onDark: true });
 
@@ -96,12 +95,14 @@ export function HeroStory() {
 
       <div className="story__stage">
         {/* Canvas frame sequence → <video> → placeholder, driven by
-            useStoryScrub through one seek(progress). Remounts per flavor. */}
+            useStoryScrub through one seek(progress). Mounted once: the pill
+            row picks the flavor the rest of the page shows, not the pour. */}
         <StageRenderer
           ref={rendererRef}
-          flavor={activeFlavor}
+          frames={POUR_FRAMES}
+          videoSrc={POUR_VIDEO}
+          label="Gari pouring into a bowl"
           className="story__video"
-          key={activeFlavor.id}
           autoPlayLoop={reducedMotion}
         />
         <div className="story__vignette" />
