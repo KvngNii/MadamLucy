@@ -1,27 +1,43 @@
+/* Full-bleed 50/50 split: solid green panel meets the pack shot, which
+   bleeds off the right edge. No .container here on purpose, the panel owns
+   its own padding so the two halves meet with no gutter between them. */
 .newsletter {
+  display: grid;
+  grid-template-columns: 1fr;
   background: var(--color-green-darker);
   color: var(--color-pale);
 }
 
-.newsletter__grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 48px;
-  align-items: center;
-}
-
 @media (min-width: 860px) {
-  .newsletter__grid {
-    grid-template-columns: 1.1fr 0.9fr;
+  .newsletter {
+    grid-template-columns: 1fr 1fr;
   }
 }
 
-.newsletter__spinner {
+.newsletter__panel {
+  display: flex;
+  align-items: center;
+  padding: clamp(48px, 6vw, 96px) clamp(24px, 5vw, 80px);
+}
+
+.newsletter__panel-inner {
+  width: 100%;
+  max-width: 520px;
+}
+
+.newsletter__headline {
+  text-transform: uppercase;
+  margin-bottom: 20px;
+}
+
+.newsletter__rule {
+  margin-bottom: 24px;
+}
+
+.newsletter__seal {
   display: inline-block;
-  font-size: 1.6rem;
-  color: var(--color-orange);
-  margin-bottom: 16px;
-  animation: newsletter-spin 15s linear infinite;
+  margin-bottom: 20px;
+  animation: newsletter-spin 24s linear infinite;
 }
 
 @keyframes newsletter-spin {
@@ -34,7 +50,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .newsletter__spinner {
+  .newsletter__seal {
     animation: none;
   }
 }
@@ -44,14 +60,16 @@
   margin-bottom: 28px;
 }
 
-.newsletter__fields {
+.newsletter__inputs {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
+  margin-bottom: 10px;
 }
 
-.newsletter__fields input {
-  flex: 1 1 200px;
+.newsletter__inputs input {
+  flex: 1 1 180px;
+  min-width: 0;
   padding: 14px 18px;
   border-radius: 999px;
   border: none;
@@ -59,8 +77,12 @@
   font-family: inherit;
 }
 
-.newsletter__fields input:focus-visible {
+.newsletter__inputs input:focus-visible {
   outline: var(--focus-ring);
+}
+
+.newsletter__submit {
+  width: 100%;
 }
 
 .newsletter__error {
@@ -77,6 +99,23 @@
   padding: 20px;
 }
 
-.newsletter__photo-col .placeholder-block {
-  border-color: rgba(232, 241, 135, 0.3);
+/* The pack shot carries its own background, so it fills the half edge to
+   edge rather than sitting in a frame. */
+.newsletter__media {
+  position: relative;
+  overflow: hidden;
+  min-height: 320px;
+}
+
+@media (min-width: 860px) {
+  .newsletter__media {
+    min-height: 100%;
+  }
+}
+
+.newsletter__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }
