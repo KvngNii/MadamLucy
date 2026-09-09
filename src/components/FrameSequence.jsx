@@ -131,6 +131,10 @@ export const FrameSequence = forwardRef(function FrameSequence(
       s.count = manifest.count;
       s.frames = new Array(manifest.count).fill(null);
       setPoster(`${manifestUrl}poster.${manifest.ext}`);
+      // A seek can land before the manifest does (the scrub binds to this
+      // renderer in the layout phase, we load in a passive effect), and that
+      // draw bailed on `!s.count`. Now that we have a count, ask again.
+      scheduleDraw();
 
       // First frame, then coarse pass, then everything else — with a small
       // concurrency cap so the coarse pass isn't starved by the fine one.
@@ -154,15 +158,31 @@ export const FrameSequence = forwardRef(function FrameSequence(
     };
     run();
 
+    // Watch the canvas itself, not just the window: the stage is sticky and
+    // can be laid out at zero size for a tick, and a draw that measured zero
+    // must repaint once the real size arrives.
     const onResize = () => {
       s.drawn = -1;
       scheduleDraw();
     };
     window.addEventListener('resize', onResize);
+    const observer =
+      typeof ResizeObserver === 'function' ? new ResizeObserver(onResize) : null;
+    if (observer && canvasRef.current) observer.observe(canvasRef.current);
+
     return () => {
       cancelled = true;
       window.removeEventListener('resize', onResize);
-      if (s.raf) cancelAnimationFrame(s.raf);
+      observer?.disconnect();
+      if (s.raf) {
+        cancelAnimationFrame(s.raf);
+        // Must clear the id, not just cancel the frame: `scheduleDraw` skips
+        // when `raf` is set, so a stale id here would silently kill every
+        // future draw on this instance. That bit exactly once — on a flavor
+        // switch, where a seek schedules a frame before this effect's first
+        // (StrictMode) cleanup, leaving the remounted canvas blank forever.
+        s.raf = 0;
+      }
     };
   }, [manifestUrl, onUnavailable, scheduleDraw]);
 

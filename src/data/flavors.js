@@ -42,6 +42,8 @@ export const flavors = [
     id: 'coconut',
     label: 'Coconut',
     videoSrc: '/assets/pour-coconut.mp4',
+    videoWebm: '/assets/pour-coconut.webm',
+    frames: '/assets/frames/coconut/',
     productName: 'Coconut Gari Mix',
     productTagline: 'Creamy Richness',
     productBlurb: 'Creamy and coconutty, taste the magic in the crunch!',
@@ -63,4 +65,5 @@ export const flavors = [
 
 export const getFlavor = (id) => flavors.find((f) => f.id === id) ?? flavors[0];
 
-export const DEFAULT_FLAVOR_ID = 'beetroot';
+// Coconut leads: it's the flavor whose pour the hero opens on.
+export const DEFAULT_FLAVOR_ID = 'coconut';

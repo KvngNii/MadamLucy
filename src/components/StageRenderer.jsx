@@ -1,6 +1,7 @@
 import {
   forwardRef,
   useCallback,
+  useEffect,
   useImperativeHandle,
   useRef,
   useState,
@@ -73,6 +74,10 @@ export const StageRenderer = forwardRef(function StageRenderer(
     }),
     [mode, applySeek]
   );
+
+  // The seek guard is a 250ms timer that would otherwise outlive the
+  // component and re-enter `applySeek` on a torn-down video.
+  useEffect(() => () => clearTimeout(guard.current), []);
 
   const toVideo = useCallback(() => setMode('video'), []);
   const label = `${flavor.label} gari pour coming soon`;

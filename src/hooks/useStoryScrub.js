@@ -46,6 +46,18 @@ export function useStoryScrub({
       },
     });
 
+    // Changing flavor mid-story rebuilds this tween at p:0, and `onUpdate`
+    // only fires once the scroll moves — so the new pour would sit on its
+    // first frame under copy written for its last. Sync the fresh tween and
+    // renderer to where the scroll already is.
+    const st = tween.scrollTrigger;
+    const p0 = st ? st.progress : 0;
+    tween.progress(p0);
+    rendererRef.current?.seek(p0);
+    if (progressBarRef.current) {
+      progressBarRef.current.style.width = `${p0 * 100}%`;
+    }
+
     return () => {
       tween.scrollTrigger?.kill();
       tween.kill();
