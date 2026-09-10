@@ -23,6 +23,9 @@
 .newsletter__panel-inner {
   width: 100%;
   max-width: 520px;
+  /* Above .brand-bg's pattern — see the note on .tradition > .container. */
+  position: relative;
+  z-index: 1;
 }
 
 .newsletter__headline {

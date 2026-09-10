@@ -186,6 +186,37 @@ button {
   color: var(--color-pale) !important;
 }
 
+/* The brand's botanical ground (cassava leaves, roots, bowls of gari) laid
+   over a solid green block, so the flat panels carry the same surface as the
+   packaging and the pour clip. `soft-light` keeps each section's own green
+   rather than replacing it with the artwork's; the motifs come through as
+   light and shade. Uses ::before so it can stack with .grain-overlay's
+   ::after on the same element.
+
+   Anything that must sit above it needs its own stacking position — see
+   .grain-overlay below, same requirement. */
+.brand-bg {
+  position: relative;
+}
+
+.brand-bg::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background-image: url('/assets/green-bg.webp');
+  /* The pattern is a scattered all-over field whose motifs run off the
+     edges, so it is covered rather than tiled — repeating would seam. */
+  background-size: cover;
+  background-position: center;
+  /* overlay at this strength shows the motifs while leaving each section's
+     own green intact; soft-light washed out, and luminosity/normal lightened
+     the base green noticeably. */
+  opacity: 0.8;
+  mix-blend-mode: overlay;
+}
+
 /* Subtle grain overlay — generated noise, no image asset needed. Add to any
    `position: relative` section container. */
 .grain-overlay {

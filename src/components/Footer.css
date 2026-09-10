@@ -108,3 +108,12 @@
   font-size: 0.8rem;
   opacity: 0.7;
 }
+
+/* Lifts the content above .brand-bg's pattern. A positioned pseudo-element
+   paints above the inline content of *unpositioned* descendants, so the
+   content has to be positioned too — and being later in DOM order than the
+   ::before, it wins. */
+.footer > .container {
+  position: relative;
+  z-index: 1;
+}

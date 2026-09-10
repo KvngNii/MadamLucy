@@ -111,3 +111,12 @@
   opacity: 0.75;
   margin: 0;
 }
+
+/* Lifts the content above .brand-bg's pattern. A positioned pseudo-element
+   paints above the inline content of *unpositioned* descendants, so the
+   content has to be positioned too — and being later in DOM order than the
+   ::before, it wins. */
+.tradition > .container {
+  position: relative;
+  z-index: 1;
+}

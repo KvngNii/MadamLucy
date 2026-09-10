@@ -38,7 +38,7 @@ const TAGS = ['no preservatives', 'nothing artificial', 'made in ghana'];
 
 export function TraditionSection() {
   return (
-    <section id="tradition" className="tradition grain-overlay">
+    <section id="tradition" className="tradition grain-overlay brand-bg">
       <div className="container">
         <h2 className="display-2 on-dark tradition__headline">
           Tradition

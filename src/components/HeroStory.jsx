@@ -86,7 +86,7 @@ export function HeroStory() {
         </div>
       )}
 
-      <div className="story__stage">
+      <div className="story__stage brand-bg">
         {/* Canvas frame sequence → <video> → placeholder, driven by
             useStoryScrub through one seek(progress). Mounted once: the pill
             row picks the flavor the rest of the page shows, not the pour. */}

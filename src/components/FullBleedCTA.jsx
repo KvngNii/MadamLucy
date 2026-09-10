@@ -2,7 +2,7 @@ import './FullBleedCTA.css';
 
 export function FullBleedCTA() {
   return (
-    <section className="fullbleed-cta grain-overlay">
+    <section className="fullbleed-cta grain-overlay brand-bg">
       <div className="fullbleed-cta__overlay" />
       <div className="container fullbleed-cta__content">
         <h2 className="display-1 on-dark">

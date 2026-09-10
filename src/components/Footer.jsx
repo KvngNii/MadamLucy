@@ -12,7 +12,7 @@ const LINKS = [
 
 export function Footer() {
   return (
-    <footer className="footer">
+    <footer className="footer brand-bg">
       <div className="container">
         <p className="footer__wordmark">Lucy Perfect</p>
       </div>

@@ -53,7 +53,7 @@ export function Newsletter() {
 
   return (
     <section id="notify-me" className="newsletter">
-      <div className="newsletter__panel">
+      <div className="newsletter__panel brand-bg">
         <div className="newsletter__panel-inner">
           <p className="section-eyebrow">Coming Soon</p>
           <h2 className="display-2 on-dark newsletter__headline">
