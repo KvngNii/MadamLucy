@@ -15,8 +15,8 @@
   border: none;
   background: #fff;
   box-shadow: 0 8px 24px rgba(29, 66, 29, 0.25);
-  font-size: 1.4rem;
   cursor: pointer;
+  color: var(--color-green-deep);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -29,6 +29,7 @@
 
 .floating-icons__btn--primary {
   background: var(--color-orange);
+  color: #fff;
 }
 
 @media (max-width: 640px) {

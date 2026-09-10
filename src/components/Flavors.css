@@ -1,0 +1,187 @@
+.flavors {
+  /* Curtain: the story pulls this section up by 100vh (negative margin on
+     .story); z-index 2 puts it above the stuck stage so it slides over the
+     frozen pour instead of appearing beneath it. Opaque background matters. */
+  position: relative;
+  z-index: 2;
+  background: #fff;
+  padding: 96px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 80px;
+}
+
+.flavors__heading {
+  margin: 0 0 12px;
+}
+
+.flavors__desc {
+  font-size: 1.05rem;
+  color: var(--color-ink);
+  opacity: 0.85;
+  margin: 0 0 24px;
+  max-width: 52ch;
+}
+
+/* ---- Tabs -------------------------------------------------------------- */
+
+.flavors__tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 32px;
+}
+
+/* Each tab carries its own flavor's colour, not the section's, so the row
+   reads as the range at a glance rather than five copies of one swatch. */
+.flavors__tab {
+  --tab-color: var(--flavor-active);
+  border: 2px solid color-mix(in srgb, var(--tab-color) 45%, transparent);
+  background: #fff;
+  border-radius: 999px;
+  padding: 9px 18px;
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: color-mix(in srgb, var(--tab-color) 80%, #000);
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.flavors__tab[data-flavor='beetroot'] { --tab-color: var(--flavor-beetroot); }
+.flavors__tab[data-flavor='ginger'] { --tab-color: var(--flavor-ginger); }
+.flavors__tab[data-flavor='turmeric'] { --tab-color: var(--flavor-turmeric); }
+.flavors__tab[data-flavor='coconut'] { --tab-color: var(--flavor-coconut); }
+.flavors__tab[data-flavor='garlic'] { --tab-color: var(--flavor-garlic); }
+
+.flavors__tab:hover {
+  background: color-mix(in srgb, var(--tab-color) 10%, #fff);
+}
+
+.flavors__tab.is-active {
+  background: var(--tab-color);
+  border-color: var(--tab-color);
+  color: #fff;
+}
+
+.flavors__tab:focus-visible {
+  outline: var(--focus-ring);
+  outline-offset: 2px;
+}
+
+/* ---- Panel ------------------------------------------------------------- */
+
+.flavors__panel {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 40px;
+  align-items: center;
+}
+
+.flavors__panel:focus {
+  outline: none;
+}
+
+@media (min-width: 860px) {
+  .flavors__panel {
+    grid-template-columns: 1fr 1fr;
+    gap: 64px;
+  }
+}
+
+.flavors__tagline {
+  text-transform: uppercase;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--flavor-active);
+  margin: 0 0 6px;
+}
+
+.flavors__name {
+  margin: 0 0 10px;
+  font-size: clamp(1.6rem, 3.4vw, 2.2rem);
+}
+
+.flavors__blurb {
+  margin: 0 0 28px;
+  font-size: 1.05rem;
+  color: var(--color-ink);
+  opacity: 0.85;
+  max-width: 40ch;
+}
+
+.flavors__label {
+  text-transform: uppercase;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  opacity: 0.55;
+  margin: 0 0 8px;
+}
+
+.flavors__list {
+  margin: 0 0 12px;
+  padding-left: 20px;
+  font-weight: 700;
+  color: var(--color-green-darker);
+}
+
+.flavors__note {
+  font-size: 0.85rem;
+  font-style: italic;
+  opacity: 0.65;
+  margin: 0 0 20px;
+  max-width: 42ch;
+}
+
+.flavors__seal {
+  margin-top: 8px;
+}
+
+/* The pack shot sits on a soft field of the active flavor so the swap is
+   visible even while the photography is still a placeholder. */
+.flavors__media {
+  border-radius: 20px;
+  padding: 24px;
+  background: color-mix(in srgb, var(--flavor-active) 10%, #fff);
+  transition: background 0.25s ease;
+}
+
+/* ---- Closing statement -------------------------------------------------- */
+
+.flavors__statement {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 40px;
+  align-items: center;
+}
+
+@media (min-width: 860px) {
+  .flavors__statement {
+    grid-template-columns: 1fr 1fr;
+    gap: 64px;
+  }
+}
+
+.flavors__statement-copy {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.flavors__md {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(1.8rem, 4vw, 2.6rem);
+  margin: 0;
+  color: var(--color-green-darker);
+  line-height: 1.1;
+}
+
+.flavors__bold {
+  margin-top: 20px;
+  font-size: 1.1rem;
+  color: var(--color-ink);
+  opacity: 0.85;
+  max-width: 42ch;
+}

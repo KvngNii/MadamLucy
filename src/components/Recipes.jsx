@@ -24,9 +24,6 @@ export function Recipes() {
                 <span className="recipe-card__tag">recipe</span>
                 <span className="recipe-card__tag">{recipe.total}</span>
               </div>
-              <span className="recipe-card__icon" aria-hidden="true">
-                🍲
-              </span>
               <h3>{recipe.title}</h3>
               <p>{recipe.teaser}</p>
               <span className="recipe-card__cta">View recipe →</span>

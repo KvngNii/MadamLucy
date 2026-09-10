@@ -2,6 +2,7 @@ import { useRef, useState } from 'react';
 import './Nav.css';
 import { LogoMark } from './LogoMark.jsx';
 import { useNavOverStory } from '../hooks/useNavOverStory.js';
+import { Icon } from './Icon.jsx';
 
 const LINKS = [
   { href: '#flavors', label: 'Flavors' },
@@ -40,7 +41,7 @@ export function Nav() {
           aria-label={menuOpen ? 'Close menu' : 'Open menu'}
           onClick={() => setMenuOpen((open) => !open)}
         >
-          <span aria-hidden="true">{menuOpen ? '✕' : '☰'}</span>
+          <Icon name={menuOpen ? 'close' : 'menu'} size={22} />
         </button>
       </div>
       {menuOpen && (

@@ -20,7 +20,6 @@ export function MeetLucy() {
           <PlaceholderBlock
             label="Photo of Lucy on her farm coming soon"
             aspect="4 / 5"
-            icon="👩🏾‍🌾"
           />
         </div>
         <div className="meet-lucy__copy">

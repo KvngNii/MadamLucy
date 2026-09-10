@@ -2,6 +2,11 @@
 
 .story {
   position: relative;
+  /* Contain the story's own layering (stage 0, panels 1, UI 3) in one
+     stacking context, so the next section's z-index 2 curtain covers the
+     whole thing. Without this the sticky progress bar and skip button
+     outrank the curtain and float over the section rising over them. */
+  z-index: 0;
   background: var(--color-green-darker);
   /* Sit under the transparent sticky nav from scroll 0 so the video runs
      edge-to-edge behind it (the nav is in normal flow above us otherwise). */
@@ -225,17 +230,6 @@
   text-shadow: 0 2px 28px rgba(0, 0, 0, 0.35);
 }
 
-.story__flavor-name {
-  font-family: var(--font-display);
-  font-weight: 700;
-  font-size: clamp(1.2rem, 2.6vw, 2rem);
-  text-transform: capitalize;
-  color: var(--color-orange);
-  /* Carries the space the dotted rule above it used to hold. */
-  margin: 20px 0 0;
-  text-shadow: 0 2px 16px rgba(0, 0, 0, 0.35);
-}
-
 .story__h2 {
   font-family: var(--font-display);
   font-weight: 700;
@@ -276,25 +270,4 @@
 
 .story__block--bottom-center .story__small {
   margin-bottom: 0;
-}
-
-/* ---- Icon row --------------------------------------------------------- */
-
-.story__icons {
-  display: flex;
-  justify-content: center;
-  gap: 14px;
-  margin-bottom: 16px;
-}
-
-.story__icon-circle {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 52px;
-  height: 52px;
-  border-radius: 50%;
-  background: rgba(255, 253, 244, 0.92);
-  font-size: 1.4rem;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
 }

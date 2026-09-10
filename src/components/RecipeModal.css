@@ -52,7 +52,10 @@
   border: none;
   background: color-mix(in srgb, var(--color-olive) 15%, #fff);
   cursor: pointer;
-  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-green-darker);
 }
 
 .recipe-modal__teaser {
@@ -104,8 +107,8 @@
 
 .recipe-modal__tip {
   display: flex;
-  gap: 10px;
-  align-items: flex-start;
+  flex-direction: column;
+  gap: 4px;
   background: color-mix(in srgb, var(--color-orange) 8%, #fff);
   border-radius: 12px;
   padding: 14px 16px;
@@ -116,6 +119,15 @@
   margin: 0;
   font-size: 0.88rem;
   opacity: 0.85;
+}
+
+.recipe-modal__tip .recipe-modal__tip-label {
+  text-transform: uppercase;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: var(--color-orange);
+  opacity: 1;
 }
 
 /* Between the ingredient breakdown and the steps. */

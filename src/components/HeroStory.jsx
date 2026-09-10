@@ -24,12 +24,6 @@ import { scrollToEl } from '../lib/lenis.js';
 const POUR_FRAMES = '/assets/frames/pour/';
 const POUR_VIDEO = '/assets/pour.mp4';
 
-const UNWRAP_ICONS = [
-  { icon: '🫚', label: 'Ginger' },
-  { icon: '🟣', label: 'Beetroot' },
-  { icon: '🟡', label: 'Turmeric' },
-];
-
 // Module-level style objects (motion skill: don't recreate per render).
 const copyStyle = { willChange: 'transform, opacity' };
 const spring = { type: 'spring', stiffness: 120, damping: 20 };
@@ -48,7 +42,7 @@ export function HeroStory() {
   useScrollHighlightText(pourHeadlineRef, { reducedMotion, onDark: true });
 
   const handleSkip = () => {
-    const target = document.getElementById('ingredients');
+    const target = document.getElementById('flavors');
     if (target) scrollToEl(target);
   };
 
@@ -118,7 +112,6 @@ export function HeroStory() {
           >
             <p className="story__eyebrow">Fire-Roasted Ghanaian Gari</p>
             <h1 className="story__headline on-dark">Gari, But Better</h1>
-            <p className="story__flavor-name">Coconut Gari Mix</p>
           </motion.div>
 
           <motion.div
@@ -173,13 +166,6 @@ export function HeroStory() {
             style={copyStyle}
             {...reveal}
           >
-            <div className="story__icons">
-              {UNWRAP_ICONS.map((item) => (
-                <span className="story__icon-circle" key={item.label} title={item.label}>
-                  <span aria-hidden="true">{item.icon}</span>
-                </span>
-              ))}
-            </div>
             <p className="story__small on-dark">
               Tear open a sachet of Lucy&apos;s Gari and you&apos;re met with
               vivid color and bold aroma: earthy beetroot, warm ginger,

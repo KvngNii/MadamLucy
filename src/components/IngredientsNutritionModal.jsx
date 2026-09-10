@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import './IngredientsNutritionModal.css';
+import { Icon } from './Icon.jsx';
 import { useFlavor } from '../context/FlavorContext.jsx';
 
 export function IngredientsNutritionModal({ onClose }) {
@@ -46,7 +47,7 @@ export function IngredientsNutritionModal({ onClose }) {
           ref={closeButtonRef}
           aria-label="Close"
         >
-          ✕
+          <Icon name="close" size={20} />
         </button>
 
         <h2 id="ingredients-modal-title" className="ingredients-modal__title">

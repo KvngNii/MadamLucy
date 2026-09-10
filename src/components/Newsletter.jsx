@@ -122,7 +122,6 @@ export function Newsletter() {
         {imageFailed ? (
           <PlaceholderBlock
             label="Coconut Gari Mix pack, photo coming soon"
-            icon="📸"
             fill
           />
         ) : (

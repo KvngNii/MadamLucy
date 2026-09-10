@@ -39,17 +39,9 @@
   gap: 4px;
 }
 
-.placeholder-block--fill .placeholder-block__icon {
-  font-size: 1.3rem;
-}
-
 .placeholder-block--fill .placeholder-block__label {
   font-size: 0.7rem;
   opacity: 0.6;
-}
-
-.placeholder-block__icon {
-  font-size: 2rem;
 }
 
 .placeholder-block__label {

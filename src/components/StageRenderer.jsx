@@ -112,6 +112,6 @@ export const StageRenderer = forwardRef(function StageRenderer(
   }
 
   return (
-    <PlaceholderBlock label={label} aspect="4 / 5" icon="🎬" className={className} fill />
+    <PlaceholderBlock label={label} aspect="4 / 5" className={className} fill />
   );
 });

@@ -30,7 +30,10 @@
   border: none;
   background: color-mix(in srgb, var(--color-olive) 15%, #fff);
   cursor: pointer;
-  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-green-darker);
 }
 
 .ingredients-modal__title {

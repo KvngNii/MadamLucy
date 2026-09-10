@@ -58,7 +58,6 @@ export function TraditionSection() {
               <PlaceholderBlock
                 label="Photo coming soon"
                 aspect="4 / 3"
-                icon="📷"
                 className="tradition__photo"
               />
             </div>
