@@ -30,13 +30,10 @@
   margin-bottom: 20px;
 }
 
-.newsletter__rule {
-  margin-bottom: 24px;
-}
-
 .newsletter__seal {
   display: inline-block;
-  margin-bottom: 20px;
+  /* Absorbs the space the rule above it used to hold. */
+  margin: 24px 0 20px;
   animation: newsletter-spin 24s linear infinite;
 }
 

@@ -59,7 +59,6 @@ export function Newsletter() {
           <h2 className="display-2 on-dark newsletter__headline">
             Be the first to try Lucy&apos;s Gari
           </h2>
-          <div className="dotted-line newsletter__rule" />
           <span className="newsletter__seal" aria-hidden="true">
             <MadeInGhanaSeal size={92} />
           </span>

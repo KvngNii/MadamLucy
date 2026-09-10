@@ -93,9 +93,12 @@
   }
 }
 
+/* Separates the footer body from the copyright line. A hairline rather
+   than a rule with presence — it is doing structural work, not decorating. */
 .footer__divider {
+  height: 1px;
   margin: 0 0 20px;
-  opacity: 0.6;
+  background: rgba(232, 241, 135, 0.15);
 }
 
 .footer__bottom {

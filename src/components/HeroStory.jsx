@@ -1,7 +1,6 @@
 import { useRef } from 'react';
 import { motion } from 'motion/react';
 import './HeroStory.css';
-import { useFlavor } from '../context/FlavorContext.jsx';
 import { StageRenderer } from './StageRenderer.jsx';
 import { ScrollHighlightText } from './ScrollHighlightText.jsx';
 import { useReducedMotion } from '../hooks/useReducedMotion.js';
@@ -36,8 +35,6 @@ const copyStyle = { willChange: 'transform, opacity' };
 const spring = { type: 'spring', stiffness: 120, damping: 20 };
 
 export function HeroStory() {
-  const { flavors, activeFlavorId, activeFlavor, setActiveFlavorId } =
-    useFlavor();
   const reducedMotion = useReducedMotion();
 
   const storyRef = useRef(null);
@@ -78,7 +75,9 @@ export function HeroStory() {
       id="top"
       ref={storyRef}
       className={`story${reducedMotion ? ' story--static' : ''}`}
-      data-flavor={activeFlavorId}
+      // Fixed: the hero pours the coconut pack, whatever flavor is selected
+      // further down the page. Only the stage's fallback tint reads this.
+      data-flavor="coconut"
     >
       {/* Progress bar + skip live in a zero-height sticky layer above the
           panels so they stay clickable/visible for the whole story. */}
@@ -109,8 +108,8 @@ export function HeroStory() {
       </div>
 
       <div className="story__panels">
-        {/* 1 — hero: headline band at the top, paragraph + CTA bottom-left,
-            flavor pills bottom-right. Middle stays clear. */}
+        {/* 1 — hero: headline band at the top, paragraph + CTA bottom-left.
+            Middle and right stay clear of the pour. */}
         <div className="story__panel story__panel--hero">
           <motion.div
             className="story__block story__block--top"
@@ -119,8 +118,7 @@ export function HeroStory() {
           >
             <p className="story__eyebrow">Fire-Roasted Ghanaian Gari</p>
             <h1 className="story__headline on-dark">Gari, But Better</h1>
-            <div className="dotted-line story__dotted" />
-            <p className="story__flavor-name">{activeFlavor.label} gari mix</p>
+            <p className="story__flavor-name">Coconut Gari Mix</p>
           </motion.div>
 
           <motion.div
@@ -135,34 +133,6 @@ export function HeroStory() {
             <motion.a href="#notify-me" className="btn btn-primary" {...tap}>
               Notify Me at Launch
             </motion.a>
-          </motion.div>
-
-          <motion.div
-            className="story__block story__block--bottom-right"
-            style={copyStyle}
-            {...reveal}
-          >
-            <div
-              className="story__flavor-selector"
-              role="group"
-              aria-label="Choose a flavor"
-            >
-              {flavors.map((flavor) => (
-                <motion.button
-                  key={flavor.id}
-                  type="button"
-                  className={`story__pill${
-                    flavor.id === activeFlavorId ? ' is-active' : ''
-                  }`}
-                  data-flavor={flavor.id}
-                  aria-pressed={flavor.id === activeFlavorId}
-                  onClick={() => setActiveFlavorId(flavor.id)}
-                  {...tap}
-                >
-                  {flavor.label}
-                </motion.button>
-              ))}
-            </div>
           </motion.div>
         </div>
 

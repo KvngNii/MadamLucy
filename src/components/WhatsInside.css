@@ -39,11 +39,6 @@
   color: var(--color-green-darker);
 }
 
-.whats-inside__dotted {
-  max-width: 160px;
-  margin-bottom: 20px;
-}
-
 .whats-inside__desc {
   font-size: 1.05rem;
   color: var(--color-ink);

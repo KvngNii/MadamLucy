@@ -118,8 +118,11 @@
   opacity: 0.85;
 }
 
+/* Between the ingredient breakdown and the steps. */
 .recipe-modal__divider {
+  height: 1px;
   margin: 24px 0;
+  background: rgba(29, 66, 29, 0.12);
 }
 
 .recipe-modal__steps {

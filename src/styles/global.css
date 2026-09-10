@@ -160,7 +160,7 @@ button {
   top: 16px;
 }
 
-/* ---- Editorial system: display type, dotted dividers, grain texture ---- */
+/* ---- Editorial system: display type, grain texture --------------------- */
 
 .display-1 {
   font-family: var(--font-display);
@@ -184,30 +184,6 @@ button {
 
 .on-dark {
   color: var(--color-pale) !important;
-}
-
-.dotted-line {
-  height: 4px;
-  width: 100%;
-  background-image: repeating-radial-gradient(
-    circle,
-    var(--color-orange) 0,
-    var(--color-orange) 2px,
-    transparent 2px,
-    transparent 10px
-  );
-  background-size: 10px 4px;
-  background-repeat: repeat-x;
-}
-
-.dotted-line--pale {
-  background-image: repeating-radial-gradient(
-    circle,
-    var(--color-pale) 0,
-    var(--color-pale) 2px,
-    transparent 2px,
-    transparent 10px
-  );
 }
 
 /* Subtle grain overlay — generated noise, no image asset needed. Add to any

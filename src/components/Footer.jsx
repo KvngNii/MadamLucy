@@ -58,7 +58,7 @@ export function Footer() {
       </div>
 
       <div className="container">
-        <div className="dotted-line dotted-line--pale footer__divider" />
+        <div className="footer__divider" />
       </div>
 
       <div className="container footer__bottom">

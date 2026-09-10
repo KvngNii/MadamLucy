@@ -160,13 +160,6 @@
   align-self: end;
 }
 
-.story__block--bottom-right {
-  grid-column: 2;
-  grid-row: 3;
-  justify-self: end;
-  align-self: end;
-}
-
 .story__block--bottom-center {
   grid-column: 1 / -1;
   grid-row: 3;
@@ -177,9 +170,16 @@
 }
 
 @media (max-width: 720px) {
+  /* The eyebrow is centred across the full width, so on a narrow screen it
+     runs under the skip button, which sits in the sticky UI layer at the
+     same height. Start the hero's top band below the button instead. */
+  .story__panel--hero .story__block--top {
+    padding-top: 44px;
+  }
+
   .story__panel {
     grid-template-columns: 1fr;
-    grid-template-rows: auto 1fr auto auto;
+    grid-template-rows: auto 1fr auto;
     gap: 14px;
     padding-left: 20px;
     padding-right: 20px;
@@ -195,12 +195,6 @@
   .story__block--bottom-left {
     grid-column: 1;
     grid-row: 3;
-  }
-
-  .story__block--bottom-right {
-    grid-column: 1;
-    grid-row: 4;
-    justify-self: start;
   }
 
   .story__block--bottom-center {
@@ -231,18 +225,14 @@
   text-shadow: 0 2px 28px rgba(0, 0, 0, 0.35);
 }
 
-.story__dotted {
-  max-width: 100%;
-  margin: 16px auto 12px;
-}
-
 .story__flavor-name {
   font-family: var(--font-display);
   font-weight: 700;
   font-size: clamp(1.2rem, 2.6vw, 2rem);
   text-transform: capitalize;
   color: var(--color-orange);
-  margin: 0;
+  /* Carries the space the dotted rule above it used to hold. */
+  margin: 20px 0 0;
   text-shadow: 0 2px 16px rgba(0, 0, 0, 0.35);
 }
 
@@ -288,39 +278,7 @@
   margin-bottom: 0;
 }
 
-/* ---- Flavor pills / icons -------------------------------------------- */
-
-.story__flavor-selector {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: flex-end;
-  gap: 8px;
-}
-
-@media (max-width: 720px) {
-  .story__flavor-selector {
-    justify-content: flex-start;
-  }
-}
-
-.story__pill {
-  border: 2px solid rgba(232, 241, 135, 0.4);
-  background: rgba(17, 24, 17, 0.4);
-  backdrop-filter: blur(4px);
-  border-radius: 999px;
-  padding: 7px 16px;
-  font-weight: 700;
-  font-size: 0.85rem;
-  cursor: pointer;
-  color: var(--color-pale);
-  transition: background 0.15s ease, border-color 0.15s ease;
-}
-
-.story__pill.is-active {
-  background: var(--flavor-active);
-  border-color: var(--flavor-active);
-  color: #fff;
-}
+/* ---- Icon row --------------------------------------------------------- */
 
 .story__icons {
   display: flex;

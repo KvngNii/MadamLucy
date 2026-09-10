@@ -16,8 +16,6 @@ export function WhatsInside() {
             <br />
             inside
           </h3>
-          <div className="dotted-line whats-inside__dotted" />
-
           <p className="whats-inside__desc">
             Every flavor starts the same way: real cassava, farmed and
             fermented by Lucy herself, then infused with a single real

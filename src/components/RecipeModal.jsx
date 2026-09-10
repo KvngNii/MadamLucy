@@ -81,7 +81,7 @@ export function RecipeModal({ recipe, onClose }) {
           </div>
         )}
 
-        <div className="dotted-line recipe-modal__divider" />
+        <div className="recipe-modal__divider" />
 
         <h3>Instructions</h3>
         <ol className="recipe-modal__steps">
