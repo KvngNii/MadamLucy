@@ -8,7 +8,7 @@ const LINKS = [
   { href: '#flavors', label: 'Flavors' },
   { href: '#about-lucy', label: 'About Lucy' },
   { href: '#recipes', label: 'Recipes' },
-  { href: '#why-us', label: 'Why Us' },
+  { href: '#tradition', label: 'Tradition' },
 ];
 
 export function Nav() {

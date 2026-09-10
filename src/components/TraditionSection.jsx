@@ -21,26 +21,6 @@ const STEPS = [
   },
 ];
 
-const WHY_CARDS = [
-  {
-    number: '01',
-    title: 'She grows the cassava',
-    body: "Every sachet starts on Lucy's own farm in the Eastern Region.",
-  },
-  {
-    number: '02',
-    title: 'Fermented and roasted by hand',
-    body: 'Small batches, turned by hand, the way she has done it for over ten years.',
-  },
-  {
-    number: '03',
-    title: 'One superfood per flavor',
-    body: 'Beetroot paste, ginger, turmeric. Nothing else goes in.',
-  },
-];
-
-const TAGS = ['no preservatives', 'nothing artificial', 'made in ghana'];
-
 export function TraditionSection() {
   return (
     <section id="tradition" className="tradition grain-overlay brand-bg">
@@ -67,35 +47,6 @@ export function TraditionSection() {
                 aspect="4 / 3"
                 className="tradition__photo"
               />
-            </div>
-          ))}
-        </div>
-      </div>
-
-      <div id="why-us" className="container tradition__why">
-        <div className="tradition__why-head">
-          <h2 className="display-2 on-dark">
-            How She
-            <br />
-            Makes It
-          </h2>
-          <div className="tradition__tags">
-            {TAGS.map((tag) => (
-              <span className="tradition__tag" key={tag}>
-                {tag}
-              </span>
-            ))}
-          </div>
-        </div>
-
-        <div className="tradition__why-grid">
-          {WHY_CARDS.map((card) => (
-            <div className="tradition__why-card" key={card.title}>
-              <span className="tradition__why-number" aria-hidden="true">
-                {card.number}
-              </span>
-              <h3 className="on-dark">{card.title}</h3>
-              <p className="on-dark">{card.body}</p>
             </div>
           ))}
         </div>
