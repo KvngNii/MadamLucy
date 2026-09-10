@@ -39,10 +39,21 @@
 }
 
 .tradition__why {
-  margin-top: 96px;
   display: grid;
   grid-template-columns: 1fr;
   gap: 48px;
+}
+
+/* Separates the two halves of this section. Specificity is deliberately
+   .tradition .tradition__why: as a bare .tradition__why this loses to
+   .container's `margin` shorthand — the element carries both classes — and
+   the gap silently collapses to nothing. Same trap that bit .hero__inner's
+   padding and .story's sticky positioning.
+
+   Sized well clear of the 48px gap *inside* each half so the two read as
+   separate movements rather than one long list. */
+.tradition .tradition__why {
+  margin-top: clamp(72px, 9vw, 128px);
 }
 
 @media (min-width: 900px) {
