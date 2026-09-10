@@ -34,8 +34,21 @@
   opacity: 0.92;
 }
 
+/* The photo has to fill exactly the box the placeholder occupies, or the
+   three cards stop lining up. The source is portrait (4:5) and its subject
+   — the hands, the pan, the gari — sits in the top third, so the 4/3 crop
+   is taken from the top; centred would keep only firewood. */
 .tradition__photo {
   border-color: rgba(232, 241, 135, 0.25);
+}
+
+img.tradition__photo {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  object-position: 50% 12%;
+  border-radius: 20px;
+  display: block;
 }
 
 .tradition__why {

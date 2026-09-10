@@ -1,11 +1,8 @@
 import { useState } from 'react';
 import './Newsletter.css';
-import { PlaceholderBlock } from './PlaceholderBlock.jsx';
+import { Photo } from './Photo.jsx';
 import { MadeInGhanaSeal } from './MadeInGhanaSeal.jsx';
 
-// Product shot for the right-hand panel. Drop the file in at this path and
-// it appears; until then the onError below degrades to a labeled
-// placeholder rather than a broken image.
 const PACK_IMAGE = '/assets/product-coconut.jpg';
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -23,7 +20,6 @@ export function Newsletter() {
   const [email, setEmail] = useState('');
   const [status, setStatus] = useState('idle'); // idle | submitting | success | error
   const [errorMessage, setErrorMessage] = useState('');
-  const [imageFailed, setImageFailed] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -119,20 +115,13 @@ export function Newsletter() {
           default beetroot pink, so it sits closer to the coconut pack's
           warm background until the real photo lands. */}
       <div className="newsletter__media" data-flavor="coconut">
-        {imageFailed ? (
-          <PlaceholderBlock
-            label="Coconut Gari Mix pack, photo coming soon"
-            fill
-          />
-        ) : (
-          <img
-            className="newsletter__image"
-            src={PACK_IMAGE}
-            alt="Lucy's Coconut Gari Mix pack"
-            loading="lazy"
-            onError={() => setImageFailed(true)}
-          />
-        )}
+        <Photo
+          className="newsletter__image"
+          src={PACK_IMAGE}
+          alt="Lucy's Coconut Gari Mix pack"
+          label="Coconut Gari Mix pack, photo coming soon"
+          fill
+        />
       </div>
     </section>
   );

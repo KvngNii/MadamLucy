@@ -1,10 +1,15 @@
 import './TraditionSection.css';
-import { PlaceholderBlock } from './PlaceholderBlock.jsx';
+import { Photo } from './Photo.jsx';
 
+// `image`/`alt` are optional: a step without one still renders its labeled
+// placeholder, so photos 02 and 03 are a one-line addition each when they
+// arrive.
 const STEPS = [
   {
     number: '01',
     caption: 'Rooted in over a decade of Ghanaian gari-making tradition',
+    image: '/assets/tradition-01-rooted.webp',
+    alt: 'Hands turning freshly roasted gari across a wide metal pan set over a wood fire in a traditional clay hearth',
   },
   {
     number: '02',
@@ -55,7 +60,9 @@ export function TraditionSection() {
             <div className="tradition__item" key={step.number}>
               <div className="tradition__number">{step.number}</div>
               <p className="tradition__caption on-dark">{step.caption}</p>
-              <PlaceholderBlock
+              <Photo
+                src={step.image}
+                alt={step.alt}
                 label="Photo coming soon"
                 aspect="4 / 3"
                 className="tradition__photo"
