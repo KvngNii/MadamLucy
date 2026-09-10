@@ -12,7 +12,7 @@
 #   frames/<flavor>/manifest.json {count,width,height,ext}
 #
 # Needs ffmpeg on PATH (or FFMPEG=/path/to/ffmpeg). Tunables:
-#   FRAME_WIDTH (default 1920)   FRAME_QUALITY (webp, default 58)
+#   FRAME_WIDTH (default 1440)   FRAME_QUALITY (webp, default 70)
 set -euo pipefail
 
 IN="${1:?input video}"; FLAVOR="${2:?flavor id, e.g. beetroot}"
@@ -20,13 +20,8 @@ FFMPEG="${FFMPEG:-ffmpeg}"
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 ASSETS="$ROOT/public/assets"
 FRAMES="$ASSETS/frames/$FLAVOR"
-# Native 1080p, not a downscale. The stage is full-viewport with
-# object-fit: cover, so a frame narrower than the display gets scaled back
-# up — a 1440-wide source was being drawn at 1920 on a 1080p screen, which
-# is what made the pour look soft. Quality 58 measured indistinguishable
-# from 70 at 2x zoom while saving 1.8 MB across 241 frames.
-W="${FRAME_WIDTH:-1920}"
-Q="${FRAME_QUALITY:-58}"
+W="${FRAME_WIDTH:-1440}"
+Q="${FRAME_QUALITY:-70}"
 
 # Encoder list captured once: piping straight into `grep -q` would trip
 # `pipefail` (grep closes the pipe early → ffmpeg exits 141 → false negative).
@@ -57,17 +52,15 @@ else
   echo "  webm skipped (no libvpx-vp9 in this ffmpeg)"
 fi
 
-# 3) Frame sequence — from "$IN", the original, NOT from the mp4 written
-#    above. Extracting from that CRF 22 re-encode put a whole extra lossy
-#    generation into the frames the canvas actually draws, for nothing.
+# 3) Frame sequence.
 if has_enc libwebp; then
   EXT=webp
-  "$FFMPEG" -y -hide_banner -loglevel error -i "$IN" \
+  "$FFMPEG" -y -hide_banner -loglevel error -i "$ASSETS/pour-$FLAVOR.mp4" \
     -vf "scale=$W:-2" -c:v libwebp -quality "$Q" -compression_level 6 \
     "$FRAMES/%04d.webp"
 else
   EXT=jpg
-  "$FFMPEG" -y -hide_banner -loglevel error -i "$IN" \
+  "$FFMPEG" -y -hide_banner -loglevel error -i "$ASSETS/pour-$FLAVOR.mp4" \
     -vf "scale=$W:-2" -q:v 3 "$FRAMES/%04d.jpg"
 fi
 cp "$FRAMES/0001.$EXT" "$FRAMES/poster.$EXT"
