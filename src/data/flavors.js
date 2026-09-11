@@ -49,6 +49,8 @@ export const flavors = [
   },
   {
     id: 'garlic',
+    image: '/assets/flavor-garlic.webp',
+    alt: 'A pouch of Lucy’s Garlic Gari Mix on a wooden table, beside fresh garlic bulbs and cassava',
     label: 'Garlic',
     productName: 'Garlic Gari Mix',
     productTagline: 'Aromatic Strength',

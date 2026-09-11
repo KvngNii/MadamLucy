@@ -217,11 +217,14 @@ button {
   mix-blend-mode: overlay;
 }
 
-/* Light ground. `overlay` at the strength above would push a pale section
-   green; multiply at low opacity leaves the artwork as a faint botanical
-   watermark instead. Value tuned against the real section, not picked. */
+/* Light ground: the same botanical motifs in the brand's warm colourway.
+   The image has to be overridden too, not just the blend — .brand-bg::before
+   above would otherwise go on painting the green artwork here. The cream base
+   colour stays; multiply at low opacity leaves the pattern as a watermark
+   rather than a wash. Value tuned against the real section, not picked. */
 .brand-bg--light::before {
-  opacity: 0.11;
+  background-image: url('/assets/orange-bg.webp');
+  opacity: 0.07;
   mix-blend-mode: multiply;
 }
 

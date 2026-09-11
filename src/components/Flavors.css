@@ -70,28 +70,31 @@
 
 /* ---- Panel ------------------------------------------------------------- */
 
-.flavors__panel {
+.flavors__top {
   display: grid;
   grid-template-columns: 1fr;
   gap: 40px;
 }
 
-.flavors__panel:focus {
+.flavors__detail:focus {
   outline: none;
 }
 
 @media (min-width: 860px) {
-  .flavors__panel {
+  .flavors__top {
     /* minmax(0, 1fr), not 1fr: a bare 1fr is minmax(auto, 1fr), so a flavor
        with a shorter blurb gives its column a smaller auto minimum and the
        split stops being even — which made the pack shot a different size per
        flavor. Pinning the minimum to 0 keeps every flavor's box identical. */
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    /* The copy column is the wider one: the five flavour pills need ~541px
+       on one row and an even split gave them 534. Headroom rather than a
+       7px shave, since the real webfont may set wider than the fallback
+       this was measured against. */
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
     gap: 64px;
-    /* start, not center: the columns are lopsided — the pack shot's 4/5 box
-       is ~668px tall against ~324px of copy — so centring floated the text in
-       the middle of the image with a wide empty band above it. Only meaningful
-       at this breakpoint; below it the panel is one column per row. */
+    /* start, not center: the columns are lopsided, so centring would float
+       the shorter one. Only meaningful at this breakpoint; below it each row
+       is its own height. */
     align-items: start;
   }
 }
@@ -136,6 +139,12 @@
 
 .flavors__seal {
   margin-top: 8px;
+}
+
+.flavors__statement-img {
+  display: block;
+  object-fit: cover;
+  border-radius: 20px;
 }
 
 /* The pack shot fills this box edge to edge. The flavor tint behind it only

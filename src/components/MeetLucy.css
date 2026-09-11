@@ -19,6 +19,16 @@
   border-radius: 24px;
 }
 
+/* The source is 3:2 landscape; this crops it to the column's 4/5 portrait.
+   Lucy is centred in the frame, so the default centre crop tightens onto her
+   rather than cutting her off. */
+.meet-lucy__photo img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+}
+
 /* Above .brand-bg's pattern — a positioned pseudo-element paints over the
    inline content of unpositioned descendants. */
 .meet-lucy > .container {
