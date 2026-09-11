@@ -74,7 +74,6 @@
   display: grid;
   grid-template-columns: 1fr;
   gap: 40px;
-  align-items: center;
 }
 
 .flavors__panel:focus {
@@ -89,6 +88,11 @@
        flavor. Pinning the minimum to 0 keeps every flavor's box identical. */
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
     gap: 64px;
+    /* start, not center: the columns are lopsided — the pack shot's 4/5 box
+       is ~668px tall against ~324px of copy — so centring floated the text in
+       the middle of the image with a wide empty band above it. Only meaningful
+       at this breakpoint; below it the panel is one column per row. */
+    align-items: start;
   }
 }
 
