@@ -62,6 +62,20 @@ h3 {
   color: var(--color-green-darker);
 }
 
+/* Section headings had no size at all, so they took the UA default 1.5em and
+   rendered at 24px next to a 46px Flavors heading and an 88px display-1 —
+   two type systems on one page. This is the same ramp Flavors already used,
+   so that section does not move and the rest come up to meet it.
+
+   A bare element selector is (0,0,1), which is the point: every heading that
+   *was* given a size through a class — .display-1, .display-2, .story__h2,
+   .ingredients-modal__title — still wins, whatever order the CSS lands in.
+   The one heading with neither a class nor a size was the recipe modal's
+   title; it is sized in RecipeModal.css so a dialog is not set like a page. */
+h2 {
+  font-size: clamp(1.9rem, 4vw, 2.9rem);
+}
+
 p {
   margin: 0 0 1em;
 }
@@ -121,9 +135,13 @@ button {
   transform: translateY(-2px);
 }
 
+/* Ink, not white. White on the brand orange is 2.70:1 — the site's primary
+   call to action was failing WCAG AA everywhere it appears (nav, hero, this
+   CTA, newsletter). Dark ink on the same orange is 5.53:1, so the brand
+   colour is untouched and only the label moves. */
 .btn-primary {
   background: var(--color-orange);
-  color: #fff;
+  color: var(--color-ink);
   box-shadow: 0 6px 18px rgba(228, 135, 0, 0.35);
 }
 

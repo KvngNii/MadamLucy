@@ -181,3 +181,10 @@
     animation: none;
   }
 }
+
+/* The only heading on the site with neither a class nor a size of its own, so
+   the new global h2 ramp would have set a dialog title at 46px. A modal is
+   not a page section; size it for the panel it sits in. */
+#recipe-modal-title {
+  font-size: clamp(1.5rem, 3.5vw, 2rem);
+}
