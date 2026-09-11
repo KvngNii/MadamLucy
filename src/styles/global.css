@@ -9,8 +9,14 @@
   --color-cream: #fffdf4;
   --color-ink: #22291f;
 
-  --font-display: 'Fredoka', 'Nunito Sans', system-ui, sans-serif;
-  --font-body: 'Nunito Sans', system-ui, sans-serif;
+  /* 'Fredoka Variable' / 'Nunito Sans Variable' first: the @fontsource-variable
+     packages register the family under that exact name, suffix included, so
+     naming only the bare family here would silently fall through to system-ui
+     — and look no different from a font that simply had not loaded yet. The
+     bare names stay as the next step for a reader who has them installed. */
+  --font-display: 'Fredoka Variable', 'Fredoka', 'Nunito Sans Variable',
+    'Nunito Sans', system-ui, sans-serif;
+  --font-body: 'Nunito Sans Variable', 'Nunito Sans', system-ui, sans-serif;
 
   --nav-height: 68px;
   --max-width: 1180px;

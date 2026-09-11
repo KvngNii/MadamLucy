@@ -23,19 +23,10 @@
     <meta property="og:image" content="/assets/Logo%20With%20Background.jpg.jpg" />
     <meta name="twitter:card" content="summary_large_image" />
 
-    <link
-      rel="preconnect"
-      href="https://fonts.googleapis.com"
-    />
-    <link
-      rel="preconnect"
-      href="https://fonts.gstatic.com"
-      crossorigin
-    />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito+Sans:wght@400;600;700;800&display=swap"
-      rel="stylesheet"
-    />
+    <!-- No webfont links: Fredoka and Nunito Sans are self-hosted and imported
+         from src/main.jsx, so their @font-face rules ride in the CSS bundle
+         the page already fetches. That removes two third-party origins from
+         the critical path and keeps visitor IPs away from Google. -->
   </head>
   <body>
     <div id="root"></div>
