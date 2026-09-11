@@ -14,7 +14,7 @@ export function MeetLucy() {
   useScrollHighlightText(textRef, { reducedMotion });
 
   return (
-    <section id="about-lucy" className="section meet-lucy">
+    <section id="about-lucy" className="section meet-lucy brand-bg brand-bg--light">
       <div className="container meet-lucy__inner">
         <div className="meet-lucy__photo">
           <PlaceholderBlock

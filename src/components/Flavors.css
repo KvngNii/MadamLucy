@@ -4,7 +4,7 @@
      frozen pour instead of appearing beneath it. Opaque background matters. */
   position: relative;
   z-index: 2;
-  background: #fff;
+  background: var(--color-cream);
   padding: 96px 0;
   display: flex;
   flex-direction: column;
@@ -83,7 +83,11 @@
 
 @media (min-width: 860px) {
   .flavors__panel {
-    grid-template-columns: 1fr 1fr;
+    /* minmax(0, 1fr), not 1fr: a bare 1fr is minmax(auto, 1fr), so a flavor
+       with a shorter blurb gives its column a smaller auto minimum and the
+       split stops being even — which made the pack shot a different size per
+       flavor. Pinning the minimum to 0 keeps every flavor's box identical. */
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
     gap: 64px;
   }
 }
@@ -126,25 +130,37 @@
   color: var(--color-green-darker);
 }
 
-.flavors__note {
-  font-size: 0.85rem;
-  font-style: italic;
-  opacity: 0.65;
-  margin: 0 0 20px;
-  max-width: 42ch;
-}
-
 .flavors__seal {
   margin-top: 8px;
 }
 
-/* The pack shot sits on a soft field of the active flavor so the swap is
-   visible even while the photography is still a placeholder. */
+/* The pack shot fills this box edge to edge. The flavor tint behind it only
+   shows through for a flavor still awaiting its photo, which is what makes
+   the placeholder read as deliberate rather than missing. */
 .flavors__media {
+  position: relative;
+  aspect-ratio: 4 / 5;
   border-radius: 20px;
-  padding: 24px;
+  overflow: hidden;
   background: color-mix(in srgb, var(--flavor-active) 10%, #fff);
   transition: background 0.25s ease;
+}
+
+/* Absolutely positioned, not just sized: PlaceholderBlock sets its own
+   aspect-ratio as an inline style, which no stylesheet rule can outrank.
+   Pinning both dimensions with inset makes them definite, so that inline
+   aspect-ratio has nothing to do — which is what keeps the box identical
+   for a flavor with a photo and one still waiting for it. */
+.flavors__media > * {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+img.flavors__pack {
+  display: block;
+  object-fit: cover;
 }
 
 /* ---- Closing statement -------------------------------------------------- */
@@ -184,4 +200,21 @@
   color: var(--color-ink);
   opacity: 0.85;
   max-width: 42ch;
+}
+
+/* Two jobs here.
+
+   width: 100% — .flavors is a column flex container and .container carries
+   `margin: 0 auto`. Auto margins on the cross axis switch off `stretch`, so
+   the container was shrink-wrapping to its content: every flavor whose blurb
+   ran to a different length gave the whole section a different width, and the
+   pack shot a different size with it. That is the sizing inconsistency, and
+   it had nothing to do with the photos.
+
+   position/z-index — above .brand-bg's pattern, since a positioned
+   pseudo-element paints over the inline content of unpositioned descendants. */
+.flavors > .container {
+  width: 100%;
+  position: relative;
+  z-index: 1;
 }

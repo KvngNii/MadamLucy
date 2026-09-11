@@ -1,7 +1,7 @@
 import { useRef } from 'react';
 import './Flavors.css';
 import { useFlavor } from '../context/FlavorContext.jsx';
-import { PlaceholderBlock } from './PlaceholderBlock.jsx';
+import { Photo } from './Photo.jsx';
 import { MadeInGhanaSeal } from './MadeInGhanaSeal.jsx';
 
 // The flavor range and what goes into each one, in one section: they were
@@ -28,7 +28,7 @@ export function Flavors() {
   };
 
   return (
-    <section id="flavors" className="flavors" data-flavor={activeFlavorId}>
+    <section id="flavors" className="flavors brand-bg brand-bg--light" data-flavor={activeFlavorId}>
       <div className="container">
         <p className="section-eyebrow">Our Flavors</p>
         <h2 className="flavors__heading">Five flavors, one better gari</h2>
@@ -84,22 +84,22 @@ export function Flavors() {
                 <li key={ingredient}>{ingredient}</li>
               ))}
             </ul>
-            {!activeFlavor.ingredientsConfirmed && (
-              <p className="flavors__note">
-                Exact wording pending confirmation. Shown here following the
-                established cassava-dough-plus-flavor pattern.
-              </p>
-            )}
 
             <div className="flavors__seal">
               <MadeInGhanaSeal size={80} />
             </div>
           </div>
 
+          {/* One fixed 4/5 box for every flavor, which is the pack shots'
+              own aspect — so they fill it exactly, and Garlic's placeholder
+              occupies the same footprint instead of resizing the panel. */}
           <div className="flavors__media">
-            <PlaceholderBlock
+            <Photo
+              src={activeFlavor.image}
+              alt={activeFlavor.alt}
               label={`${activeFlavor.productName} pack, photo coming soon`}
-              aspect="1 / 1"
+              aspect="4 / 5"
+              className="flavors__pack"
             />
           </div>
         </div>
@@ -107,7 +107,7 @@ export function Flavors() {
 
       <div className="container flavors__statement">
         <div className="flavors__statement-media">
-          <PlaceholderBlock
+          <Photo
             label="Lucy's hands, farm-to-sachet, photo coming soon"
             aspect="4 / 5"
           />

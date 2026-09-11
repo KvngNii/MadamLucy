@@ -217,6 +217,14 @@ button {
   mix-blend-mode: overlay;
 }
 
+/* Light ground. `overlay` at the strength above would push a pale section
+   green; multiply at low opacity leaves the artwork as a faint botanical
+   watermark instead. Value tuned against the real section, not picked. */
+.brand-bg--light::before {
+  opacity: 0.11;
+  mix-blend-mode: multiply;
+}
+
 /* Subtle grain overlay — generated noise, no image asset needed. Add to any
    `position: relative` section container. */
 .grain-overlay {

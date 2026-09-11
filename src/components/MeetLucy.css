@@ -1,5 +1,5 @@
 .meet-lucy {
-  background: #fff;
+  background: var(--color-cream);
 }
 
 .meet-lucy__inner {
@@ -17,4 +17,11 @@
 
 .meet-lucy__photo :is(img, .placeholder-block) {
   border-radius: 24px;
+}
+
+/* Above .brand-bg's pattern — a positioned pseudo-element paints over the
+   inline content of unpositioned descendants. */
+.meet-lucy > .container {
+  position: relative;
+  z-index: 1;
 }
