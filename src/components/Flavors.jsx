@@ -77,19 +77,23 @@ export function Flavors() {
           </div>
 
           {/* role/id live on the detail now that the wrapper is gone, so the
-            tabs' aria-controls still resolves. */}
+            tabs' aria-controls still resolves. `key` remounts it on flavour
+            change, which is what restarts the CSS entry animation. */}
           <div
             className="flavors__detail"
+            key={activeFlavorId}
             id="flavor-panel"
             role="tabpanel"
             aria-labelledby={`flavor-tab-${activeFlavorId}`}
             tabIndex={-1}
           >
+            <div className="flavors__rule" />
             <p className="flavors__tagline">{activeFlavor.productTagline}</p>
             <h3 className="flavors__name">{activeFlavor.productName}</h3>
             <p className="flavors__blurb">{activeFlavor.productBlurb}</p>
 
             <p className="flavors__label">What&apos;s inside</p>
+            {/* still a list — restyled as chips, not re-marked-up as divs */}
             <ul className="flavors__list">
               {activeFlavor.ingredients.map((ingredient) => (
                 <li key={ingredient}>{ingredient}</li>
@@ -98,6 +102,7 @@ export function Flavors() {
 
             <div className="flavors__seal">
               <MadeInGhanaSeal size={80} />
+              <p>Farmed, fermented and roasted by Lucy in the Eastern Region</p>
             </div>
           </div>
         </div>
@@ -106,6 +111,7 @@ export function Flavors() {
             box exactly and every flavor occupies the same footprint. */}
         <div className="flavors__media">
           <Photo
+            key={activeFlavorId}
             src={activeFlavor.image}
             alt={activeFlavor.alt}
             label={`${activeFlavor.productName} pack, photo coming soon`}
