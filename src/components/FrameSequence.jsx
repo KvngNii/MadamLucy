@@ -19,7 +19,18 @@ import './FrameSequence.css';
 
 const COARSE_STEP = 8;
 const CONCURRENCY = 6;
-const MAX_DPR = 1.5;
+// Cap the canvas backing store at 2x the CSS size. This used to be 1.5,
+// which made the pour visibly soft on every Retina screen: the compositor
+// had to stretch the backing store the remaining 1.33x to fill a 2x display,
+// so the image was resampled twice on its way to the glass. At 2 the canvas
+// is 1:1 with a typical laptop and there is one resample instead of two.
+//
+// Still capped rather than using devicePixelRatio raw: a 3x phone would
+// allocate a 1170x2532 store and rescale a 1440-wide bitmap into it on every
+// scrub frame, and the frames themselves are only 1440 wide, so past 2x there
+// is nothing left to reveal — only work. Scrub timings at 390x844 @3x were
+// measured before and after this change; see the commit.
+const MAX_DPR = 2;
 
 export const FrameSequence = forwardRef(function FrameSequence(
   { manifestUrl, className = '', onUnavailable },
@@ -64,6 +75,9 @@ export const FrameSequence = forwardRef(function FrameSequence(
       canvas.height = Math.round(ch * dpr);
     }
     const ctx = canvas.getContext('2d');
+    // Default is 'low'. Every device upscales these frames to some degree, so
+    // the better resampling kernel is doing real work here, and it is free.
+    ctx.imageSmoothingQuality = 'high';
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     // object-fit: cover
     const scale = Math.max(cw / img.naturalWidth, ch / img.naturalHeight);
