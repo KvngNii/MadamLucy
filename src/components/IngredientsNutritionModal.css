@@ -30,7 +30,10 @@
   border: none;
   background: color-mix(in srgb, var(--color-olive) 15%, #fff);
   cursor: pointer;
-  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-green-darker);
 }
 
 .ingredients-modal__title {
@@ -56,9 +59,11 @@
   cursor: pointer;
 }
 
+/* Same fix as the Flavors section's tabs: white on the undiluted accent is
+   3.21:1 at worst (garlic). 80% is the least darkening that clears AA. */
 .ingredients-modal__flavor-tab.is-active {
-  background: var(--flavor-active);
-  border-color: var(--flavor-active);
+  background: color-mix(in srgb, var(--flavor-active) 80%, #000);
+  border-color: color-mix(in srgb, var(--flavor-active) 80%, #000);
   color: #fff;
 }
 

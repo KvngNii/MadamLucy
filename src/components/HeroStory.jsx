@@ -1,7 +1,6 @@
 import { useRef } from 'react';
 import { motion } from 'motion/react';
 import './HeroStory.css';
-import { useFlavor } from '../context/FlavorContext.jsx';
 import { StageRenderer } from './StageRenderer.jsx';
 import { ScrollHighlightText } from './ScrollHighlightText.jsx';
 import { useReducedMotion } from '../hooks/useReducedMotion.js';
@@ -20,19 +19,16 @@ import { scrollToEl } from '../lib/lenis.js';
 // the stage stuck while the next section (pulled up 100vh by a negative
 // margin on the story) slides over it.
 
-const UNWRAP_ICONS = [
-  { icon: '🫚', label: 'Ginger' },
-  { icon: '🟣', label: 'Beetroot' },
-  { icon: '🟡', label: 'Turmeric' },
-];
+// One pour clip for the whole site, not one per flavor. The canvas frame
+// sequence is what actually scrubs; the mp4 is the fallback if it can't load.
+const POUR_FRAMES = '/assets/frames/pour/';
+const POUR_VIDEO = '/assets/pour.mp4';
 
 // Module-level style objects (motion skill: don't recreate per render).
 const copyStyle = { willChange: 'transform, opacity' };
 const spring = { type: 'spring', stiffness: 120, damping: 20 };
 
 export function HeroStory() {
-  const { flavors, activeFlavorId, activeFlavor, setActiveFlavorId } =
-    useFlavor();
   const reducedMotion = useReducedMotion();
 
   const storyRef = useRef(null);
@@ -41,18 +37,12 @@ export function HeroStory() {
   const angleHeadlineRef = useRef(null);
   const pourHeadlineRef = useRef(null);
 
-  useStoryScrub({
-    storyRef,
-    rendererRef,
-    progressBarRef,
-    activeFlavorId,
-    reducedMotion,
-  });
+  useStoryScrub({ storyRef, rendererRef, progressBarRef, reducedMotion });
   useScrollHighlightText(angleHeadlineRef, { reducedMotion, onDark: true });
   useScrollHighlightText(pourHeadlineRef, { reducedMotion, onDark: true });
 
   const handleSkip = () => {
-    const target = document.getElementById('ingredients');
+    const target = document.getElementById('flavors');
     if (target) scrollToEl(target);
   };
 
@@ -79,7 +69,9 @@ export function HeroStory() {
       id="top"
       ref={storyRef}
       className={`story${reducedMotion ? ' story--static' : ''}`}
-      data-flavor={activeFlavorId}
+      // Fixed: the hero pours the coconut pack, whatever flavor is selected
+      // further down the page. Only the stage's fallback tint reads this.
+      data-flavor="coconut"
     >
       {/* Progress bar + skip live in a zero-height sticky layer above the
           panels so they stay clickable/visible for the whole story. */}
@@ -94,22 +86,24 @@ export function HeroStory() {
         </div>
       )}
 
-      <div className="story__stage">
+      <div className="story__stage brand-bg">
         {/* Canvas frame sequence → <video> → placeholder, driven by
-            useStoryScrub through one seek(progress). Remounts per flavor. */}
+            useStoryScrub through one seek(progress). Mounted once: the pill
+            row picks the flavor the rest of the page shows, not the pour. */}
         <StageRenderer
           ref={rendererRef}
-          flavor={activeFlavor}
+          frames={POUR_FRAMES}
+          videoSrc={POUR_VIDEO}
+          label="Gari pouring into a bowl"
           className="story__video"
-          key={activeFlavor.id}
           autoPlayLoop={reducedMotion}
         />
         <div className="story__vignette" />
       </div>
 
       <div className="story__panels">
-        {/* 1 — hero: headline band at the top, paragraph + CTA bottom-left,
-            flavor pills bottom-right. Middle stays clear. */}
+        {/* 1 — hero: headline band at the top, paragraph + CTA bottom-left.
+            Middle and right stay clear of the pour. */}
         <div className="story__panel story__panel--hero">
           <motion.div
             className="story__block story__block--top"
@@ -118,8 +112,6 @@ export function HeroStory() {
           >
             <p className="story__eyebrow">Fire-Roasted Ghanaian Gari</p>
             <h1 className="story__headline on-dark">Gari, But Better</h1>
-            <div className="dotted-line story__dotted" />
-            <p className="story__flavor-name">{activeFlavor.label} gari mix</p>
           </motion.div>
 
           <motion.div
@@ -134,34 +126,6 @@ export function HeroStory() {
             <motion.a href="#notify-me" className="btn btn-primary" {...tap}>
               Notify Me at Launch
             </motion.a>
-          </motion.div>
-
-          <motion.div
-            className="story__block story__block--bottom-right"
-            style={copyStyle}
-            {...reveal}
-          >
-            <div
-              className="story__flavor-selector"
-              role="group"
-              aria-label="Choose a flavor"
-            >
-              {flavors.map((flavor) => (
-                <motion.button
-                  key={flavor.id}
-                  type="button"
-                  className={`story__pill${
-                    flavor.id === activeFlavorId ? ' is-active' : ''
-                  }`}
-                  data-flavor={flavor.id}
-                  aria-pressed={flavor.id === activeFlavorId}
-                  onClick={() => setActiveFlavorId(flavor.id)}
-                  {...tap}
-                >
-                  {flavor.label}
-                </motion.button>
-              ))}
-            </div>
           </motion.div>
         </div>
 
@@ -202,13 +166,6 @@ export function HeroStory() {
             style={copyStyle}
             {...reveal}
           >
-            <div className="story__icons">
-              {UNWRAP_ICONS.map((item) => (
-                <span className="story__icon-circle" key={item.label} title={item.label}>
-                  <span aria-hidden="true">{item.icon}</span>
-                </span>
-              ))}
-            </div>
             <p className="story__small on-dark">
               Tear open a sachet of Lucy&apos;s Gari and you&apos;re met with
               vivid color and bold aroma: earthy beetroot, warm ginger,

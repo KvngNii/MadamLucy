@@ -34,80 +34,28 @@
   opacity: 0.92;
 }
 
+/* The photo has to fill exactly the box the placeholder occupies, or the
+   three cards stop lining up. The source is portrait (4:5) and its subject
+   — the hands, the pan, the gari — sits in the top third, so the 4/3 crop
+   is taken from the top; centred would keep only firewood. */
 .tradition__photo {
   border-color: rgba(232, 241, 135, 0.25);
 }
 
-.tradition__why {
-  margin-top: 96px;
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 48px;
-}
-
-@media (min-width: 900px) {
-  .tradition__why {
-    grid-template-columns: 0.9fr 1.1fr;
-  }
-}
-
-.tradition__why-head h2 {
-  margin-bottom: 16px;
-}
-
-.tradition__why-copy {
-  max-width: 40ch;
-  opacity: 0.8;
-  margin: 0 0 24px;
-}
-
-.tradition__tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-}
-
-.tradition__tag {
-  border: 1px solid rgba(232, 241, 135, 0.35);
-  border-radius: 999px;
-  padding: 6px 14px;
-  font-size: 0.8rem;
-  font-weight: 700;
-  text-transform: lowercase;
-  color: var(--color-pale);
-}
-
-.tradition__why-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 24px;
-}
-
-.tradition__why-card {
-  background: rgba(232, 241, 135, 0.06);
-  border: 1px solid rgba(232, 241, 135, 0.15);
-  border-radius: 18px;
-  padding: 24px;
-}
-
-/* Numbered like the STEPS above, so the two halves read as one idea. */
-.tradition__why-number {
+img.tradition__photo {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  object-position: 50% 12%;
+  border-radius: 20px;
   display: block;
-  font-family: var(--font-display);
-  font-weight: 700;
-  font-size: 1.5rem;
-  line-height: 1;
-  color: var(--color-orange);
-  margin-bottom: 12px;
 }
 
-.tradition__why-card h3 {
-  font-size: 1.05rem;
-  margin: 0 0 8px;
-}
-
-.tradition__why-card p {
-  font-size: 0.92rem;
-  opacity: 0.75;
-  margin: 0;
+/* Lifts the content above .brand-bg's pattern. A positioned pseudo-element
+   paints above the inline content of *unpositioned* descendants, so the
+   content has to be positioned too — and being later in DOM order than the
+   ::before, it wins. */
+.tradition > .container {
+  position: relative;
+  z-index: 1;
 }

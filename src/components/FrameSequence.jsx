@@ -19,7 +19,18 @@ import './FrameSequence.css';
 
 const COARSE_STEP = 8;
 const CONCURRENCY = 6;
-const MAX_DPR = 1.5;
+// Cap the canvas backing store at 2x the CSS size. This used to be 1.5,
+// which made the pour visibly soft on every Retina screen: the compositor
+// had to stretch the backing store the remaining 1.33x to fill a 2x display,
+// so the image was resampled twice on its way to the glass. At 2 the canvas
+// is 1:1 with a typical laptop and there is one resample instead of two.
+//
+// Still capped rather than using devicePixelRatio raw: a 3x phone would
+// allocate a 1170x2532 store and rescale a 1440-wide bitmap into it on every
+// scrub frame, and the frames themselves are only 1440 wide, so past 2x there
+// is nothing left to reveal — only work. Scrub timings at 390x844 @3x were
+// measured before and after this change; see the commit.
+const MAX_DPR = 2;
 
 export const FrameSequence = forwardRef(function FrameSequence(
   { manifestUrl, className = '', onUnavailable },
@@ -64,6 +75,9 @@ export const FrameSequence = forwardRef(function FrameSequence(
       canvas.height = Math.round(ch * dpr);
     }
     const ctx = canvas.getContext('2d');
+    // Default is 'low'. Every device upscales these frames to some degree, so
+    // the better resampling kernel is doing real work here, and it is free.
+    ctx.imageSmoothingQuality = 'high';
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     // object-fit: cover
     const scale = Math.max(cw / img.naturalWidth, ch / img.naturalHeight);
@@ -131,6 +145,10 @@ export const FrameSequence = forwardRef(function FrameSequence(
       s.count = manifest.count;
       s.frames = new Array(manifest.count).fill(null);
       setPoster(`${manifestUrl}poster.${manifest.ext}`);
+      // A seek can land before the manifest does (the scrub binds to this
+      // renderer in the layout phase, we load in a passive effect), and that
+      // draw bailed on `!s.count`. Now that we have a count, ask again.
+      scheduleDraw();
 
       // First frame, then coarse pass, then everything else — with a small
       // concurrency cap so the coarse pass isn't starved by the fine one.
@@ -154,15 +172,31 @@ export const FrameSequence = forwardRef(function FrameSequence(
     };
     run();
 
+    // Watch the canvas itself, not just the window: the stage is sticky and
+    // can be laid out at zero size for a tick, and a draw that measured zero
+    // must repaint once the real size arrives.
     const onResize = () => {
       s.drawn = -1;
       scheduleDraw();
     };
     window.addEventListener('resize', onResize);
+    const observer =
+      typeof ResizeObserver === 'function' ? new ResizeObserver(onResize) : null;
+    if (observer && canvasRef.current) observer.observe(canvasRef.current);
+
     return () => {
       cancelled = true;
       window.removeEventListener('resize', onResize);
-      if (s.raf) cancelAnimationFrame(s.raf);
+      observer?.disconnect();
+      if (s.raf) {
+        cancelAnimationFrame(s.raf);
+        // Must clear the id, not just cancel the frame: `scheduleDraw` skips
+        // when `raf` is set, so a stale id here would silently kill every
+        // future draw on this instance. That bit exactly once — on a flavor
+        // switch, where a seek schedules a frame before this effect's first
+        // (StrictMode) cleanup, leaving the remounted canvas blank forever.
+        s.raf = 0;
+      }
     };
   }, [manifestUrl, onUnavailable, scheduleDraw]);
 

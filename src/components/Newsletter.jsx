@@ -1,20 +1,21 @@
 import { useState } from 'react';
 import './Newsletter.css';
-import { PlaceholderBlock } from './PlaceholderBlock.jsx';
+import { Photo } from './Photo.jsx';
 import { MadeInGhanaSeal } from './MadeInGhanaSeal.jsx';
 
-// Product shot for the right-hand panel. Drop the file in at this path and
-// it appears; until then the onError below degrades to a labeled
-// placeholder rather than a broken image.
 const PACK_IMAGE = '/assets/product-coconut.jpg';
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-// No backend yet — this is the single place to wire a real endpoint later
-// (Mailchimp, Formspree, Netlify Forms, a custom API route, etc.). For now
-// it simulates a network call and logs the payload.
-async function submitNewsletterSignup({ name, email }) {
-  console.info('[newsletter] signup captured (stub):', { name, email });
+// NOT WIRED UP. This is the single place to add a real endpoint (Mailchimp,
+// Formspree, Netlify Forms, a Vercel function). Until one exists the form
+// tells people they are on the list and keeps nothing — see the note on the
+// success message below.
+//
+// Deliberately logs no name or email. A stub is what ships if nobody
+// revisits it, and real visitors' details sitting in the browser console are
+// readable by any extension with content-script access.
+async function submitNewsletterSignup() {
   await new Promise((resolve) => setTimeout(resolve, 400));
 }
 
@@ -23,7 +24,6 @@ export function Newsletter() {
   const [email, setEmail] = useState('');
   const [status, setStatus] = useState('idle'); // idle | submitting | success | error
   const [errorMessage, setErrorMessage] = useState('');
-  const [imageFailed, setImageFailed] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -41,7 +41,7 @@ export function Newsletter() {
 
     setStatus('submitting');
     try {
-      await submitNewsletterSignup({ name: name.trim(), email: email.trim() });
+      await submitNewsletterSignup();
       setStatus('success');
       setName('');
       setEmail('');
@@ -53,13 +53,12 @@ export function Newsletter() {
 
   return (
     <section id="notify-me" className="newsletter">
-      <div className="newsletter__panel">
+      <div className="newsletter__panel brand-bg">
         <div className="newsletter__panel-inner">
           <p className="section-eyebrow">Coming Soon</p>
           <h2 className="display-2 on-dark newsletter__headline">
             Be the first to try Lucy&apos;s Gari
           </h2>
-          <div className="dotted-line newsletter__rule" />
           <span className="newsletter__seal" aria-hidden="true">
             <MadeInGhanaSeal size={92} />
           </span>
@@ -68,6 +67,9 @@ export function Newsletter() {
             it&apos;s ready to ship.
           </p>
 
+          {/* Until submitNewsletterSignup reaches a real endpoint, this
+              message promises something the code does not do. Either wire the
+              endpoint or soften the copy before launch. */}
           {status === 'success' ? (
             <p className="newsletter__success" role="status">
               You&apos;re on the list! We&apos;ll email you the moment
@@ -120,21 +122,13 @@ export function Newsletter() {
           default beetroot pink, so it sits closer to the coconut pack's
           warm background until the real photo lands. */}
       <div className="newsletter__media" data-flavor="coconut">
-        {imageFailed ? (
-          <PlaceholderBlock
-            label="Coconut Gari Mix pack, photo coming soon"
-            icon="📸"
-            fill
-          />
-        ) : (
-          <img
-            className="newsletter__image"
-            src={PACK_IMAGE}
-            alt="Lucy's Coconut Gari Mix pack"
-            loading="lazy"
-            onError={() => setImageFailed(true)}
-          />
-        )}
+        <Photo
+          className="newsletter__image"
+          src={PACK_IMAGE}
+          alt="Lucy's Coconut Gari Mix pack"
+          label="Coconut Gari Mix pack, photo coming soon"
+          fill
+        />
       </div>
     </section>
   );

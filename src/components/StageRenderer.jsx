@@ -1,6 +1,7 @@
 import {
   forwardRef,
   useCallback,
+  useEffect,
   useImperativeHandle,
   useRef,
   useState,
@@ -9,18 +10,18 @@ import { FrameSequence } from './FrameSequence.jsx';
 import { PlaceholderBlock } from './PlaceholderBlock.jsx';
 
 // The pour stage's renderer chain, best first:
-//   1. FrameSequence (canvas image sequence)  — if the flavor has frames
-//   2. <video> (H.264 mp4 + optional WebM)    — with a seek queue
-//   3. PlaceholderBlock                        — nothing available yet
+//   1. FrameSequence (canvas image sequence)  — if a frame manifest is given
+//   2. <video> (H.264 mp4)                    — with a seek queue
+//   3. PlaceholderBlock                        — nothing available
 // Whichever is active, the parent drives it through one `seek(progress)`.
 // Add `?noframes` to the URL to force the video path while developing.
 
 export const StageRenderer = forwardRef(function StageRenderer(
-  { flavor, className = '', autoPlayLoop = false },
+  { frames, videoSrc, label, className = '', autoPlayLoop = false },
   ref
 ) {
   const wantFrames =
-    !!flavor.frames &&
+    !!frames &&
     !autoPlayLoop &&
     !(typeof window !== 'undefined' && window.location.search.includes('noframes'));
   const [mode, setMode] = useState(wantFrames ? 'frames' : 'video');
@@ -74,14 +75,17 @@ export const StageRenderer = forwardRef(function StageRenderer(
     [mode, applySeek]
   );
 
+  // The seek guard is a 250ms timer that would otherwise outlive the
+  // component and re-enter `applySeek` on a torn-down video.
+  useEffect(() => () => clearTimeout(guard.current), []);
+
   const toVideo = useCallback(() => setMode('video'), []);
-  const label = `${flavor.label} gari pour coming soon`;
 
   if (mode === 'frames') {
     return (
       <FrameSequence
         ref={framesRef}
-        manifestUrl={flavor.frames}
+        manifestUrl={frames}
         className={className}
         onUnavailable={toVideo}
       />
@@ -102,13 +106,12 @@ export const StageRenderer = forwardRef(function StageRenderer(
         onSeeked={onSeeked}
         onError={() => setMode('placeholder')}
       >
-        {flavor.videoWebm && <source src={flavor.videoWebm} type="video/webm" />}
-        <source src={flavor.videoSrc} type="video/mp4" />
+        <source src={videoSrc} type="video/mp4" />
       </video>
     );
   }
 
   return (
-    <PlaceholderBlock label={label} aspect="4 / 5" icon="🎬" className={className} fill />
+    <PlaceholderBlock label={label} aspect="4 / 5" className={className} fill />
   );
 });

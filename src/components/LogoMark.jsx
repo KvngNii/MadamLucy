@@ -1,23 +1,23 @@
 import './LogoMark.css';
 
-// TEMPORARY recreation of the "LUCY" 2x2 monogram lockup, built in CSS so the
-// site has a working, on-brand logo today. Replace with the real
-// /assets/logo.png (transparent) and /assets/logo-reversed.jpg (green field)
-// as soon as their file paths are available — swap the <img> back in and
-// delete this component, no other changes needed.
+// The brand's "lucy" monogram. One transparent PNG serves both places it
+// appears: the mark is pale yellow-green, so it sits directly on a dark
+// ground (the footer, and the nav while that is over the pour) and gets a
+// deep-green tile behind it on the cream nav bar, which is how the brand's
+// own with-background artwork is built.
+const LOGO_SRC = '/assets/Logo.png';
+
 export function LogoMark({ variant = 'light', size = 44 }) {
-  const isReversed = variant === 'reversed';
   return (
-    <span
-      className={`logo-mark logo-mark--${isReversed ? 'reversed' : 'light'}`}
+    <img
+      className={`logo-mark logo-mark--${variant === 'reversed' ? 'reversed' : 'light'}`}
       style={{ '--logo-size': `${size}px` }}
-      role="img"
-      aria-label="Lucy Perfect Enterprise logo"
-    >
-      <span className="logo-mark__cell">L</span>
-      <span className="logo-mark__cell">U</span>
-      <span className="logo-mark__cell">C</span>
-      <span className="logo-mark__cell">Y</span>
-    </span>
+      src={LOGO_SRC}
+      width={size}
+      height={size}
+      // Decorative: both call sites already carry the brand name in text
+      // beside it, so an alt here would just be read out twice.
+      alt=""
+    />
   );
 }

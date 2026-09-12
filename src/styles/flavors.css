@@ -11,6 +11,7 @@
   /* Default active flavor before any selection */
   --flavor-active: var(--flavor-beetroot);
   --flavor-active-soft: color-mix(in srgb, var(--flavor-active) 16%, #fff);
+  --flavor-ink: color-mix(in srgb, var(--flavor-active) 70%, #000);
 }
 
 [data-flavor='beetroot'] {
@@ -27,4 +28,27 @@
 }
 [data-flavor='garlic'] {
   --flavor-active: var(--flavor-garlic);
+}
+
+/* --flavor-ink: the flavour colour, safe as text.
+
+   The accents are picked for packaging, where they sit on saturated artwork.
+   Four of the five are mid-tones, so as small bold text on a near-white
+   ground they land between 2.9:1 and 4.7:1 — under WCAG AA. Darkening to 70%
+   keeps the hue and clears 4.5:1 for every flavour (worst case garlic:
+   5.4:1 on the tinted section ground, 5.1:1 on a chip). Use it wherever the
+   flavour colour is the *text*; use --flavor-active where it is a fill, a
+   rule or a border, none of which carry a contrast requirement.
+
+   Redeclared here and not only on :root, which is the whole point. A custom
+   property's own var()s are substituted against the element the property is
+   DECLARED on, and the resolved value is what inherits — so the :root copy
+   below resolves --flavor-active once, at :root, where it is always the
+   beetroot default. Every flavour then inherited beetroot ink. Declaring it
+   again on [data-flavor] puts the substitution on the same element that sets
+   --flavor-active, so it resolves per flavour. Same specificity as :root
+   (0,1,0), so this must stay after it. --flavor-active-soft above has the
+   same shape and would need the same treatment if it is ever used. */
+[data-flavor] {
+  --flavor-ink: color-mix(in srgb, var(--flavor-active) 70%, #000);
 }

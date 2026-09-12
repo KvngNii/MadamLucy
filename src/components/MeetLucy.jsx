@@ -1,7 +1,7 @@
 import { useRef } from 'react';
 import './MeetLucy.css';
 import { ScrollHighlightText } from './ScrollHighlightText.jsx';
-import { PlaceholderBlock } from './PlaceholderBlock.jsx';
+import { Photo } from './Photo.jsx';
 import { useReducedMotion } from '../hooks/useReducedMotion.js';
 import { useScrollHighlightText } from '../hooks/useScrollHighlightText.js';
 
@@ -14,13 +14,17 @@ export function MeetLucy() {
   useScrollHighlightText(textRef, { reducedMotion });
 
   return (
-    <section id="about-lucy" className="section meet-lucy">
+    <section id="about-lucy" className="section meet-lucy brand-bg brand-bg--light">
       <div className="container meet-lucy__inner">
         <div className="meet-lucy__photo">
-          <PlaceholderBlock
+          {/* The source is 3:2 landscape and Lucy is centred in it, so a
+              4/5 crop tightens onto her without losing her to the edges. */}
+          <Photo
+            src="/assets/meet-lucy.webp"
+            alt="Lucy standing in her cassava field in a Lucy Perfect shirt, a harvesting blade across her shoulders"
             label="Photo of Lucy on her farm coming soon"
             aspect="4 / 5"
-            icon="👩🏾‍🌾"
+            className="meet-lucy__img"
           />
         </div>
         <div className="meet-lucy__copy">

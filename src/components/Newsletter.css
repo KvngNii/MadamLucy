@@ -23,6 +23,9 @@
 .newsletter__panel-inner {
   width: 100%;
   max-width: 520px;
+  /* Above .brand-bg's pattern — see the note on .tradition > .container. */
+  position: relative;
+  z-index: 1;
 }
 
 .newsletter__headline {
@@ -30,13 +33,10 @@
   margin-bottom: 20px;
 }
 
-.newsletter__rule {
-  margin-bottom: 24px;
-}
-
 .newsletter__seal {
   display: inline-block;
-  margin-bottom: 20px;
+  /* Absorbs the space the rule above it used to hold. */
+  margin: 24px 0 20px;
   animation: newsletter-spin 24s linear infinite;
 }
 

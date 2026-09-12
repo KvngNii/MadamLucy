@@ -1,10 +1,15 @@
 import './TraditionSection.css';
-import { PlaceholderBlock } from './PlaceholderBlock.jsx';
+import { Photo } from './Photo.jsx';
 
+// `image`/`alt` are optional: a step without one still renders its labeled
+// placeholder, so photos 02 and 03 are a one-line addition each when they
+// arrive.
 const STEPS = [
   {
     number: '01',
     caption: 'Rooted in over a decade of Ghanaian gari-making tradition',
+    image: '/assets/tradition-01-rooted.webp',
+    alt: 'Hands turning freshly roasted gari across a wide metal pan set over a wood fire in a traditional clay hearth',
   },
   {
     number: '02',
@@ -16,29 +21,9 @@ const STEPS = [
   },
 ];
 
-const WHY_CARDS = [
-  {
-    number: '01',
-    title: 'She grows the cassava',
-    body: "Every sachet starts on Lucy's own farm in the Eastern Region.",
-  },
-  {
-    number: '02',
-    title: 'Fermented and roasted by hand',
-    body: 'Small batches, turned by hand, the way she has done it for over ten years.',
-  },
-  {
-    number: '03',
-    title: 'One superfood per flavor',
-    body: 'Beetroot paste, ginger, turmeric. Nothing else goes in.',
-  },
-];
-
-const TAGS = ['no preservatives', 'nothing artificial', 'made in ghana'];
-
 export function TraditionSection() {
   return (
-    <section id="tradition" className="tradition grain-overlay">
+    <section id="tradition" className="tradition grain-overlay brand-bg">
       <div className="container">
         <h2 className="display-2 on-dark tradition__headline">
           Tradition
@@ -55,41 +40,13 @@ export function TraditionSection() {
             <div className="tradition__item" key={step.number}>
               <div className="tradition__number">{step.number}</div>
               <p className="tradition__caption on-dark">{step.caption}</p>
-              <PlaceholderBlock
+              <Photo
+                src={step.image}
+                alt={step.alt}
                 label="Photo coming soon"
                 aspect="4 / 3"
-                icon="📷"
                 className="tradition__photo"
               />
-            </div>
-          ))}
-        </div>
-      </div>
-
-      <div id="why-us" className="container tradition__why">
-        <div className="tradition__why-head">
-          <h2 className="display-2 on-dark">
-            How She
-            <br />
-            Makes It
-          </h2>
-          <div className="tradition__tags">
-            {TAGS.map((tag) => (
-              <span className="tradition__tag" key={tag}>
-                {tag}
-              </span>
-            ))}
-          </div>
-        </div>
-
-        <div className="tradition__why-grid">
-          {WHY_CARDS.map((card) => (
-            <div className="tradition__why-card" key={card.title}>
-              <span className="tradition__why-number" aria-hidden="true">
-                {card.number}
-              </span>
-              <h3 className="on-dark">{card.title}</h3>
-              <p className="on-dark">{card.body}</p>
             </div>
           ))}
         </div>
