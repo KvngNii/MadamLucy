@@ -12,10 +12,24 @@ import { Resend } from 'resend';
 //
 // Swapping providers means replacing `store()` below and nothing else.
 
-const API_KEY = process.env.RESEND_API_KEY;
-// Resend renamed Audiences to Segments; `audience_id` still works but is on
-// the way out, so prefer the new name and accept the old one.
-const SEGMENT_ID = process.env.RESEND_SEGMENT_ID || process.env.RESEND_AUDIENCE_ID;
+// Read per request, not once at module scope. A warm serverless instance that
+// booted before a config change would otherwise hold the stale snapshot for
+// its whole life, which turns "I set the variable and nothing happened" into a
+// mystery. Reading process.env per call costs nothing.
+function config() {
+  const apiKey = (process.env.RESEND_API_KEY || '').trim();
+  // Resend renamed Audiences to Segments; `audience_id` still works but is on
+  // the way out, so prefer the new name and accept the old one.
+  const segmentId = (
+    process.env.RESEND_SEGMENT_ID ||
+    process.env.RESEND_AUDIENCE_ID ||
+    ''
+  ).trim();
+  const missing = [];
+  if (!apiKey) missing.push('RESEND_API_KEY');
+  if (!segmentId) missing.push('RESEND_SEGMENT_ID');
+  return { apiKey, segmentId, missing, configured: missing.length === 0 };
+}
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const MAX_NAME = 100;
@@ -49,22 +63,66 @@ function splitName(full) {
   return { firstName: trimmed.slice(0, cut), lastName: trimmed.slice(cut + 1) };
 }
 
-async function store({ email, firstName, lastName }) {
-  const resend = new Resend(API_KEY);
+async function store({ email, firstName, lastName }, { apiKey, segmentId }) {
+  const resend = new Resend(apiKey);
   return resend.contacts.create({
     email,
     firstName,
     lastName,
     unsubscribed: false,
-    segments: [{ id: SEGMENT_ID }],
+    segments: [{ id: segmentId }],
   });
 }
 
 export default async function handler(req, res) {
   res.setHeader('Cache-Control', 'no-store');
 
+  const cfg = config();
+
+  // GET is a health check rather than a 405: without it, a 503 from the form
+  // gives no way to tell which variable is missing short of guessing and
+  // redeploying. Reports only whether each name is set — never a value, a
+  // length or a prefix. The names are already public in the README, and the
+  // 503 body already says the endpoint is unconfigured, so this discloses
+  // nothing new.
+  if (req.method === 'GET') {
+    const body = {
+      ok: cfg.configured,
+      configured: cfg.configured,
+      missing: cfg.missing,
+    };
+
+    // ?probe=1 additionally checks the credentials actually WORK, which the
+    // presence check above cannot tell you: a key with Sending access, or a
+    // segment id from another account, both look perfectly configured and
+    // then fail at signup time. segments.get is read-only and writes nothing.
+    //
+    // Opt-in rather than on by default: a public endpoint that calls an
+    // upstream on every hit is a free way for anyone to burn the Resend rate
+    // limit. Same reason it shares the POST rate limiter.
+    if (cfg.configured && req.query?.probe) {
+      if (overLimit(clientIp(req))) {
+        return res.status(429).json({ ...body, error: 'Too many probes. Try again in a minute.' });
+      }
+      const resend = new Resend(cfg.apiKey);
+      try {
+        const { data, error } = await resend.segments.get(cfg.segmentId);
+        body.provider = error
+          // The provider's own error identifier — restricted_api_key,
+          // not_found — never a key, a segment id, or any part of either.
+          ? { reachable: false, reason: error.name || 'unknown' }
+          : { reachable: true, segment: data?.name ?? null };
+      } catch (err) {
+        body.provider = { reachable: false, reason: err?.name || 'unreachable' };
+      }
+      body.ok = body.provider.reachable === true;
+    }
+
+    return res.status(200).json(body);
+  }
+
   if (req.method !== 'POST') {
-    res.setHeader('Allow', 'POST');
+    res.setHeader('Allow', 'GET, POST');
     return res.status(405).json({ ok: false, error: 'Method not allowed.' });
   }
 
@@ -85,15 +143,14 @@ export default async function handler(req, res) {
     return res.status(400).json({ ok: false, error: 'Please enter a valid email address.' });
   }
 
-  const ip = (req.headers['x-forwarded-for'] || '').split(',')[0].trim() || 'unknown';
-  if (overLimit(ip)) {
+  if (overLimit(clientIp(req))) {
     return res.status(429).json({ ok: false, error: 'Too many attempts. Please try again in a minute.' });
   }
 
   // Unconfigured is a 503, not a silent success. The old stub claimed people
   // were on a list that did not exist; never do that again.
-  if (!API_KEY || !SEGMENT_ID) {
-    console.error('subscribe: missing RESEND_API_KEY or RESEND_SEGMENT_ID');
+  if (!cfg.configured) {
+    console.error(`subscribe: not configured — missing ${cfg.missing.join(' and ')}`);
     return res.status(503).json({
       ok: false,
       error: 'Signups are not switched on yet. Please try again shortly.',
@@ -101,7 +158,7 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { error } = await store({ email, ...splitName(name) });
+    const { error } = await store({ email, ...splitName(name) }, cfg);
     if (error) {
       // Someone signing up twice is a success from their side, not an error.
       if (/already|exists|duplicate/i.test(error.message || '')) {
@@ -116,6 +173,10 @@ export default async function handler(req, res) {
     console.error('subscribe: unexpected', err?.name, err?.message);
     return res.status(502).json({ ok: false, error: "We couldn't save that just now. Please try again." });
   }
+}
+
+function clientIp(req) {
+  return (req.headers['x-forwarded-for'] || '').split(',')[0].trim() || 'unknown';
 }
 
 function safeParse(s) {
