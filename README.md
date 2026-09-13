@@ -26,7 +26,15 @@ and the form tells the visitor signups are not switched on yet.** It never
 claims success for a signup it did not store.
 
 1. Create a Resend account at <https://resend.com> and add an API key with
-   **Sending access** (Settings → API Keys).
+   **Full access** (Settings → API Keys).
+
+   It has to be Full access, not Sending access: Sending access can only send
+   email and cannot create or update contacts, which is what a signup does.
+   Be aware of what that key can do — Full access can create, read, update and
+   delete anything on the account, including domains and other API keys. It is
+   broader than this site needs, and Resend offers nothing narrower for contact
+   management. It stays server-side (nothing in `src/` imports the SDK) and
+   lives in Vercel's environment, never the repo.
 2. Create a segment (Audiences were renamed Segments) and copy its id. Either
    in the dashboard under **Contacts → Segments → Create**, or with the helper
    in this repo, which is exact and safe to run twice:
@@ -64,6 +72,24 @@ claims success for a signup it did not store.
    the wrong environment (Vercel keeps Production, Preview and Development
    separate) or the deployment predates it — use **Redeploy**, since variables
    are captured per deployment.
+
+   Add `?probe=1` to check the credentials actually *work*, not just that they
+   are present. It makes one read-only call to Resend:
+
+   ```
+   curl -s "https://YOUR-DOMAIN/api/subscribe?probe=1"
+   ```
+
+   ```jsonc
+   {"provider":{"reachable":true,"segment":"Launch list"}}   // good
+   {"provider":{"reachable":false,"reason":"restricted_api_key"}}  // key lacks Full access
+   {"provider":{"reachable":false,"reason":"not_found"}}     // wrong segment id
+   {"provider":{"reachable":false,"reason":"invalid_api_key"}} // wrong key
+   ```
+
+   It reports Resend's own error identifiers and never a key or segment id.
+   The probe is opt-in and rate-limited so the endpoint cannot be used to burn
+   your Resend quota.
 6. Sign up through the live form once and confirm the contact appears in the
    Resend dashboard.
 
