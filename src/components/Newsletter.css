@@ -119,3 +119,24 @@
   object-fit: cover;
   display: block;
 }
+
+/* Honeypot. Moved off-screen rather than display:none or hidden — a bot that
+   skips invisible fields would slip past those, but a form-filler walking the
+   DOM still fills this one. aria-hidden + tabIndex=-1 on the markup keep it
+   away from anyone real. */
+.newsletter__hp {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+.newsletter__consent {
+  margin: 14px 0 0;
+  font-size: 0.78rem;
+  line-height: 1.45;
+  color: var(--color-pale);
+  opacity: 0.75;
+  max-width: 44ch;
+}

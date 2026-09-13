@@ -7,21 +7,42 @@ const PACK_IMAGE = '/assets/product-coconut.jpg';
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-// NOT WIRED UP. This is the single place to add a real endpoint (Mailchimp,
-// Formspree, Netlify Forms, a Vercel function). Until one exists the form
-// tells people they are on the list and keeps nothing — see the note on the
-// success message below.
+// Posts to our own /api/subscribe (see api/subscribe.js), which holds the
+// Resend key server-side and adds the checks a bot could otherwise skip.
+// Same-origin, so the site's `connect-src 'self'` CSP needs no widening.
 //
-// Deliberately logs no name or email. A stub is what ships if nobody
-// revisits it, and real visitors' details sitting in the browser console are
-// readable by any extension with content-script access.
-async function submitNewsletterSignup() {
-  await new Promise((resolve) => setTimeout(resolve, 400));
+// Throws with a message meant for the visitor: the endpoint returns a usable
+// sentence for every failure it knows about, and this falls back to a generic
+// one when the request never arrived at all.
+async function submitNewsletterSignup({ name, email, company }) {
+  let res;
+  try {
+    res = await fetch('/api/subscribe', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, email, company }),
+    });
+  } catch {
+    throw new Error('Could not reach the server. Please check your connection.');
+  }
+
+  let payload = {};
+  try {
+    payload = await res.json();
+  } catch {
+    /* a proxy or error page returned something that is not JSON */
+  }
+
+  if (!res.ok || !payload.ok) {
+    throw new Error(payload.error || 'Something went wrong. Please try again in a moment.');
+  }
 }
 
 export function Newsletter() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
+  // Honeypot. Real people never see this field, so anything in it is a bot.
+  const [company, setCompany] = useState('');
   const [status, setStatus] = useState('idle'); // idle | submitting | success | error
   const [errorMessage, setErrorMessage] = useState('');
 
@@ -41,13 +62,14 @@ export function Newsletter() {
 
     setStatus('submitting');
     try {
-      await submitNewsletterSignup();
+      await submitNewsletterSignup({ name: name.trim(), email: email.trim(), company });
       setStatus('success');
       setName('');
       setEmail('');
-    } catch {
+    } catch (err) {
       setStatus('error');
-      setErrorMessage('Something went wrong. Please try again in a moment.');
+      // The endpoint's own wording, which is specific to what actually failed.
+      setErrorMessage(err.message);
     }
   };
 
@@ -67,9 +89,6 @@ export function Newsletter() {
             it&apos;s ready to ship.
           </p>
 
-          {/* Until submitNewsletterSignup reaches a real endpoint, this
-              message promises something the code does not do. Either wire the
-              endpoint or soften the copy before launch. */}
           {status === 'success' ? (
             <p className="newsletter__success" role="status">
               You&apos;re on the list! We&apos;ll email you the moment
@@ -101,6 +120,22 @@ export function Newsletter() {
                   autoComplete="email"
                 />
               </div>
+
+              {/* Not display:none — some bots skip hidden fields. Off-screen,
+                  out of the tab order, and hidden from assistive tech, so no
+                  real visitor can reach it but a form-filling script will. */}
+              <div className="newsletter__hp" aria-hidden="true">
+                <label htmlFor="newsletter-company">Company</label>
+                <input
+                  id="newsletter-company"
+                  type="text"
+                  name="company"
+                  tabIndex={-1}
+                  autoComplete="off"
+                  value={company}
+                  onChange={(e) => setCompany(e.target.value)}
+                />
+              </div>
               <button
                 type="submit"
                 className="btn btn-primary newsletter__submit"
@@ -113,6 +148,10 @@ export function Newsletter() {
                   {errorMessage}
                 </p>
               )}
+              <p className="newsletter__consent">
+                We&apos;ll only email you about the launch, and you can
+                unsubscribe from any message.
+              </p>
             </form>
           )}
         </div>
