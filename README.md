@@ -27,7 +27,17 @@ claims success for a signup it did not store.
 
 1. Create a Resend account at <https://resend.com> and add an API key with
    **Sending access** (Settings → API Keys).
-2. Create a segment (Audiences were renamed Segments) and copy its id.
+2. Create a segment (Audiences were renamed Segments) and copy its id. Either
+   in the dashboard under **Contacts → Segments → Create**, or with the helper
+   in this repo, which is exact and safe to run twice:
+
+   ```
+   RESEND_API_KEY=re_... node scripts/resend-segment.mjs "Launch list"
+   ```
+
+   It prints the id to paste below. With no name it lists what already exists.
+   If a segment of that name is already there it reuses it rather than making
+   a second one, so your signups cannot end up split across two lists.
 3. In the Vercel project, Settings → Environment Variables, add both for
    Production *and* Preview:
 
