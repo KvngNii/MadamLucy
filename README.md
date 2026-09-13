@@ -49,7 +49,22 @@ claims success for a signup it did not store.
    `RESEND_AUDIENCE_ID` is accepted as a fallback for the old name.
 4. Redeploy. Environment variables are only read at boot, so an existing
    deployment will not pick them up.
-5. Sign up through the live form once and confirm the contact appears in the
+5. Check the endpoint can see them. `GET /api/subscribe` is a health check
+   that reports which names are set — never their values:
+
+   ```
+   curl -s https://YOUR-DOMAIN/api/subscribe
+   ```
+
+   `{"configured":true,"missing":[]}` means it is wired up.
+   `{"configured":false,"missing":["RESEND_SEGMENT_ID"]}` names what is absent.
+   A 404 means the deployment does not have this code yet.
+
+   If a variable you have set shows as missing, it is almost always scoped to
+   the wrong environment (Vercel keeps Production, Preview and Development
+   separate) or the deployment predates it — use **Redeploy**, since variables
+   are captured per deployment.
+6. Sign up through the live form once and confirm the contact appears in the
    Resend dashboard.
 
 Never commit these values. They belong in Vercel's environment, not in the
