@@ -13,10 +13,25 @@
   text-align: center;
 }
 
+.fullbleed-cta__photo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Set by sampling the 85,800 pixels that actually sit behind the heading,
+   not by eye. The photo is a bright orange flat-lay — the opposite of the
+   dark ground this pale display type was built for — and at the old
+   rgba(29,66,29,0.35) the heading measured 1.66:1. Black rather than the
+   brand green: it reaches 5.88:1 at 0.65 where a green tint needs 0.75 for
+   4.51:1, so a lighter scrim does more work and the photo keeps its own
+   warmth instead of going green. */
 .fullbleed-cta__overlay {
   position: absolute;
   inset: 0;
-  background: rgba(29, 66, 29, 0.35);
+  background: rgba(0, 0, 0, 0.65);
 }
 
 .fullbleed-cta__content {
@@ -37,13 +52,3 @@
   font-size: 1.05rem;
 }
 
-.fullbleed-cta__photo-note {
-  position: absolute;
-  bottom: 14px;
-  right: 20px;
-  z-index: 2;
-  margin: 0;
-  font-size: 0.75rem;
-  color: rgba(232, 241, 135, 0.7);
-  font-style: italic;
-}

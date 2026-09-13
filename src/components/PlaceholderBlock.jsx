@@ -7,7 +7,6 @@ import './PlaceholderBlock.css';
 export function PlaceholderBlock({
   label,
   aspect = '4 / 3',
-  icon = '🌾',
   className = '',
   fill = false,
 }) {
@@ -18,9 +17,6 @@ export function PlaceholderBlock({
       role="img"
       aria-label={label}
     >
-      <span className="placeholder-block__icon" aria-hidden="true">
-        {icon}
-      </span>
       <span className="placeholder-block__label">{label}</span>
     </div>
   );

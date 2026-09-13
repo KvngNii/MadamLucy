@@ -1,0 +1,331 @@
+.flavors {
+  /* Curtain: the story pulls this section up by 100vh (negative margin on
+     .story); z-index 2 puts it above the stuck stage so it slides over the
+     frozen pour instead of appearing beneath it. Opaque background matters. */
+  position: relative;
+  z-index: 2;
+  /* The flavour owns the section, not just the pill. data-flavor on this
+     element resolves --flavor-active via styles/flavors.css, so the ground,
+     the accents and the chips below all follow the active tab. The
+     transition is what makes the swap read as a change rather than a jump. */
+  background: color-mix(in srgb, var(--flavor-active) 7%, var(--color-cream));
+  transition: background 0.45s ease;
+  padding: 96px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 80px;
+}
+
+/* Size comes from the global h2 ramp now — this used to carry its own copy
+   of the same clamp, which is how the rest of the page got left behind. */
+.flavors__heading {
+  margin: 0 0 12px;
+}
+
+/* Solid, short, flavour-coloured — a different device from the dotted rules
+   that came out earlier, and the one thing marking where the section header
+   ends and the selected flavour begins. */
+.flavors__rule {
+  width: 56px;
+  height: 3px;
+  border-radius: 2px;
+  background: var(--flavor-active);
+  margin: 0 0 22px;
+  transition: background 0.45s ease;
+}
+
+.flavors__desc {
+  font-size: 1.05rem;
+  color: var(--color-ink);
+  opacity: 0.85;
+  margin: 0 0 24px;
+  max-width: 52ch;
+}
+
+/* ---- Tabs -------------------------------------------------------------- */
+
+.flavors__tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 32px;
+}
+
+/* Each tab carries its own flavor's colour, not the section's, so the row
+   reads as the range at a glance rather than five copies of one swatch. */
+.flavors__tab {
+  --tab-color: var(--flavor-active);
+  border: 2px solid color-mix(in srgb, var(--tab-color) 45%, transparent);
+  background: #fff;
+  border-radius: 999px;
+  padding: 9px 18px;
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: color-mix(in srgb, var(--tab-color) 70%, #000);
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.flavors__tab[data-flavor='beetroot'] { --tab-color: var(--flavor-beetroot); }
+.flavors__tab[data-flavor='ginger'] { --tab-color: var(--flavor-ginger); }
+.flavors__tab[data-flavor='turmeric'] { --tab-color: var(--flavor-turmeric); }
+.flavors__tab[data-flavor='coconut'] { --tab-color: var(--flavor-coconut); }
+.flavors__tab[data-flavor='garlic'] { --tab-color: var(--flavor-garlic); }
+
+.flavors__tab:hover {
+  background: color-mix(in srgb, var(--tab-color) 10%, #fff);
+}
+
+/* 80%, not the pure accent: white on the undiluted colour is only 3.21:1 for
+   garlic, 3.33 ginger, 3.45 coconut. 80% is the least darkening that clears
+   AA for all five (4.75:1 worst case), so the filled pill stays as close to
+   the true brand colour as the contrast floor allows. */
+.flavors__tab.is-active {
+  background: color-mix(in srgb, var(--tab-color) 80%, #000);
+  border-color: color-mix(in srgb, var(--tab-color) 80%, #000);
+  color: #fff;
+}
+
+.flavors__tab:focus-visible {
+  outline: var(--focus-ring);
+  outline-offset: 2px;
+}
+
+/* ---- Panel ------------------------------------------------------------- */
+
+.flavors__top {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 40px;
+}
+
+.flavors__detail:focus {
+  outline: none;
+}
+
+@media (min-width: 860px) {
+  .flavors__top {
+    /* minmax(0, 1fr), not 1fr: a bare 1fr is minmax(auto, 1fr), so a flavor
+       with a shorter blurb gives its column a smaller auto minimum and the
+       split stops being even — which made the pack shot a different size per
+       flavor. Pinning the minimum to 0 keeps every flavor's box identical. */
+    /* The copy column is the wider one: the five flavour pills need ~541px
+       on one row and an even split gave them 534. Headroom rather than a
+       7px shave, since the real webfont may set wider than the fallback
+       this was measured against. */
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+    gap: 64px;
+    /* start, not center: the columns are lopsided, so centring would float
+       the shorter one. Only meaningful at this breakpoint; below it each row
+       is its own height. */
+    align-items: start;
+  }
+}
+
+.flavors__tagline {
+  text-transform: uppercase;
+  font-size: 0.95rem;
+  letter-spacing: 0.14em;
+  font-weight: 700;
+  color: var(--flavor-ink);
+  margin: 0 0 6px;
+  transition: color 0.45s ease;
+}
+
+.flavors__name {
+  margin: 0 0 10px;
+  font-size: clamp(1.9rem, 4vw, 2.7rem);
+}
+
+.flavors__blurb {
+  margin: 0 0 28px;
+  font-size: 1.05rem;
+  color: var(--color-ink);
+  opacity: 0.85;
+  max-width: 40ch;
+}
+
+.flavors__label {
+  text-transform: uppercase;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  opacity: 0.55;
+  margin: 0 0 8px;
+}
+
+/* Chips, not bullets: a bulleted list reads like a spec sheet. Still a real
+   <ul>/<li> — this is a restyle, not a re-marking-up. */
+.flavors__list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0 0 26px;
+  padding: 0;
+  list-style: none;
+}
+
+.flavors__list li {
+  font-weight: 700;
+  font-size: 0.85rem;
+  padding: 7px 14px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--flavor-active) 14%, #fff);
+  color: var(--flavor-ink);
+  border: 1px solid color-mix(in srgb, var(--flavor-active) 30%, transparent);
+  transition: background 0.45s ease, color 0.45s ease, border-color 0.45s ease;
+}
+
+/* Paired with a line of provenance so the foot of the column is composed
+   rather than trailing off into the gap under it. */
+.flavors__seal {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-top: 8px;
+}
+
+.flavors__seal p {
+  margin: 0;
+  font-size: 0.78rem;
+  font-weight: 700;
+  line-height: 1.4;
+  opacity: 0.6;
+  max-width: 22ch;
+}
+
+.flavors__statement-img {
+  display: block;
+  object-fit: cover;
+  border-radius: 20px;
+}
+
+/* The pack shot fills this box edge to edge. The flavor tint behind it only
+   shows through for a flavor still awaiting its photo, which is what makes
+   the placeholder read as deliberate rather than missing. */
+.flavors__media {
+  position: relative;
+  aspect-ratio: 4 / 5;
+  border-radius: 20px;
+  overflow: hidden;
+  background: color-mix(in srgb, var(--flavor-active) 10%, #fff);
+  transition: background 0.25s ease;
+}
+
+/* Absolutely positioned, not just sized: PlaceholderBlock sets its own
+   aspect-ratio as an inline style, which no stylesheet rule can outrank.
+   Pinning both dimensions with inset makes them definite, so that inline
+   aspect-ratio has nothing to do — which is what keeps the box identical
+   for a flavor with a photo and one still waiting for it. */
+.flavors__media > * {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+img.flavors__pack {
+  display: block;
+  object-fit: cover;
+}
+
+/* ---- Closing statement -------------------------------------------------- */
+
+.flavors__statement {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 40px;
+  align-items: center;
+}
+
+@media (min-width: 860px) {
+  .flavors__statement {
+    grid-template-columns: 1fr 1fr;
+    gap: 64px;
+  }
+}
+
+.flavors__statement-copy {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.flavors__md {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(1.8rem, 4vw, 2.6rem);
+  margin: 0;
+  color: var(--color-green-darker);
+  line-height: 1.1;
+}
+
+.flavors__bold {
+  margin-top: 20px;
+  font-size: 1.1rem;
+  color: var(--color-ink);
+  opacity: 0.85;
+  max-width: 42ch;
+}
+
+/* The botanical wash needs a touch more presence over a tinted ground than
+   it does over flat cream. */
+.flavors.brand-bg--light::before {
+  opacity: 0.09;
+}
+
+/* Two jobs here.
+
+   width: 100% — .flavors is a column flex container and .container carries
+   `margin: 0 auto`. Auto margins on the cross axis switch off `stretch`, so
+   the container was shrink-wrapping to its content: every flavor whose blurb
+   ran to a different length gave the whole section a different width, and the
+   pack shot a different size with it. That is the sizing inconsistency, and
+   it had nothing to do with the photos.
+
+   position/z-index — above .brand-bg's pattern, since a positioned
+   pseudo-element paints over the inline content of unpositioned descendants. */
+.flavors > .container {
+  width: 100%;
+  position: relative;
+  z-index: 1;
+}
+
+/* ---- Swap ---------------------------------------------------------------
+   `key={activeFlavorId}` remounts the detail and the pack on every change,
+   which restarts these. An entry animation rather than an out-then-in swap:
+   the mockup's version needed a timed class toggle, and in React that wants
+   AnimatePresence, which can leave the panel briefly empty. For a ~300ms
+   decorative transition this reads the same with nothing to get wrong. */
+@keyframes flavor-rise {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: none; }
+}
+
+@keyframes flavor-slide {
+  from { opacity: 0; transform: translateX(18px) scale(0.985); }
+  to   { opacity: 1; transform: none; }
+}
+
+.flavors__detail > * {
+  animation: flavor-rise 0.34s ease both;
+}
+
+.flavors__detail > *:nth-child(2) { animation-delay: 0.04s; }
+.flavors__detail > *:nth-child(3) { animation-delay: 0.08s; }
+.flavors__detail > *:nth-child(4) { animation-delay: 0.10s; }
+.flavors__detail > *:nth-child(5) { animation-delay: 0.12s; }
+.flavors__detail > *:nth-child(6) { animation-delay: 0.14s; }
+
+.flavors__media .flavors__pack,
+.flavors__media .placeholder-block {
+  animation: flavor-slide 0.4s ease both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .flavors__detail > *,
+  .flavors__media .flavors__pack,
+  .flavors__media .placeholder-block {
+    animation: none;
+  }
+}

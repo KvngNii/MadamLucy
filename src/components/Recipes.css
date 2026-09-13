@@ -12,15 +12,51 @@
 .recipe-card {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: stretch;
   text-align: left;
   background: #fff;
   border: 1px solid rgba(29, 66, 29, 0.1);
   border-radius: 20px;
-  padding: 28px 24px;
+  /* No padding here — see .recipe-card__body. Buttons also carry a UA
+     padding, so it has to be zeroed rather than merely left unset. */
+  padding: 0;
+  overflow: hidden;
   cursor: pointer;
   font-family: inherit;
   transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+/* Fixed box, image cropped to fill it: the three sources could be recropped
+   at any time and the cards must stay identical regardless. */
+.recipe-card__media {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  background: color-mix(in srgb, var(--color-olive) 10%, #fff);
+}
+
+/* Absolute, not just sized: PlaceholderBlock sets its own aspect-ratio as an
+   inline style, which no stylesheet rule can outrank. Pinning both dimensions
+   makes them definite, so a recipe still awaiting a photo occupies exactly
+   the same box as one that has it. */
+.recipe-card__media > * {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+img.recipe-card__img {
+  display: block;
+  object-fit: cover;
+}
+
+.recipe-card__body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 24px;
 }
 
 .recipe-card:hover {
@@ -43,11 +79,6 @@
   background: color-mix(in srgb, var(--color-olive) 12%, #fff);
   border-radius: 999px;
   padding: 4px 10px;
-}
-
-.recipe-card__icon {
-  font-size: 2rem;
-  margin-bottom: 12px;
 }
 
 .recipe-card h3 {

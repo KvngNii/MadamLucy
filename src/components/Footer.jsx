@@ -6,13 +6,13 @@ const LINKS = [
   { href: '#flavors', label: 'Flavors' },
   { href: '#about-lucy', label: 'About Lucy' },
   { href: '#recipes', label: 'Recipes' },
-  { href: '#why-us', label: 'Why Us' },
+  { href: '#tradition', label: 'Tradition' },
   { href: '#notify-me', label: 'Notify Me' },
 ];
 
 export function Footer() {
   return (
-    <footer className="footer">
+    <footer className="footer brand-bg">
       <div className="container">
         <p className="footer__wordmark">Lucy Perfect</p>
       </div>
@@ -58,7 +58,7 @@ export function Footer() {
       </div>
 
       <div className="container">
-        <div className="dotted-line dotted-line--pale footer__divider" />
+        <div className="footer__divider" />
       </div>
 
       <div className="container footer__bottom">

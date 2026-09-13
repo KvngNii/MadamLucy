@@ -2,6 +2,11 @@
 
 .story {
   position: relative;
+  /* Contain the story's own layering (stage 0, panels 1, UI 3) in one
+     stacking context, so the next section's z-index 2 curtain covers the
+     whole thing. Without this the sticky progress bar and skip button
+     outrank the curtain and float over the section rising over them. */
+  z-index: 0;
   background: var(--color-green-darker);
   /* Sit under the transparent sticky nav from scroll 0 so the video runs
      edge-to-edge behind it (the nav is in normal flow above us otherwise). */
@@ -160,13 +165,6 @@
   align-self: end;
 }
 
-.story__block--bottom-right {
-  grid-column: 2;
-  grid-row: 3;
-  justify-self: end;
-  align-self: end;
-}
-
 .story__block--bottom-center {
   grid-column: 1 / -1;
   grid-row: 3;
@@ -177,9 +175,16 @@
 }
 
 @media (max-width: 720px) {
+  /* The eyebrow is centred across the full width, so on a narrow screen it
+     runs under the skip button, which sits in the sticky UI layer at the
+     same height. Start the hero's top band below the button instead. */
+  .story__panel--hero .story__block--top {
+    padding-top: 44px;
+  }
+
   .story__panel {
     grid-template-columns: 1fr;
-    grid-template-rows: auto 1fr auto auto;
+    grid-template-rows: auto 1fr auto;
     gap: 14px;
     padding-left: 20px;
     padding-right: 20px;
@@ -195,12 +200,6 @@
   .story__block--bottom-left {
     grid-column: 1;
     grid-row: 3;
-  }
-
-  .story__block--bottom-right {
-    grid-column: 1;
-    grid-row: 4;
-    justify-self: start;
   }
 
   .story__block--bottom-center {
@@ -220,6 +219,15 @@
   margin: 0 0 10px;
 }
 
+/* The headline is filled with the brand's botanical pattern rather than a
+   flat colour, the way the reference fills its display type. The artwork is
+   the same GREEN_BG_ field, pre-recoloured into the warm gold range and
+   contrast-boosted (see the note in the commit) so the motifs read against
+   the deep green pour behind them.
+
+   `color` is set first and only cleared where background-clip: text is
+   supported — without that guard, a browser without it paints nothing and
+   the headline vanishes. */
 .story__headline {
   font-family: var(--font-display);
   font-weight: 700;
@@ -228,22 +236,28 @@
   text-transform: uppercase;
   font-size: clamp(3rem, 11vw, 9.5rem);
   margin: 0;
+  color: var(--color-pale);
   text-shadow: 0 2px 28px rgba(0, 0, 0, 0.35);
 }
 
-.story__dotted {
-  max-width: 100%;
-  margin: 16px auto 12px;
-}
-
-.story__flavor-name {
-  font-family: var(--font-display);
-  font-weight: 700;
-  font-size: clamp(1.2rem, 2.6vw, 2rem);
-  text-transform: capitalize;
-  color: var(--color-orange);
-  margin: 0;
-  text-shadow: 0 2px 16px rgba(0, 0, 0, 0.35);
+@supports (background-clip: text) or (-webkit-background-clip: text) {
+  .story__headline {
+    background-image: url('/assets/headline-texture.webp');
+    /* Sized so each letter catches a readable piece of the pattern: cover
+       would give the whole line one blown-up motif, and the native size
+       reads as noise at this weight. */
+    background-size: 150% auto;
+    background-position: center;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+    /* text-shadow does not survive a transparent text fill; drop-shadow
+       applies to the painted glyphs instead, keeping the headline lifted
+       off the pour. */
+    text-shadow: none;
+    filter: drop-shadow(0 2px 18px rgba(0, 0, 0, 0.45));
+  }
 }
 
 .story__h2 {
@@ -286,57 +300,4 @@
 
 .story__block--bottom-center .story__small {
   margin-bottom: 0;
-}
-
-/* ---- Flavor pills / icons -------------------------------------------- */
-
-.story__flavor-selector {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: flex-end;
-  gap: 8px;
-}
-
-@media (max-width: 720px) {
-  .story__flavor-selector {
-    justify-content: flex-start;
-  }
-}
-
-.story__pill {
-  border: 2px solid rgba(232, 241, 135, 0.4);
-  background: rgba(17, 24, 17, 0.4);
-  backdrop-filter: blur(4px);
-  border-radius: 999px;
-  padding: 7px 16px;
-  font-weight: 700;
-  font-size: 0.85rem;
-  cursor: pointer;
-  color: var(--color-pale);
-  transition: background 0.15s ease, border-color 0.15s ease;
-}
-
-.story__pill.is-active {
-  background: var(--flavor-active);
-  border-color: var(--flavor-active);
-  color: #fff;
-}
-
-.story__icons {
-  display: flex;
-  justify-content: center;
-  gap: 14px;
-  margin-bottom: 16px;
-}
-
-.story__icon-circle {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 52px;
-  height: 52px;
-  border-radius: 50%;
-  background: rgba(255, 253, 244, 0.92);
-  font-size: 1.4rem;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
 }

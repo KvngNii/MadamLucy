@@ -1,66 +1,66 @@
-// Central flavor registry — every themed section (hero, product cards,
-// ingredients drawer) reads from this single source so adding/adjusting a
-// flavor never requires touching layout code.
+// Central flavor registry. Every themed section (products grid, What's
+// Inside, the ingredients modal) reads from this single source so
+// adjusting a flavor never requires touching layout code. `image`/`alt`
+// are optional: a flavor without a pack shot yet falls back to a labeled
+// placeholder in the same box. There is one
+// pour clip for the whole site (see HeroStory), not one per flavor.
 export const flavors = [
   {
     id: 'beetroot',
+    image: '/assets/flavor-beetroot.webp',
+    alt: 'A pouch of Lucy’s Beetroot Gari Mix on a wooden table, beside whole beetroot and fresh cassava',
     label: 'Beetroot',
-    videoSrc: '/assets/pour-beetroot.mp4',
-    videoWebm: '/assets/pour-beetroot.webm',
-    // Canvas frame sequence (see scripts/encode-pour.sh). Flavors without
-    // `frames` fall back to the video, then to the placeholder.
-    frames: '/assets/frames/beetroot/',
     productName: 'Beetroot Gari Mix',
     productTagline: 'Purple Vitality',
     productBlurb:
       'Beet the ordinary with rich, earthy sweetness and a pop of purple!',
     ingredients: ['Cassava dough', 'Beetroot paste'],
-    ingredientsConfirmed: true,
   },
   {
     id: 'ginger',
+    image: '/assets/flavor-ginger.webp',
+    alt: 'A pouch of Lucy’s Ginger Gari Mix on a wooden table, beside fresh ginger root and cassava',
     label: 'Ginger',
-    videoSrc: '/assets/pour-ginger.mp4',
     productName: 'Ginger Gari Mix',
     productTagline: 'Spicy Warmth',
     productBlurb: 'Peppery, zesty and ready to spice up your life!',
     ingredients: ['Cassava dough', 'Ginger powder'],
-    ingredientsConfirmed: true,
   },
   {
     id: 'turmeric',
+    image: '/assets/flavor-turmeric.webp',
+    alt: 'A pouch of Lucy’s Turmeric Gari Mix on a wooden table, beside fresh turmeric and cassava',
     label: 'Turmeric',
-    videoSrc: '/assets/pour-turmeric.mp4',
     productName: 'Turmeric Gari Mix',
     productTagline: 'Golden Goodness',
     productBlurb:
       "Deep, rich flavor and a hint of spice. There's sunshine in every bite!",
     ingredients: ['Cassava dough', 'Turmeric powder'],
-    ingredientsConfirmed: true,
   },
   {
     id: 'coconut',
+    image: '/assets/flavor-coconut.webp',
+    alt: 'A pouch of Lucy’s Coconut Gari Mix on a wooden table, beside fresh coconut and cassava',
     label: 'Coconut',
-    videoSrc: '/assets/pour-coconut.mp4',
     productName: 'Coconut Gari Mix',
     productTagline: 'Creamy Richness',
     productBlurb: 'Creamy and coconutty, taste the magic in the crunch!',
     ingredients: ['Cassava dough', 'Coconut'],
-    ingredientsConfirmed: false,
   },
   {
     id: 'garlic',
+    image: '/assets/flavor-garlic.webp',
+    alt: 'A pouch of Lucy’s Garlic Gari Mix on a wooden table, beside fresh garlic bulbs and cassava',
     label: 'Garlic',
-    videoSrc: '/assets/pour-garlic.mp4',
     productName: 'Garlic Gari Mix',
     productTagline: 'Aromatic Strength',
     productBlurb:
       'Savory, rich with garlicky goodness. This gari is anything but average!',
     ingredients: ['Cassava dough', 'Garlic powder'],
-    ingredientsConfirmed: false,
   },
 ];
 
 export const getFlavor = (id) => flavors.find((f) => f.id === id) ?? flavors[0];
 
-export const DEFAULT_FLAVOR_ID = 'beetroot';
+// Coconut leads: it's the pack in the hero's pour clip.
+export const DEFAULT_FLAVOR_ID = 'coconut';

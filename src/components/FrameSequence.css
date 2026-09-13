@@ -2,7 +2,10 @@
   position: absolute;
   inset: 0;
   overflow: hidden;
-  background: var(--color-green-darker);
+  /* Transparent on purpose: .story__stage behind it carries the green *and*
+     the brand pattern, so the gap before the first frame decodes shows the
+     botanical ground rather than a flat green block. */
+  background: transparent;
 }
 
 .frame-seq__canvas,

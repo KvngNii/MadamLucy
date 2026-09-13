@@ -2,6 +2,7 @@ import { useState } from 'react';
 import './FloatingIcons.css';
 import { IngredientsNutritionModal } from './IngredientsNutritionModal.jsx';
 import { scrollToEl } from '../lib/lenis.js';
+import { Icon } from './Icon.jsx';
 
 export function FloatingIcons() {
   const [modalOpen, setModalOpen] = useState(false);
@@ -17,7 +18,7 @@ export function FloatingIcons() {
           aria-label="View ingredients and nutrition facts"
           title="Ingredients & Nutrition"
         >
-          🌿
+          <Icon name="leaf" size={22} />
         </button>
         <button
           type="button"
@@ -29,7 +30,7 @@ export function FloatingIcons() {
           aria-label="Jump to Notify Me signup"
           title="Notify Me"
         >
-          🔔
+          <Icon name="bell" size={22} />
         </button>
       </div>
 

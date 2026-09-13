@@ -93,9 +93,12 @@
   }
 }
 
+/* Separates the footer body from the copyright line. A hairline rather
+   than a rule with presence — it is doing structural work, not decorating. */
 .footer__divider {
+  height: 1px;
   margin: 0 0 20px;
-  opacity: 0.6;
+  background: rgba(232, 241, 135, 0.15);
 }
 
 .footer__bottom {
@@ -104,4 +107,13 @@
   padding-bottom: 24px;
   font-size: 0.8rem;
   opacity: 0.7;
+}
+
+/* Lifts the content above .brand-bg's pattern. A positioned pseudo-element
+   paints above the inline content of *unpositioned* descendants, so the
+   content has to be positioned too — and being later in DOM order than the
+   ::before, it wins. */
+.footer > .container {
+  position: relative;
+  z-index: 1;
 }

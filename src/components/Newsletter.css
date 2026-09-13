@@ -23,6 +23,9 @@
 .newsletter__panel-inner {
   width: 100%;
   max-width: 520px;
+  /* Above .brand-bg's pattern — see the note on .tradition > .container. */
+  position: relative;
+  z-index: 1;
 }
 
 .newsletter__headline {
@@ -30,13 +33,10 @@
   margin-bottom: 20px;
 }
 
-.newsletter__rule {
-  margin-bottom: 24px;
-}
-
 .newsletter__seal {
   display: inline-block;
-  margin-bottom: 20px;
+  /* Absorbs the space the rule above it used to hold. */
+  margin: 24px 0 20px;
   animation: newsletter-spin 24s linear infinite;
 }
 
@@ -118,4 +118,25 @@
   height: 100%;
   object-fit: cover;
   display: block;
+}
+
+/* Honeypot. Moved off-screen rather than display:none or hidden — a bot that
+   skips invisible fields would slip past those, but a form-filler walking the
+   DOM still fills this one. aria-hidden + tabIndex=-1 on the markup keep it
+   away from anyone real. */
+.newsletter__hp {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+.newsletter__consent {
+  margin: 14px 0 0;
+  font-size: 0.78rem;
+  line-height: 1.45;
+  color: var(--color-pale);
+  opacity: 0.75;
+  max-width: 44ch;
 }

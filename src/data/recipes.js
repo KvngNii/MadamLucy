@@ -5,6 +5,8 @@
 export const recipes = [
   {
     id: 'gari-soakings',
+    image: '/assets/recipe-soakings.webp',
+    alt: 'A bowl of gari soakings with milk, sugar and roasted groundnuts',
     title: 'Gari Soakings',
     teaser: 'A quick, refreshing snack or breakfast option.',
     prep: '5 min',
@@ -36,6 +38,8 @@ export const recipes = [
   },
   {
     id: 'eba',
+    image: '/assets/recipe-eba.webp',
+    alt: 'A smooth ball of Ɛba on a plate beside a bowl of soup',
     title: 'Ɛba',
     teaser: 'A hearty swallow dish perfect for lunch or dinner.',
     prep: '5 min',
@@ -66,6 +70,8 @@ export const recipes = [
   },
   {
     id: 'gari-foto',
+    image: '/assets/recipe-gari-foto.webp',
+    alt: 'A plate of Gari Fɔtɔ with peppers, onions and egg stirred through',
     title: 'Gari Fɔtɔ',
     teaser: "A spicy, flavorful dish that's quick to prepare.",
     prep: '10 min',

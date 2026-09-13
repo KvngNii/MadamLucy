@@ -3,24 +3,30 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Lucy Perfect Enterprise — Gari, But Better</title>
+    <title>Lucy Perfect Enterprise | Gari, But Better</title>
     <meta
       name="description"
-      content="Real cassava, real superfoods, real Ghana. Farm-to-table gari, reimagined for your health — Lucy Perfect Enterprise."
+      content="Real cassava, real superfoods, real Ghana. Farm-to-table gari from Lucy Perfect Enterprise, reimagined for your health."
     />
-    <link
-      rel="preconnect"
-      href="https://fonts.googleapis.com"
+    <link rel="icon" type="image/png" href="/assets/Logo.png" />
+    <link rel="apple-touch-icon" href="/assets/Logo.png" />
+
+    <!-- Share card. The with-background artwork is used here rather than the
+         transparent mark, which would render on whatever ground the platform
+         happens to composite it against. -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Lucy Perfect Enterprise | Gari, But Better" />
+    <meta
+      property="og:description"
+      content="Real cassava, real superfoods, real Ghana. Farm-to-table gari, reimagined for your health."
     />
-    <link
-      rel="preconnect"
-      href="https://fonts.gstatic.com"
-      crossorigin
-    />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito+Sans:wght@400;600;700;800&display=swap"
-      rel="stylesheet"
-    />
+    <meta property="og:image" content="/assets/Logo%20With%20Background.jpg.jpg" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <!-- No webfont links: Fredoka and Nunito Sans are self-hosted and imported
+         from src/main.jsx, so their @font-face rules ride in the CSS bundle
+         the page already fetches. That removes two third-party origins from
+         the critical path and keeps visitor IPs away from Google. -->
   </head>
   <body>
     <div id="root"></div>

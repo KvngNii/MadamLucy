@@ -20,7 +20,6 @@ export function useStoryScrub({
   storyRef,
   rendererRef,
   progressBarRef,
-  activeFlavorId,
   reducedMotion,
 }) {
   useLayoutEffect(() => {
@@ -46,11 +45,21 @@ export function useStoryScrub({
       },
     });
 
+    // A rebuilt tween starts at p:0 and `onUpdate` only fires once the
+    // scroll moves, so anything that re-runs this effect part-way down the
+    // page would snap the pour back to its first frame. Sync the fresh tween
+    // and renderer to where the scroll already is.
+    const st = tween.scrollTrigger;
+    const p0 = st ? st.progress : 0;
+    tween.progress(p0);
+    rendererRef.current?.seek(p0);
+    if (progressBarRef.current) {
+      progressBarRef.current.style.width = `${p0 * 100}%`;
+    }
+
     return () => {
       tween.scrollTrigger?.kill();
       tween.kill();
     };
-    // Re-run on flavor change: the renderer remounts (key=flavor id), so the
-    // scrub needs to bind to the fresh one.
-  }, [storyRef, rendererRef, progressBarRef, activeFlavorId, reducedMotion]);
+  }, [storyRef, rendererRef, progressBarRef, reducedMotion]);
 }

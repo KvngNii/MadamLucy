@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react';
 import './RecipeModal.css';
+import { Icon } from './Icon.jsx';
 
 export function RecipeModal({ recipe, onClose }) {
   const closeButtonRef = useRef(null);
@@ -41,7 +42,7 @@ export function RecipeModal({ recipe, onClose }) {
           ref={closeButtonRef}
           aria-label="Close recipe"
         >
-          ✕
+          <Icon name="close" size={20} />
         </button>
 
         <span className="recipe-modal__tag">recipe</span>
@@ -76,12 +77,12 @@ export function RecipeModal({ recipe, onClose }) {
 
         {recipe.tip && (
           <div className="recipe-modal__tip">
-            <span aria-hidden="true">💡</span>
+            <p className="recipe-modal__tip-label">Tip</p>
             <p>{recipe.tip}</p>
           </div>
         )}
 
-        <div className="dotted-line recipe-modal__divider" />
+        <div className="recipe-modal__divider" />
 
         <h3>Instructions</h3>
         <ol className="recipe-modal__steps">
