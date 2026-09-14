@@ -7,15 +7,37 @@
   display: block;
 }
 
-/* No background and no padding on either variant. Both existed to build a
-   green tile under a transparent mark; the artwork carries its own green
-   field, so a CSS tile behind it would only show as a rim of a different
-   green (the token is #116935, the artwork is #216439) around the edge.
-
-   border-radius above still applies — it rounds the artwork's square corners,
-   which is how the mark reads everywhere else it is used. */
-.logo-mark--light,
-.logo-mark--reversed {
+/* No background or padding on either file. Both used to build a green tile
+   under a transparent mark; the artwork carries its own field, and the
+   transparent version is only ever used where the ground is already green. A
+   CSS tile behind either would show as a rim of a different green — the token
+   is #116935, the artwork is #216439. */
+.logo-mark--reversed,
+.logo-mark--field,
+.logo-mark--plain {
   background: transparent;
   padding: 0;
+}
+
+/* The nav carries both and shows the one that matches the ground under it.
+   Sized so the pair occupies exactly the box one image would. */
+.logo-mark__pair {
+  display: block;
+  position: relative;
+  width: var(--logo-size);
+  height: var(--logo-size);
+  flex-shrink: 0;
+}
+
+.logo-mark--plain {
+  display: none;
+}
+
+/* Over the pour the ground is green, so the transparent mark takes over. */
+.nav--over-story .logo-mark--field {
+  display: none;
+}
+
+.nav--over-story .logo-mark--plain {
+  display: block;
 }

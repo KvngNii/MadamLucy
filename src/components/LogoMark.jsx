@@ -1,30 +1,54 @@
 import './LogoMark.css';
 
-// The brand's "lucy" monogram — the with-background artwork exactly as
-// supplied, green field and all.
+// The brand's "lucy" monogram, in two files, because which one is right
+// depends on what is behind it.
 //
-// Percent-encoded because the filename has spaces in it, matching how
-// index.html already references the same file for og:image.
+// On a ground that is already green — the footer, and the nav while it is
+// over the pour — the transparent PNG, so the mark sits straight on that
+// green with no edge of its own.
 //
-// This replaced Logo.png, the transparent version. That file's fully
-// transparent pixels carried rgb(76,105,113) — a slate grey-blue — baked into
-// palette index 0, and phones whose browsers composite the stored RGB instead
-// of discarding it painted a grey tile behind the mark. Nothing in CSS could
-// reach that colour; it was inside the image. The artwork below has no
-// transparency for anything to get wrong.
-const LOGO_SRC = '/assets/Logo%20With%20Background.jpg.jpg';
+// On the cream nav bar there is no green to sit on, so the with-background
+// artwork supplies its own field.
+//
+// A note on that PNG, since it caused a real bug: its fully transparent
+// pixels used to carry rgb(76,105,113), a slate grey-blue, in palette index
+// 0. Alpha 0 makes that invisible by spec and desktop Chromium discards it,
+// but a phone painted it as a solid grey tile behind the mark. Index 0 is now
+// #116935 — the same green it sits on — so a browser that composites the
+// stored RGB anyway shows green rather than slate. Not a cosmetic change to
+// the artwork: every pixel with any opacity is byte-identical.
+const LOGO_ON_GREEN = '/assets/Logo.png';
+// Percent-encoded for the spaces, matching how index.html references the same
+// file for og:image.
+const LOGO_OWN_FIELD = '/assets/Logo%20With%20Background.jpg.jpg';
 
 export function LogoMark({ variant = 'light', size = 44 }) {
+  const style = { '--logo-size': `${size}px` };
+  // Decorative: both call sites carry the brand name in text beside it, so an
+  // alt here would just be read out twice.
+  const shared = { width: size, height: size, alt: '' };
+
+  // The footer's ground is green and stays green.
+  if (variant === 'reversed') {
+    return (
+      <img
+        className="logo-mark logo-mark--reversed"
+        style={style}
+        src={LOGO_ON_GREEN}
+        {...shared}
+      />
+    );
+  }
+
+  // The nav's ground changes as you scroll, and it changes by a CSS class that
+  // GSAP toggles (useNavOverStory), not by React state. Rendering both and
+  // letting CSS choose leaves that one mechanism in charge; mirroring it into
+  // React state would be a second source of truth to keep in sync, and one
+  // more thing to get wrong on a fast scroll.
   return (
-    <img
-      className={`logo-mark logo-mark--${variant === 'reversed' ? 'reversed' : 'light'}`}
-      style={{ '--logo-size': `${size}px` }}
-      src={LOGO_SRC}
-      width={size}
-      height={size}
-      // Decorative: both call sites already carry the brand name in text
-      // beside it, so an alt here would just be read out twice.
-      alt=""
-    />
+    <span className="logo-mark__pair" style={style}>
+      <img className="logo-mark logo-mark--field" src={LOGO_OWN_FIELD} {...shared} />
+      <img className="logo-mark logo-mark--plain" src={LOGO_ON_GREEN} {...shared} />
+    </span>
   );
 }
