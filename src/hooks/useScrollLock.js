@@ -1,27 +1,38 @@
 import { useEffect } from 'react';
 import { getLenis } from '../lib/lenis.js';
 
-// Holds the page still while a modal is open.
+// Holds the page still while a modal is open, without freezing the modal.
 //
-// `document.body.style.overflow = 'hidden'` on its own does NOT do this on
-// this site, which is what both modals used to do. Lenis reads wheel and touch
-// events and drives the scroll position in JavaScript — it never consults the
-// overflow property, so the page kept scrolling behind an open modal.
-// Measured: 1313px of drift from six wheel ticks over the backdrop.
+// `document.body.style.overflow = 'hidden'` on its own does nothing here, which
+// is what both modals used to do. Lenis reads wheel and touch events and drives
+// scroll in JavaScript; it never consults the overflow property. Measured:
+// 1313px of drift from six wheel ticks over the backdrop.
 //
-// Four things, because no single one covers every case:
+// The non-obvious part is what stop() actually does. From Lenis' own handler:
 //
-//   1. lenis.stop()          — the actual fix for wheel and trackpad.
-//   2. body overflow hidden  — still needed for the reduced-motion path, where
-//                              Lenis never boots and native scroll is live.
-//   3. touch-action: none    — on the backdrop, so dragging it on a phone does
-//                              not scroll the document underneath. Lenis does
-//                              not intercept touch by default, so stop() alone
-//                              leaves touch scrolling native.
-//   4. overscroll-behavior   — on the panel, so reaching the end of the recipe
-//                              does not chain the remaining momentum to the page.
+//     if (composedPath.find(node => node.hasAttribute("data-lenis-prevent")))
+//       return;
+//     if (this.isStopped || this.isLocked) {
+//       if (event.cancelable) event.preventDefault();
+//       return;
+//     }
 //
-// (3) and (4) live in the modals' CSS; this hook does (1) and (2).
+// stop() does not idle Lenis — it makes Lenis preventDefault every cancelable
+// wheel and touch event, so native scrolling dies everywhere, the open modal
+// included. Stopping alone therefore trades "the page scrolls behind the modal"
+// for "nothing scrolls at all", which is exactly what the first attempt did.
+//
+// `data-lenis-prevent` is tested BEFORE that branch and returns early, so
+// events inside a marked element never reach the preventDefault and scroll
+// natively even while Lenis is stopped. The two compose: the marked panel
+// scrolls, everything else is swallowed. That attribute lives on the modal
+// panels; this hook owns the stop/start and the reduced-motion fallback.
+//
+//   lenis.stop()          locks the page for wheel, trackpad and touch
+//   body overflow hidden  still needed on the reduced-motion path, where Lenis
+//                         never boots and native scroll is live
+//   overscroll-behavior   on the panel (in CSS), so reaching the end of a
+//                         recipe does not chain the momentum to the document
 export function useScrollLock(active = true) {
   useEffect(() => {
     if (!active) return undefined;

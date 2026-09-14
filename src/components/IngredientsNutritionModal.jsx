@@ -34,6 +34,7 @@ export function IngredientsNutritionModal({ onClose }) {
     >
       <div
         className="ingredients-modal"
+        data-lenis-prevent
         role="dialog"
         aria-modal="true"
         aria-labelledby="ingredients-modal-title"

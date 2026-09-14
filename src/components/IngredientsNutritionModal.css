@@ -126,12 +126,11 @@
   opacity: 0.8;
 }
 
-/* The touch half of the scroll lock — see src/hooks/useScrollLock.js for the
-   other half. Lenis does not intercept touch by default, so stopping it leaves
-   touch scrolling native: without this, dragging the backdrop on a phone still
-   scrolls the page behind the modal. */
+/* The backdrop does not need touch-action: none — Lenis' stop() already
+   preventDefaults touchmove here. It used to carry it, and that was a second
+   reason the panel could not pan: touch-action on an ancestor constrains the
+   gesture for its descendants too. */
 .ingredients-modal__overlay {
-  touch-action: none;
   overscroll-behavior: contain;
 }
 

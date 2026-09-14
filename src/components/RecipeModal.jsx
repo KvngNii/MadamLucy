@@ -29,8 +29,14 @@ export function RecipeModal({ recipe, onClose }) {
         if (e.target === e.currentTarget) onClose();
       }}
     >
+      {/* data-lenis-prevent is what lets this panel scroll while the page is
+          locked. Lenis checks it BEFORE its isStopped branch and returns early,
+          so wheel and touch inside here never reach the preventDefault that
+          stop() applies to everything else. Without it, stop() freezes the
+          modal too — which it did. */}
       <div
         className="recipe-modal"
+        data-lenis-prevent
         role="dialog"
         aria-modal="true"
         aria-labelledby="recipe-modal-title"
