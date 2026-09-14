@@ -19,36 +19,6 @@ import './FrameSequence.css';
 
 const COARSE_STEP = 8;
 const CONCURRENCY = 6;
-
-// Below this viewport width the phone set is used. 820 rather than a phone
-// width: a small tablet or a narrow desktop window gets a stage barely wider
-// than a phone's, and at the capped 2x DPR the 960-wide frames still cover it.
-const SMALL_VIEWPORT = 820;
-
-// Which sequence this device should get, decided once at mount.
-//
-// The full set is 9.2 MB across 241 frames. Measured on a throttled 4G phone
-// it was still arriving 45 seconds after load, competing the whole time with
-// the content someone was actually trying to read. The phone set is the same
-// pour at a third of the frame rate and half the width — 481 KB.
-//
-// Read once, not on resize. Re-picking mid-scroll would throw away every
-// decoded frame to serve the case of a phone rotated into a tablet-width
-// window, which is not a case anyone is in.
-function pickSequence(full, small, force) {
-  if (typeof window === 'undefined') return { url: full, posterOnly: force };
-  const conn = navigator.connection;
-  // saveData is the one unambiguous thing a person can say to a site about
-  // their data, and 2g means the sequence would still be downloading after
-  // they had given up and left. Either way they get the poster, which is a
-  // still of the pour — the page looks finished, it just does not move.
-  const posterOnly =
-    force ||
-    Boolean(conn?.saveData) ||
-    /^(slow-)?2g$/.test(conn?.effectiveType || '');
-  const narrow = window.innerWidth < SMALL_VIEWPORT;
-  return { url: narrow && small ? small : full, posterOnly };
-}
 // Cap the canvas backing store at 2x the CSS size. This used to be 1.5,
 // which made the pour visibly soft on every Retina screen: the compositor
 // had to stretch the backing store the remaining 1.33x to fill a 2x display,
@@ -63,16 +33,10 @@ function pickSequence(full, small, force) {
 const MAX_DPR = 2;
 
 export const FrameSequence = forwardRef(function FrameSequence(
-  { manifestUrl, smallManifestUrl, staticOnly = false, className = '', onUnavailable },
+  { manifestUrl, className = '', onUnavailable },
   ref
 ) {
   const canvasRef = useRef(null);
-  // useState with an initialiser, not useMemo: this must be decided exactly
-  // once for the life of the component, and useMemo is a performance hint the
-  // runtime is allowed to discard.
-  const [{ url: activeUrl, posterOnly }] = useState(() =>
-    pickSequence(manifestUrl, smallManifestUrl, staticOnly)
-  );
   const state = useRef({
     frames: [], // HTMLImageElement | null, per index
     count: 0,
@@ -164,25 +128,13 @@ export const FrameSequence = forwardRef(function FrameSequence(
           resolve(true);
         };
         img.onerror = () => resolve(false);
-        img.src = `${activeUrl}${String(i + 1).padStart(4, '0')}.${ext}`;
+        img.src = `${manifestUrl}${String(i + 1).padStart(4, '0')}.${ext}`;
       });
-
-    // Pull a list of indices with a small concurrency cap, so one pass cannot
-    // starve the next.
-    const pull = async (order, ext) => {
-      let next = 0;
-      const worker = async () => {
-        while (!cancelled && next < order.length) {
-          await load(order[next++], ext);
-        }
-      };
-      await Promise.all(Array.from({ length: CONCURRENCY }, worker));
-    };
 
     const run = async () => {
       let manifest;
       try {
-        const res = await fetch(`${activeUrl}manifest.json`);
+        const res = await fetch(`${manifestUrl}manifest.json`);
         if (!res.ok) throw new Error(`manifest ${res.status}`);
         manifest = await res.json();
       } catch {
@@ -192,49 +144,32 @@ export const FrameSequence = forwardRef(function FrameSequence(
       if (cancelled) return;
       s.count = manifest.count;
       s.frames = new Array(manifest.count).fill(null);
-      setPoster(`${activeUrl}poster.${manifest.ext}`);
+      setPoster(`${manifestUrl}poster.${manifest.ext}`);
       // A seek can land before the manifest does (the scrub binds to this
       // renderer in the layout phase, we load in a passive effect), and that
       // draw bailed on `!s.count`. Now that we have a count, ask again.
       scheduleDraw();
 
-      // Save-Data, or a connection slow enough that the sequence would still
-      // be arriving after they had gone. The poster stays up — firstFrameReady
-      // never flips — so the stage shows a still of the pour rather than a
-      // hole, and seek() is harmless because there is nothing to draw.
-      if (posterOnly) return;
+      // First frame, then coarse pass, then everything else — with a small
+      // concurrency cap so the coarse pass isn't starved by the fine one.
+      const order = [0];
+      for (let i = COARSE_STEP; i < manifest.count; i += COARSE_STEP) order.push(i);
+      for (let i = 1; i < manifest.count; i++) if (i % COARSE_STEP) order.push(i);
 
       const first = await load(0, manifest.ext);
       if (!first) {
         if (!cancelled) onUnavailable?.();
         return;
       }
-
-      // Coarse pass: every 8th frame. This is what makes scrubbing work at
-      // all, so it runs now, at full priority.
-      const coarse = [];
-      for (let i = COARSE_STEP; i < manifest.count; i += COARSE_STEP) coarse.push(i);
-      await pull(coarse, manifest.ext);
-      if (cancelled) return;
-
-      // Everything else, once the browser is idle. These only smooth a scrub
-      // that already works, and holding them back keeps them from competing
-      // with the images, fonts and copy someone is actually looking at — which
-      // measured as the page still downloading 45 seconds in on 4G.
-      const fine = [];
-      for (let i = 1; i < manifest.count; i++) if (i % COARSE_STEP) fine.push(i);
-      const startFine = () => {
-        if (!cancelled) pull(fine, manifest.ext);
+      let next = 1;
+      const worker = async () => {
+        while (!cancelled && next < order.length) {
+          const i = order[next++];
+          await load(i, manifest.ext);
+        }
       };
-      if (typeof requestIdleCallback === 'function') {
-        // The timeout is the point: on a page that never goes idle this still
-        // runs, just late.
-        idle = requestIdleCallback(startFine, { timeout: 4000 });
-      } else {
-        idle = setTimeout(startFine, 1200);
-      }
+      await Promise.all(Array.from({ length: CONCURRENCY }, worker));
     };
-    let idle = 0;
     run();
 
     // Watch the canvas itself, not just the window: the stage is sticky and
@@ -253,12 +188,6 @@ export const FrameSequence = forwardRef(function FrameSequence(
       cancelled = true;
       window.removeEventListener('resize', onResize);
       observer?.disconnect();
-      // Either kind of handle: whichever scheduler the branch above used, the
-      // other's canceller is a no-op on an id it does not own.
-      if (idle) {
-        if (typeof cancelIdleCallback === 'function') cancelIdleCallback(idle);
-        clearTimeout(idle);
-      }
       if (s.raf) {
         cancelAnimationFrame(s.raf);
         // Must clear the id, not just cancel the frame: `scheduleDraw` skips
@@ -269,7 +198,7 @@ export const FrameSequence = forwardRef(function FrameSequence(
         s.raf = 0;
       }
     };
-  }, [activeUrl, posterOnly, onUnavailable, scheduleDraw]);
+  }, [manifestUrl, onUnavailable, scheduleDraw]);
 
   return (
     <div className={`frame-seq ${className}`}>

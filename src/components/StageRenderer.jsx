@@ -17,7 +17,7 @@ import { PlaceholderBlock } from './PlaceholderBlock.jsx';
 // Add `?noframes` to the URL to force the video path while developing.
 
 export const StageRenderer = forwardRef(function StageRenderer(
-  { frames, framesSmall, videoSrc, label, className = '', autoPlayLoop = false, staticOnly = false },
+  { frames, videoSrc, label, className = '', autoPlayLoop = false },
   ref
 ) {
   const wantFrames =
@@ -86,8 +86,6 @@ export const StageRenderer = forwardRef(function StageRenderer(
       <FrameSequence
         ref={framesRef}
         manifestUrl={frames}
-        smallManifestUrl={framesSmall}
-        staticOnly={staticOnly}
         className={className}
         onUnavailable={toVideo}
       />

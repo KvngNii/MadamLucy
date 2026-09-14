@@ -44,13 +44,6 @@
   }
 }
 
-/* 36x36 measured on a phone; the circle stays 36 and the tappable box goes
-   to 44 around it. */
-.recipe-modal .recipe-modal__close {
-  min-width: 44px;
-  min-height: 44px;
-}
-
 .recipe-modal__close {
   position: absolute;
   top: 18px;
