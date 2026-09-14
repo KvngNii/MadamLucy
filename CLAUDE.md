@@ -41,6 +41,16 @@ commits pushed afterwards need a new PR.
   directly and passed while wheeling over the modal did nothing. Drive real
   input, and assert both halves — the thing that should move *and* the thing
   that should not.
+- **`grep` for a filename misses the URL-encoded copy.** `Logo With
+  Background.jpg.jpg` was declared unreferenced and deleted on the strength of
+  a literal grep; it was the `og:image`, spelled `Logo%20With%20Background`.
+  Search for a distinctive fragment (`Background.jpg`), not the human spelling,
+  and check `index.html` as well as `src/`.
+- **Two payloads, not one.** The page ships a 9.2 MB desktop pour sequence and
+  a 481 KB phone one (`frames/pour/` and `frames/pour-sm/`), chosen in
+  `FrameSequence.jsx` at mount. Adding an asset means asking which set it
+  belongs to. `npm run audit:mobile` fails if a phone ever fetches the desktop
+  set.
 
 ## Still outstanding
 

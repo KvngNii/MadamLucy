@@ -45,6 +45,14 @@
   gap: 10px;
 }
 
+/* 342x24 measured: full width, but only 24px of it was tappable, stacked
+   10px apart. Padding rather than a height so the text stays where it is. */
+.footer .footer__links a {
+  display: flex;
+  align-items: center;
+  min-height: 44px;
+}
+
 .footer__links a {
   text-decoration: none;
   color: var(--color-pale);
@@ -73,6 +81,14 @@
 .footer__tbd {
   opacity: 0.65;
   font-style: italic;
+}
+
+/* The legal row is a second set of links with its own rule; 175x20 and 196x20
+   measured, so it needed the same treatment as .footer__links a above. */
+.footer .footer__legal-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
 }
 
 .footer__legal-link {

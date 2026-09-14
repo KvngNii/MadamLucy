@@ -20,6 +20,7 @@ export function MeetLucy() {
           {/* The source is 3:2 landscape and Lucy is centred in it, so a
               4/5 crop tightens onto her without losing her to the edges. */}
           <Photo
+            sizes="(max-width: 860px) 92vw, 46vw"
             src="/assets/meet-lucy.webp"
             alt="Lucy standing in her cassava field in a Lucy Perfect shirt, a harvesting blade across her shoulders"
             label="Photo of Lucy on her farm coming soon"
