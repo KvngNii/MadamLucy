@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { PlaceholderBlock } from './PlaceholderBlock.jsx';
+import { srcSetFor } from '../lib/photos.js';
 
 // A real photograph that degrades to a labeled placeholder: when no `src`
 // has been supplied yet, and when one has but fails to load. Photography is
@@ -9,6 +10,12 @@ import { PlaceholderBlock } from './PlaceholderBlock.jsx';
 //
 // `label` describes the missing photo (shown in the placeholder); `alt`
 // describes the real one (read by screen readers when it loads).
+//
+// A photo listed in lib/photos.js gets a srcset automatically, so a phone
+// fetches the 500px file instead of the 1000-1600px one. `sizes` tells the
+// browser how wide the box will be before any CSS has been applied to it —
+// without it the browser assumes 100vw and over-fetches on desktop, which is
+// the failure mode that makes people conclude srcset "doesn't work".
 export function Photo({
   src,
   alt = '',
@@ -17,6 +24,7 @@ export function Photo({
   className = '',
   fill = false,
   loading = 'lazy',
+  sizes,
 }) {
   const [failed, setFailed] = useState(false);
 
@@ -31,10 +39,14 @@ export function Photo({
     );
   }
 
+  const srcSet = srcSetFor(src);
+
   return (
     <img
       className={className}
       src={src}
+      srcSet={srcSet || undefined}
+      sizes={srcSet ? sizes || '100vw' : undefined}
       alt={alt}
       loading={loading}
       onError={() => setFailed(true)}

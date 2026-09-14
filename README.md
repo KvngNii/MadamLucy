@@ -162,6 +162,23 @@ network. It exists mainly to hold one line: a broken mailer must never turn a
 successful signup into an error on screen. Every case asserts both what should
 happen and what should not.
 
+### Mobile audit
+
+```
+npm run build
+npx vite preview --port 4180 &
+npm run audit:mobile          # needs Playwright; PLAYWRIGHT=<path> if not local
+```
+
+Measures what a phone actually pays: bytes transferred at three widths, tap
+targets under 44px, text under 12px, oversampled images, and that the frame-set
+gate holds in both directions (a phone never fetches the desktop sequence, a
+desktop never fetches the phone one). Run it after anything that touches
+assets, layout or the pour.
+
+Before the mobile pass it reported 9.69 MB at 390x844, 16 tap targets under
+44px, and two text sizes under 12px. It now reports 0.97 MB and zero of each.
+
 ### Changing provider
 
 `store()` in `api/subscribe.js` is the only function that knows about Resend.
