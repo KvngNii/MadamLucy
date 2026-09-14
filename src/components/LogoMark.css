@@ -7,20 +7,15 @@
   display: block;
 }
 
-/* Nav: the cream bar needs the green field behind the pale mark, but over
-   the pour the mark sits on the video the way the packaging does. */
-.logo-mark--light {
-  background: var(--color-green-deep);
-  padding: 8%;
-  transition: background-color 0.3s ease, padding 0.3s ease;
-}
+/* No background and no padding on either variant. Both existed to build a
+   green tile under a transparent mark; the artwork carries its own green
+   field, so a CSS tile behind it would only show as a rim of a different
+   green (the token is #116935, the artwork is #216439) around the edge.
 
-.nav--over-story .logo-mark--light {
-  background: transparent;
-  padding: 0;
-}
-
-/* Footer green is already the mark's ground. */
+   border-radius above still applies — it rounds the artwork's square corners,
+   which is how the mark reads everywhere else it is used. */
+.logo-mark--light,
 .logo-mark--reversed {
   background: transparent;
+  padding: 0;
 }
