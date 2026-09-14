@@ -2,8 +2,9 @@ import './TraditionSection.css';
 import { Photo } from './Photo.jsx';
 
 // `image`/`alt` are optional: a step without one still renders its labeled
-// placeholder, so photos 02 and 03 are a one-line addition each when they
-// arrive.
+// placeholder, so a photo is a line each when it arrives. Every card crops to
+// the same 4/3 box from a differently framed source, so each also names the
+// class that positions its crop — see TraditionSection.css.
 const STEPS = [
   {
     number: '01',
@@ -14,10 +15,14 @@ const STEPS = [
   {
     number: '02',
     caption: "Cultivated and harvested on Lucy's own farm in the Eastern Region",
+    image: '/assets/tradition-02-cultivated.webp',
+    alt: 'A farmer in a green Lucy Perfect shirt and hairnet loading freshly harvested cassava roots into a metal basin at the edge of the farm',
   },
   {
     number: '03',
     caption: 'Hand-fermented, roasted, and infused with real superfoods',
+    image: '/assets/tradition-03-hand-fermented.webp',
+    alt: 'A woman in a green Lucy Perfect shirt spreading fermented cassava across a wide steel roasting pan set over an open fire',
   },
 ];
 
@@ -45,7 +50,7 @@ export function TraditionSection() {
                 alt={step.alt}
                 label="Photo coming soon"
                 aspect="4 / 3"
-                className="tradition__photo"
+                className={`tradition__photo tradition__photo--${step.number}`}
               />
             </div>
           ))}

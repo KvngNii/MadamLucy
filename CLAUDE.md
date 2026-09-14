@@ -7,9 +7,10 @@
   one-way — deleting data, rotating credentials, changing the brand palette.
 - **Author commits as KvngNii <barneyhamms77@gmail.com>**, with
   `Co-Authored-By: Claude` retained so the involvement is still on the record.
-  That address is the one GitHub links to the account — verified against commit
-  `e653201`. A different address in session context (sediham77@gmail.com) is
-  *not* the one GitHub recognises; commits authored to it show as unlinked.
+  That address is the account's primary, verified against commit `e653201`, and
+  the one to author as. sediham77@gmail.com — the address in session context —
+  is now a verified secondary, so it links too; it is simply not the one to use,
+  and seeing barneyhamms77 on the history is not a mistake to correct.
   Set it with `git config --local user.name/user.email` at the start of a
   session; `.git/config` does not survive a fresh clone.
 
@@ -51,5 +52,5 @@ commits pushed afterwards need a new PR.
   actually work.
 - Per-flavour hex codes in `src/styles/flavors.css` are estimates from
   packaging renders, not the source design files.
-- Placeholders awaiting real content: Tradition photos 02 and 03, the Instagram
-  handle, contact / FDA / batch numbers.
+- Placeholders awaiting real content: the Instagram handle, contact / FDA /
+  batch numbers.
