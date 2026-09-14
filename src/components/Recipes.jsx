@@ -9,10 +9,17 @@ export function Recipes() {
   const activeRecipe = recipes.find((r) => r.id === activeRecipeId) ?? null;
 
   return (
-    <section id="recipes" className="section recipes">
+    <section id="recipes" className="section recipes brand-bg">
       <div className="container">
-        <p className="section-eyebrow">How to Enjoy It</p>
-        <h2>Three ways to eat Lucy&apos;s gari</h2>
+        <p className="section-eyebrow recipes__eyebrow">How to Enjoy It</p>
+        {/* Display scale and uppercase, the same treatment the Tradition and
+            Newsletter headlines already use on a dark ground. No "all recipes"
+            button under it: there are three recipes and nowhere else to send
+            anyone, and a prominent button that goes nowhere teaches people the
+            site is decorative. */}
+        <h2 className="display-2 on-dark recipes__heading">
+          Three ways to eat Lucy&apos;s gari
+        </h2>
         <div className="recipes__grid">
           {recipes.map((recipe) => (
             <button
@@ -39,9 +46,8 @@ export function Recipes() {
                   <span className="recipe-card__tag">recipe</span>
                   <span className="recipe-card__tag">{recipe.total}</span>
                 </div>
-                <h3>{recipe.title}</h3>
+                <h3 className="recipe-card__title">{recipe.title}</h3>
                 <p>{recipe.teaser}</p>
-                <span className="recipe-card__cta">View recipe →</span>
               </div>
             </button>
           ))}

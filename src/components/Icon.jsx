@@ -28,6 +28,13 @@ const paths = {
       <path d="M18 6L6 18" />
     </>
   ),
+  lightbulb: (
+    <>
+      <path d="M9 18h6" />
+      <path d="M10 21h4" />
+      <path d="M12 3a6 6 0 0 0-3.5 10.9c.6.4 1 1.1 1 1.9v.2h5v-.2c0-.8.4-1.5 1-1.9A6 6 0 0 0 12 3Z" />
+    </>
+  ),
 };
 
 export function Icon({ name, size = 24, strokeWidth = 1.8, className = '' }) {
