@@ -96,11 +96,71 @@ claims success for a signup it did not store.
 Never commit these values. They belong in Vercel's environment, not in the
 repo — anything in `public/` or imported from `src/` reaches the browser.
 
-### Sending the launch email
+### The thank-you email
 
-Collecting works as soon as the variables are set. *Sending* needs a verified
-domain (Resend → Domains), which involves adding DNS records and is worth
-doing before launch day rather than on it.
+Every new signup gets a short thank-you: what they'll receive, roughly when,
+and nothing in between. The message itself is `api/lib/welcome-email.js`.
+
+**It stays switched off until you set `RESEND_FROM`**, and it cannot be set
+correctly until a domain is verified (below). Until then signups are stored as
+normal and nothing is sent — collecting and sending are deliberately separate
+switches.
+
+| name | value |
+|---|---|
+| `RESEND_FROM` | `Lucy Perfect <hello@yourdomain>` — an address at a **verified** domain |
+| `RESEND_REPLY_TO` | optional; defaults to the address inside `RESEND_FROM` |
+
+`GET /api/subscribe` reports `"sendsWelcome": true` once it is on, so you can
+check without a test signup.
+
+A failed send can never fail a signup. If Resend rejects the message or is
+unreachable, the contact is still stored and the visitor still sees success —
+they *are* on the list. The reason is logged (the provider's error name, never
+anyone's address).
+
+A repeat signup is not thanked twice.
+
+Unsubscribing is a `List-Unsubscribe` header plus a line in the message asking
+people to reply — honest and immediate at this list size, with nothing to
+maintain. Resend **Topics** is the managed version when the list is big enough
+to want it.
+
+### Thanking the people who signed up earlier
+
+Anyone who joined before the automatic email existed gets nothing from it. For
+them:
+
+```
+RESEND_API_KEY=re_... RESEND_SEGMENT_ID=seg_... \
+RESEND_FROM="Lucy Perfect <hello@yourdomain>" \
+  node scripts/welcome-broadcast.mjs
+```
+
+That creates a Resend **draft** and stops — it prints the link and sends
+nothing. Open it, read it, send yourself a test from the dashboard, then press
+Send. Broadcasts carry Resend's own unsubscribe link, so that is handled for
+you. Safe to run twice: it reuses a draft of the same name rather than making a
+second one.
+
+### Sending needs a verified domain
+
+Both of the above need one. Resend will not send from a domain it has not
+verified (Resend → Domains, add the DNS records, wait for Verified).
+
+A `*.vercel.app` subdomain **cannot** work — its DNS is not yours, so the SPF
+and DKIM records can never be added. It has to be a domain you own.
+
+### Tests
+
+```
+npm test
+```
+
+Drives `api/subscribe.js` end to end with the Resend SDK stubbed — no key, no
+network. It exists mainly to hold one line: a broken mailer must never turn a
+successful signup into an error on screen. Every case asserts both what should
+happen and what should not.
 
 ### Changing provider
 
