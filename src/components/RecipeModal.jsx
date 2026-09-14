@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react';
 import './RecipeModal.css';
 import { Icon } from './Icon.jsx';
+import { Photo } from './Photo.jsx';
 
 export function RecipeModal({ recipe, onClose }) {
   const closeButtonRef = useRef(null);
@@ -49,6 +50,22 @@ export function RecipeModal({ recipe, onClose }) {
         <h2 id="recipe-modal-title">{recipe.title}</h2>
         <p className="recipe-modal__teaser">{recipe.teaser}</p>
 
+        {/* The data has carried `image` since the recipe photos landed; the
+            modal simply never showed it. Photo so a missing shot degrades the
+            same way it does everywhere else on the site. */}
+        <div className="recipe-modal__media">
+          <Photo
+            src={recipe.image}
+            alt={recipe.alt}
+            label={`${recipe.title}, photo coming soon`}
+            aspect="16 / 9"
+            className="recipe-modal__image"
+          />
+        </div>
+
+        <h3 className="recipe-modal__section-title recipe-modal__section-title--center">
+          The Breakdown
+        </h3>
         <div className="recipe-modal__breakdown">
           <div>
             <span className="recipe-modal__breakdown-label">prep time</span>
@@ -68,7 +85,7 @@ export function RecipeModal({ recipe, onClose }) {
           </div>
         </div>
 
-        <h3>Ingredients</h3>
+        <h3 className="recipe-modal__section-title">Ingredients</h3>
         <ul className="recipe-modal__ingredients">
           {recipe.ingredients.map((ingredient) => (
             <li key={ingredient}>{ingredient}</li>
@@ -77,14 +94,21 @@ export function RecipeModal({ recipe, onClose }) {
 
         {recipe.tip && (
           <div className="recipe-modal__tip">
-            <p className="recipe-modal__tip-label">Tip</p>
-            <p>{recipe.tip}</p>
+            <span className="recipe-modal__tip-icon" aria-hidden="true">
+              <Icon name="lightbulb" size={20} />
+            </span>
+            {/* The icon is decorative, so the label it replaces still has to
+                exist for anyone not seeing it. */}
+            <p>
+              <span className="visually-hidden">Tip: </span>
+              {recipe.tip}
+            </p>
           </div>
         )}
 
         <div className="recipe-modal__divider" />
 
-        <h3>Instructions</h3>
+        <h3 className="recipe-modal__section-title">Instructions</h3>
         <ol className="recipe-modal__steps">
           {recipe.steps.map((step, i) => (
             <li key={step.title}>

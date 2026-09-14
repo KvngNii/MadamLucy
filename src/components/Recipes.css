@@ -1,5 +1,28 @@
 .recipes {
-  background: color-mix(in srgb, var(--color-pale) 40%, #fff);
+  background: var(--color-green-darker);
+}
+
+/* Above .brand-bg's pattern — a positioned pseudo-element paints over the
+   inline content of unpositioned descendants. Same note as .tradition. */
+.recipes > .container {
+  position: relative;
+  z-index: 1;
+}
+
+/* Scoped to .recipes, not left as a bare .recipes__eyebrow: .section-eyebrow
+   in global.css is also a single class, so source order decided the winner and
+   its olive survived on a dark ground at 2.65:1 — while the opacity below,
+   which .section-eyebrow does not declare, applied anyway and made it worse.
+   Same cascade trap as .hero__inner, .story__stage and .tradition__why. */
+.recipes .recipes__eyebrow {
+  color: var(--color-pale);
+  opacity: 0.75;
+}
+
+.recipes__heading {
+  text-transform: uppercase;
+  margin-bottom: 40px;
+  max-width: 18ch;
 }
 
 .recipes__grid {
@@ -14,8 +37,8 @@
   flex-direction: column;
   align-items: stretch;
   text-align: left;
-  background: #fff;
-  border: 1px solid rgba(29, 66, 29, 0.1);
+  background: var(--color-pale);
+  border: 2px solid color-mix(in srgb, var(--color-pale) 70%, #000);
   border-radius: 20px;
   /* No padding here — see .recipe-card__body. Buttons also carry a UA
      padding, so it has to be zeroed rather than merely left unset. */
@@ -61,7 +84,24 @@ img.recipe-card__img {
 
 .recipe-card:hover {
   transform: translateY(-4px);
-  box-shadow: 0 16px 30px rgba(29, 66, 29, 0.12);
+  box-shadow: 0 16px 30px rgba(0, 0, 0, 0.25);
+}
+
+.recipe-card:focus-visible {
+  outline: var(--focus-ring);
+  outline-offset: 3px;
+}
+
+/* The card's whole point. This used to inherit the UA default h3 size and
+   rendered at 18.7px under a 46px section heading — the one place on the site
+   where that gap was actually visible. */
+.recipe-card__title {
+  font-family: var(--font-display);
+  text-transform: uppercase;
+  font-size: clamp(1.4rem, 2.2vw, 1.85rem);
+  line-height: 1.05;
+  color: var(--color-green-darker);
+  margin: 0 0 10px;
 }
 
 .recipe-card__tags {
@@ -70,15 +110,17 @@ img.recipe-card__img {
   margin-bottom: 14px;
 }
 
+/* Inverted against the reference's version: their pills are dark-on-amber, and
+   on a pale-yellow card the same relationship means green-on-green. */
 .recipe-card__tag {
   text-transform: uppercase;
-  font-size: 0.65rem;
+  font-size: 0.68rem;
   font-weight: 700;
   letter-spacing: 0.06em;
-  color: var(--color-green-deep);
-  background: color-mix(in srgb, var(--color-olive) 12%, #fff);
+  color: var(--color-pale);
+  background: var(--color-green-darker);
   border-radius: 999px;
-  padding: 4px 10px;
+  padding: 5px 12px;
 }
 
 .recipe-card h3 {
@@ -86,12 +128,9 @@ img.recipe-card__img {
 }
 
 .recipe-card p {
-  margin: 0 0 16px;
-  opacity: 0.85;
+  margin: 0;
+  color: var(--color-green-darker);
+  opacity: 0.78;
+  line-height: 1.5;
 }
 
-.recipe-card__cta {
-  font-weight: 700;
-  color: var(--color-orange);
-  margin-top: auto;
-}

@@ -14,7 +14,9 @@
   background: #fff;
   border-radius: 24px;
   padding: 36px;
-  max-width: 600px;
+  /* Wide enough for two ingredient columns to breathe; 600px forced them
+     into a single cramped list. */
+  max-width: 940px;
   width: 100%;
   max-height: 85vh;
   overflow-y: auto;
@@ -61,21 +63,58 @@
 .recipe-modal__teaser {
   opacity: 0.8;
   margin-bottom: 24px;
+  max-width: 52ch;
 }
 
-.recipe-modal h3 {
-  font-size: 1rem;
-  margin-top: 20px;
+.recipe-modal__media {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  border-radius: 18px;
+  overflow: hidden;
+  margin-bottom: 36px;
+  background: color-mix(in srgb, var(--color-olive) 10%, #fff);
 }
 
+/* Absolute, not just sized: PlaceholderBlock sets its own aspect-ratio as an
+   inline style, which no stylesheet rule can outrank. */
+.recipe-modal__media > * {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+img.recipe-modal__image {
+  display: block;
+  object-fit: cover;
+}
+
+.recipe-modal__section-title {
+  font-family: var(--font-display);
+  text-transform: uppercase;
+  font-size: clamp(1.5rem, 3vw, 2.1rem);
+  line-height: 1.05;
+  color: var(--color-green-darker);
+  margin: 0 0 18px;
+}
+
+.recipe-modal__section-title--center {
+  text-align: center;
+}
+
+
+
+/* An outlined table rather than a filled panel: cells divided by rules, the
+   way a recipe card reads in print. The 1px inset shadow trick is avoided —
+   plain borders with a negative margin would double up, so each cell carries
+   only its left rule and the container carries the outer box. */
 .recipe-modal__breakdown {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 8px;
-  background: color-mix(in srgb, var(--color-pale) 40%, #fff);
-  border-radius: 14px;
-  padding: 16px 12px;
-  margin-bottom: 20px;
+  border: 2px solid var(--color-green-darker);
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 36px;
 }
 
 .recipe-modal__breakdown > div {
@@ -84,50 +123,98 @@
   align-items: center;
   text-align: center;
   gap: 4px;
+  padding: 14px 10px;
+  border-left: 2px solid var(--color-green-darker);
+}
+
+.recipe-modal__breakdown > div:first-child {
+  border-left: none;
+}
+
+@media (max-width: 620px) {
+  .recipe-modal__breakdown {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  /* On two columns the "first child has no left rule" rule is wrong for the
+     third cell, and rows need a rule between them. */
+  .recipe-modal__breakdown > div:nth-child(odd) {
+    border-left: none;
+  }
+  .recipe-modal__breakdown > div:nth-child(n + 3) {
+    border-top: 2px solid var(--color-green-darker);
+  }
 }
 
 .recipe-modal__breakdown-label {
   text-transform: uppercase;
-  font-size: 0.65rem;
+  font-size: 0.7rem;
   font-weight: 700;
-  letter-spacing: 0.06em;
-  opacity: 0.65;
+  letter-spacing: 0.08em;
+  color: var(--color-green-darker);
+  opacity: 0.75;
 }
 
 .recipe-modal__breakdown-value {
   font-family: var(--font-display);
   font-weight: 700;
+  font-size: 1.05rem;
+  text-transform: uppercase;
   color: var(--color-green-darker);
 }
 
 .recipe-modal__ingredients {
-  margin: 0;
+  margin: 0 0 28px;
   padding-left: 20px;
+  columns: 2;
+  column-gap: 40px;
+}
+
+.recipe-modal__ingredients li {
+  text-transform: uppercase;
+  font-weight: 700;
+  font-size: 0.85rem;
+  letter-spacing: 0.02em;
+  line-height: 1.4;
+  color: var(--color-green-darker);
+  margin-bottom: 10px;
+  /* Keep an item from splitting across the column break mid-word. */
+  break-inside: avoid;
+}
+
+@media (max-width: 620px) {
+  .recipe-modal__ingredients {
+    columns: 1;
+  }
 }
 
 .recipe-modal__tip {
   display: flex;
-  flex-direction: column;
-  gap: 4px;
-  background: color-mix(in srgb, var(--color-orange) 8%, #fff);
+  align-items: center;
+  gap: 14px;
+  background: color-mix(in srgb, var(--color-orange) 10%, #fff);
   border-radius: 12px;
-  padding: 14px 16px;
+  padding: 16px 18px;
   margin-top: 16px;
+}
+
+.recipe-modal__tip-icon {
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--color-green-darker);
+  color: var(--color-pale);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .recipe-modal__tip p {
   margin: 0;
-  font-size: 0.88rem;
-  opacity: 0.85;
-}
-
-.recipe-modal__tip .recipe-modal__tip-label {
-  text-transform: uppercase;
-  font-size: 0.68rem;
+  font-size: 0.92rem;
+  line-height: 1.45;
   font-weight: 700;
-  letter-spacing: 0.12em;
-  color: var(--color-orange);
-  opacity: 1;
+  color: var(--color-green-darker);
 }
 
 /* Between the ingredient breakdown and the steps. */
@@ -145,19 +232,24 @@
 
 .recipe-modal__steps li {
   display: flex;
-  gap: 14px;
-  margin-bottom: 18px;
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 22px;
 }
 
+/* Outlined rather than filled, as in the reference: the numbers are a spine
+   down the left of the steps, not a row of solid dots competing with the text. */
 .recipe-modal__step-number {
   flex-shrink: 0;
-  width: 28px;
-  height: 28px;
+  width: 38px;
+  height: 38px;
   border-radius: 50%;
-  background: var(--color-green-darker);
-  color: var(--color-pale);
+  border: 2px solid var(--color-green-darker);
+  background: transparent;
+  color: var(--color-green-darker);
+  font-family: var(--font-display);
   font-weight: 700;
-  font-size: 0.85rem;
+  font-size: 1rem;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -166,8 +258,9 @@
 .recipe-modal__step-title {
   display: block;
   font-weight: 700;
+  font-size: 1.05rem;
   color: var(--color-green-darker);
-  margin-bottom: 2px;
+  margin-bottom: 3px;
 }
 
 .recipe-modal__step-desc {
@@ -185,6 +278,12 @@
 /* The only heading on the site with neither a class nor a size of its own, so
    the new global h2 ramp would have set a dialog title at 46px. A modal is
    not a page section; size it for the panel it sits in. */
+/* The only heading on the site with neither a class nor a size of its own, so
+   the global h2 ramp would have set a dialog title at 46px. Sized for the panel
+   it sits in, and uppercase to match the card it was opened from. */
 #recipe-modal-title {
-  font-size: clamp(1.5rem, 3.5vw, 2rem);
+  font-size: clamp(1.8rem, 4vw, 2.6rem);
+  text-transform: uppercase;
+  line-height: 1.05;
+  margin-bottom: 10px;
 }
