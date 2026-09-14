@@ -35,20 +35,43 @@
 }
 
 /* The photo has to fill exactly the box the placeholder occupies, or the
-   three cards stop lining up. The source is portrait (4:5) and its subject
-   — the hands, the pan, the gari — sits in the top third, so the 4/3 crop
-   is taken from the top; centred would keep only firewood. */
+   three cards stop lining up. */
 .tradition__photo {
   border-color: rgba(232, 241, 135, 0.25);
 }
 
+/* The box is fixed at 4/3 landscape; the photographs are not. 01 is 4:5
+   portrait, 02 and 03 are near-square, so cover throws away a different band
+   of each and no single object-position suits all three. Each card sets its
+   own below — a new photo needs its own line here, not the inherited one. */
 img.tradition__photo {
   width: 100%;
   aspect-ratio: 4 / 3;
   object-fit: cover;
-  object-position: 50% 12%;
   border-radius: 20px;
   display: block;
+}
+
+/* Scoped to .tradition rather than left as bare img.class: element+class ties
+   with the rule above on specificity, and a tie is settled by source order —
+   the collision this codebase keeps springing. */
+
+/* Subject in the top third — hands, pan, gari. Centred would keep firewood
+   and throw away the work. */
+.tradition img.tradition__photo--01 {
+  object-position: 50% 12%;
+}
+
+/* Fills the frame head to feet, so centred loses an even sliver top and
+   bottom and keeps her whole. */
+.tradition img.tradition__photo--02 {
+  object-position: 50% 50%;
+}
+
+/* Above centre: high enough to keep the hairnet off the top edge, low enough
+   to keep the hand and the spreader in. Drops the fire and the near rim. */
+.tradition img.tradition__photo--03 {
+  object-position: 50% 40%;
 }
 
 /* Lifts the content above .brand-bg's pattern. A positioned pseudo-element
