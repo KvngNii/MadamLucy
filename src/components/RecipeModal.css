@@ -287,3 +287,19 @@ img.recipe-modal__image {
   line-height: 1.05;
   margin-bottom: 10px;
 }
+
+/* The touch half of the scroll lock — see src/hooks/useScrollLock.js for the
+   other half. Lenis does not intercept touch by default, so stopping it leaves
+   touch scrolling native: without this, dragging the backdrop on a phone still
+   scrolls the page behind the modal. */
+.recipe-modal__overlay {
+  touch-action: none;
+  overscroll-behavior: contain;
+}
+
+/* And so reaching the end of the panel does not chain the leftover momentum
+   through to the document. pan-y because the panel itself must still scroll. */
+.recipe-modal {
+  touch-action: pan-y;
+  overscroll-behavior: contain;
+}

@@ -1,10 +1,13 @@
 import { useEffect, useRef } from 'react';
+import { useScrollLock } from '../hooks/useScrollLock.js';
 import './RecipeModal.css';
 import { Icon } from './Icon.jsx';
 import { Photo } from './Photo.jsx';
 
 export function RecipeModal({ recipe, onClose }) {
   const closeButtonRef = useRef(null);
+
+  useScrollLock();
 
   useEffect(() => {
     closeButtonRef.current?.focus();
@@ -14,12 +17,8 @@ export function RecipeModal({ recipe, onClose }) {
     };
     document.addEventListener('keydown', handleKeyDown);
 
-    const { overflow } = document.body.style;
-    document.body.style.overflow = 'hidden';
-
     return () => {
       document.removeEventListener('keydown', handleKeyDown);
-      document.body.style.overflow = overflow;
     };
   }, [onClose]);
 
