@@ -287,3 +287,18 @@ img.recipe-modal__image {
   line-height: 1.05;
   margin-bottom: 10px;
 }
+
+/* The backdrop does not need touch-action: none — Lenis' stop() already
+   preventDefaults touchmove here. It used to carry it, and that was a second
+   reason the panel could not pan: touch-action on an ancestor constrains the
+   gesture for its descendants too. */
+.recipe-modal__overlay {
+  overscroll-behavior: contain;
+}
+
+/* And so reaching the end of the panel does not chain the leftover momentum
+   through to the document. pan-y because the panel itself must still scroll. */
+.recipe-modal {
+  touch-action: pan-y;
+  overscroll-behavior: contain;
+}

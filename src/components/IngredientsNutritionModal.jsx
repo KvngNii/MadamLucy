@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { useScrollLock } from '../hooks/useScrollLock.js';
 import './IngredientsNutritionModal.css';
 import { Icon } from './Icon.jsx';
 import { useFlavor } from '../context/FlavorContext.jsx';
@@ -9,6 +10,8 @@ export function IngredientsNutritionModal({ onClose }) {
   const [tab, setTab] = useState('ingredients');
   const closeButtonRef = useRef(null);
 
+  useScrollLock();
+
   useEffect(() => {
     closeButtonRef.current?.focus();
 
@@ -17,12 +20,8 @@ export function IngredientsNutritionModal({ onClose }) {
     };
     document.addEventListener('keydown', handleKeyDown);
 
-    const { overflow } = document.body.style;
-    document.body.style.overflow = 'hidden';
-
     return () => {
       document.removeEventListener('keydown', handleKeyDown);
-      document.body.style.overflow = overflow;
     };
   }, [onClose]);
 
@@ -35,6 +34,7 @@ export function IngredientsNutritionModal({ onClose }) {
     >
       <div
         className="ingredients-modal"
+        data-lenis-prevent
         role="dialog"
         aria-modal="true"
         aria-labelledby="ingredients-modal-title"
