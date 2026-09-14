@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test": "node tests/subscribe.test.mjs"
   },
   "dependencies": {
     "@fontsource-variable/fredoka": "^5.3.0",

@@ -45,8 +45,10 @@ commits pushed afterwards need a new PR.
 ## Still outstanding
 
 - Buy a domain and verify it in Resend. Signup collection works; **sending is
-  blocked on it**. A `*.vercel.app` subdomain cannot work — its DNS is not
-  yours, so SPF/DKIM can never be added.
+  blocked on it**, and two things now wait on that: the launch email and the
+  thank-you (`RESEND_FROM` is the single switch for both). A `*.vercel.app`
+  subdomain cannot work — its DNS is not yours, so SPF/DKIM can never be
+  added.
 - `RESEND_API_KEY` needs **Full access**, not Sending access — Sending cannot
   manage contacts. `GET /api/subscribe?probe=1` reports whether the credentials
   actually work.

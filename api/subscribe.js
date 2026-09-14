@@ -1,4 +1,5 @@
 import { Resend } from 'resend';
+import { welcomeEmail } from './lib/welcome-email.js';
 
 // Launch-list signup endpoint.
 //
@@ -25,10 +26,33 @@ function config() {
     process.env.RESEND_AUDIENCE_ID ||
     ''
   ).trim();
+  // Optional, and deliberately not in `missing`: signups work without it.
+  // It gates the thank-you email only, and it cannot be set correctly until a
+  // domain is verified in Resend — sending from an unverified domain fails.
+  // So collecting stays switched on and sending stays switched off until the
+  // day that variable appears, with nothing to remember to turn on but this.
+  const from = (process.env.RESEND_FROM || '').trim();
+  const replyTo = (process.env.RESEND_REPLY_TO || '').trim() || addressOf(from);
   const missing = [];
   if (!apiKey) missing.push('RESEND_API_KEY');
   if (!segmentId) missing.push('RESEND_SEGMENT_ID');
-  return { apiKey, segmentId, missing, configured: missing.length === 0 };
+  return {
+    apiKey,
+    segmentId,
+    from,
+    replyTo,
+    sends: Boolean(from),
+    missing,
+    configured: missing.length === 0,
+  };
+}
+
+// `Lucy Perfect <hello@example.com>` -> `hello@example.com`; a bare address is
+// returned as-is. Used for the List-Unsubscribe header, which takes an address
+// and not a display name.
+function addressOf(from) {
+  const angled = from.match(/<([^>]+)>/);
+  return (angled ? angled[1] : from).trim();
 }
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -74,6 +98,52 @@ async function store({ email, firstName, lastName }, { apiKey, segmentId }) {
   });
 }
 
+// The thank-you, sent once, to someone who has just joined the list for the
+// first time.
+//
+// Awaited rather than fired and forgotten: Vercel freezes the function the
+// moment the response is returned, so a promise left running is killed
+// mid-flight — reliably enough that it would look like an intermittent failure
+// to send. One extra round trip on a request that already shows "Signing up…"
+// is the cheaper trade.
+//
+// Never throws. The caller's job is to tell the visitor whether they are on
+// the list, and they are, whether or not the mail went out. A send that fails
+// is ours to see in the logs, not theirs to see on the page.
+async function sendWelcome({ email, firstName }, cfg) {
+  const { subject, previewText, html, text } = welcomeEmail({ firstName });
+  const resend = new Resend(cfg.apiKey);
+  try {
+    const { error } = await resend.emails.send({
+      from: cfg.from,
+      to: email,
+      replyTo: cfg.replyTo,
+      subject,
+      html,
+      text,
+      headers: {
+        // resend.emails.send adds no unsubscribe footer of its own — that is a
+        // broadcast feature — and the form promises "you can unsubscribe from
+        // any message". So the header is on us. mailto rather than a URL
+        // because it needs no endpoint, no token and no database to honour,
+        // and Gmail and Apple Mail both surface it as a one-tap Unsubscribe.
+        'List-Unsubscribe': `<mailto:${cfg.replyTo}?subject=unsubscribe>`,
+        'List-Unsubscribe-Post': 'List-Unsubscribe=One-Click',
+      },
+      // headers are echoed in the message; the tag is for Resend's own
+      // filtering, and carries nothing about the person.
+      tags: [{ name: 'type', value: 'welcome' }],
+    });
+    if (error) {
+      // Provider's identifier and message only. Never the address — a log line
+      // is the easiest place for a signup list to leak out of.
+      console.error('subscribe: welcome email rejected', error.name, error.message);
+    }
+  } catch (err) {
+    console.error('subscribe: welcome email failed', err?.name, err?.message);
+  }
+}
+
 export default async function handler(req, res) {
   res.setHeader('Cache-Control', 'no-store');
 
@@ -90,6 +160,10 @@ export default async function handler(req, res) {
       ok: cfg.configured,
       configured: cfg.configured,
       missing: cfg.missing,
+      // Whether the thank-you email is switched on. Separate from `configured`
+      // because signups work without it, and reported at all so "did my
+      // RESEND_FROM take?" is one curl rather than a test signup.
+      sendsWelcome: cfg.sends,
     };
 
     // ?probe=1 additionally checks the credentials actually WORK, which the
@@ -157,10 +231,14 @@ export default async function handler(req, res) {
     });
   }
 
+  const { firstName, lastName } = splitName(name);
+
   try {
-    const { error } = await store({ email, ...splitName(name) }, cfg);
+    const { error } = await store({ email, firstName, lastName }, cfg);
     if (error) {
       // Someone signing up twice is a success from their side, not an error.
+      // No thank-you here: they had one the first time, and a welcome that
+      // arrives again every time someone resubmits the form is just spam.
       if (/already|exists|duplicate/i.test(error.message || '')) {
         return res.status(200).json({ ok: true });
       }
@@ -168,6 +246,15 @@ export default async function handler(req, res) {
       console.error('subscribe: resend rejected', error.name, error.message);
       return res.status(502).json({ ok: false, error: "We couldn't save that just now. Please try again." });
     }
+
+    // Stored. Everything past this point is a courtesy, and none of it can
+    // change the answer the visitor gets.
+    if (cfg.sends) {
+      await sendWelcome({ email, firstName }, cfg);
+    } else {
+      console.warn('subscribe: stored, no welcome email — RESEND_FROM is not set');
+    }
+
     return res.status(200).json({ ok: true });
   } catch (err) {
     console.error('subscribe: unexpected', err?.name, err?.message);
