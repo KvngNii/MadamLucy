@@ -1,11 +1,18 @@
 import './LogoMark.css';
 
-// The brand's "lucy" monogram. One transparent PNG serves both places it
-// appears: the mark is pale yellow-green, so it sits directly on a dark
-// ground (the footer, and the nav while that is over the pour) and gets a
-// deep-green tile behind it on the cream nav bar, which is how the brand's
-// own with-background artwork is built.
-const LOGO_SRC = '/assets/Logo.png';
+// The brand's "lucy" monogram — the with-background artwork exactly as
+// supplied, green field and all.
+//
+// Percent-encoded because the filename has spaces in it, matching how
+// index.html already references the same file for og:image.
+//
+// This replaced Logo.png, the transparent version. That file's fully
+// transparent pixels carried rgb(76,105,113) — a slate grey-blue — baked into
+// palette index 0, and phones whose browsers composite the stored RGB instead
+// of discarding it painted a grey tile behind the mark. Nothing in CSS could
+// reach that colour; it was inside the image. The artwork below has no
+// transparency for anything to get wrong.
+const LOGO_SRC = '/assets/Logo%20With%20Background.jpg.jpg';
 
 export function LogoMark({ variant = 'light', size = 44 }) {
   return (
