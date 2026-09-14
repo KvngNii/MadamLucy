@@ -84,11 +84,6 @@
   transform-origin: left;
 }
 
-/* 109x37 measured; the padding below gave 37. */
-.story .story__skip {
-  min-height: 44px;
-}
-
 .story__skip {
   position: absolute;
   top: calc(var(--nav-height) + 12px);

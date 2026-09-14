@@ -50,9 +50,6 @@ export function TraditionSection() {
                 alt={step.alt}
                 label="Photo coming soon"
                 aspect="4 / 3"
-                // Three across above 760px (the grid's auto-fit lands there
-                // at a 220px minimum), one across below it.
-                sizes="(max-width: 760px) 92vw, 33vw"
                 className={`tradition__photo tradition__photo--${step.number}`}
               />
             </div>

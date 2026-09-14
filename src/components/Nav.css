@@ -34,24 +34,6 @@
   height: var(--nav-height);
 }
 
-
-/* ---- Touch targets ------------------------------------------------------
-   Measured at 390x844: these were under the 44x44 a fingertip needs. Where
-   the visible art should stay its size, the hit area grows underneath it
-   rather than the icon growing with it.
-
-   Scoped `.section .element`, never a bare single-class rule: two rules of
-   equal specificity leave source order to decide, and that has gone wrong
-   here four times. */
-.nav .nav__brand,
-.nav .nav__menu-toggle {
-  min-width: 44px;
-  min-height: 44px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-}
-
 .nav__brand {
   display: flex;
   align-items: center;

@@ -53,11 +53,6 @@
 
 /* Each tab carries its own flavor's colour, not the section's, so the row
    reads as the range at a glance rather than five copies of one swatch. */
-/* 42 tall measured — two pixels short, which is still short. */
-.flavors .flavors__tab {
-  min-height: 44px;
-}
-
 .flavors__tab {
   --tab-color: var(--flavor-active);
   border: 2px solid color-mix(in srgb, var(--tab-color) 45%, transparent);
@@ -150,10 +145,9 @@
   max-width: 40ch;
 }
 
-/* 0.75rem, not 0.72: 11.5px measured, half a pixel under the 12px floor. */
 .flavors__label {
   text-transform: uppercase;
-  font-size: 0.75rem;
+  font-size: 0.72rem;
   font-weight: 700;
   letter-spacing: 0.1em;
   opacity: 0.55;

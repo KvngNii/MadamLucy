@@ -112,12 +112,9 @@ img.recipe-card__img {
 
 /* Inverted against the reference's version: their pills are dark-on-amber, and
    on a pale-yellow card the same relationship means green-on-green. */
-/* 0.75rem, not 0.68: at 0.68 these measured 10.9px on a phone, which is below
-   the 12px floor where uppercase letterforms at this tracking stop being
-   comfortably readable. */
 .recipe-card__tag {
   text-transform: uppercase;
-  font-size: 0.75rem;
+  font-size: 0.68rem;
   font-weight: 700;
   letter-spacing: 0.06em;
   color: var(--color-pale);

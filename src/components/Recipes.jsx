@@ -32,7 +32,6 @@ export function Recipes() {
                   all three cards occupy the same footprint. */}
               <div className="recipe-card__media">
                 <Photo
-                  sizes="(max-width: 760px) 92vw, 33vw"
                   src={recipe.image}
                   alt={recipe.alt}
                   label={`${recipe.title}, photo coming soon`}

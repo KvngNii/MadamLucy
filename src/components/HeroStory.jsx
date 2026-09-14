@@ -22,9 +22,6 @@ import { scrollToEl } from '../lib/lenis.js';
 // One pour clip for the whole site, not one per flavor. The canvas frame
 // sequence is what actually scrubs; the mp4 is the fallback if it can't load.
 const POUR_FRAMES = '/assets/frames/pour/';
-// Same pour, a third of the frames at half the width — 481 KB against 9.2 MB.
-// FrameSequence picks by viewport width; see the note on pickSequence there.
-const POUR_FRAMES_SM = '/assets/frames/pour-sm/';
 const POUR_VIDEO = '/assets/pour.mp4';
 
 // Module-level style objects (motion skill: don't recreate per render).
@@ -96,16 +93,10 @@ export function HeroStory() {
         <StageRenderer
           ref={rendererRef}
           frames={POUR_FRAMES}
-          framesSmall={POUR_FRAMES_SM}
           videoSrc={POUR_VIDEO}
           label="Gari pouring into a bowl"
           className="story__video"
-          // Reduced motion gets a still of the pour, not a looping video of
-          // it. The loop was the old behaviour and it was backwards twice
-          // over: an autoplaying loop is exactly the motion the setting asks
-          // to be spared, and taking the video path meant downloading the
-          // 5.8 MB mp4 to deliver it.
-          staticOnly={reducedMotion}
+          autoPlayLoop={reducedMotion}
         />
         <div className="story__vignette" />
       </div>
